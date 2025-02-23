@@ -1,6 +1,6 @@
 <template>
   <div class="about bg-white dark:bg-gray-900">
-    <h1 class="text-black dark:text-white">This is an about page</h1>
+    <h1 class="text-black dark:text-white">{{ $t('about.title') }}</h1>
   </div>
 </template>
 

@@ -1,7 +1,7 @@
 <template>
   <main>
     <div class="menu bg-white dark:bg-gray-900">
-      <h1 class="text-black dark:text-white">This is a main page</h1>
+      <h1 class="text-black dark:text-white">{{ $t('home.mainPage') }}</h1>
     </div>
   </main>
 </template>
