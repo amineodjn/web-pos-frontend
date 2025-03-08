@@ -1,0 +1,15 @@
+{
+  "navbar": {
+    "menu": "Menu",
+    "about": "About"
+  },
+  "home": {
+    "mainPage": "This is a main page"
+  },
+  "brand": {
+    "name": "The Real King Kebab"
+  },
+  "about": {
+    "title": "This is an about page"
+  }
+}
