@@ -1,21 +1,31 @@
 <template>
-  <BadgeUI>
-    <template #default>HELLO</template>
-  </BadgeUI>
+  <div class="flex justify-center overflow-x-auto whitespace-nowrap gap-2 p-2">
+    <BadgeUI
+      v-for="(badge, index) in CATEGORY_BADGES"
+      :key="index"
+      @click="handleBadgeClick(badge)"
+    >
+      <template #default>{{ badge }}</template>
+    </BadgeUI>
+  </div>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue'
-import { fetchData } from '../utils/HandleRequests'
 import BadgeUI from '../components/ui/BadgeUI.vue'
 
-const menuData = ref(null)
+const emit = defineEmits(['category-selected'])
 
-;(async () => {
-  try {
-    menuData.value = await fetchData('http://192.168.0.15:5000/api/menu/dummy')
-    console.log(menuData.value)
-  } catch (error) {
-    console.error('Failed to fetch menu data', error)
-  }
-})()
+const CATEGORY_BADGES = [
+  'Main',
+  'Sides',
+  'Drinks',
+  'Starters',
+  'Desserts',
+  'Soups',
+  'Salads',
+  'Kids Menu'
+]
+
+function handleBadgeClick(badge: string) {
+  emit('category-selected', badge)
+}
 </script>

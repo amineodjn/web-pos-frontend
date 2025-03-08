@@ -1,41 +1,45 @@
 <template>
-  <nav class="bg-white border-gray-200 dark:bg-gray-900">
+  <nav class="navbar relative bg-white border-gray-200 dark:bg-gray-900">
     <div
-      class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4"
+      class="max-w-screen-xl flex flex-wrap items-center md:justify-between mx-auto p-4"
     >
       <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
         <span
           class="self-center text-xl sm:text-2xl font-semibold whitespace-nowrap text-red-600"
-          >The Real king Kebab</span
+          >{{ $t('brand.name') }}</span
         >
       </a>
       <div v-if="screenWidth < MAX_MOBILE_SCREEN_WIDTH">
-        <DarkModeToggle />
-        <button
-          data-collapse-toggle="navbar-default"
-          type="button"
-          class="inline-flex items-center ml-2 p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-          aria-controls="navbar-default"
-          :aria-expanded="isExpanded"
-          @click="toggleMenu"
-        >
-          <span class="sr-only">Open main menu</span>
-          <svg
-            class="w-5 h-5"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 17 14"
+        <div class="flex items-center gap-2 ml-2">
+          <LanguageSelector />
+          <DarkModeToggle />
+
+          <button
+            data-collapse-toggle="navbar-default"
+            type="button"
+            class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+            aria-controls="navbar-default"
+            :aria-expanded="isExpanded"
+            @click="toggleMenu"
           >
-            <path
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M1 1h15M1 7h15M1 13h15"
-            />
-          </svg>
-        </button>
+            <span class="sr-only">Open main menu</span>
+            <svg
+              class="w-5 h-5"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 17 14"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M1 1h15M1 7h15M1 13h15"
+              />
+            </svg>
+          </button>
+        </div>
       </div>
       <div class="hidden w-full md:block md:w-auto" id="navbar-default">
         <ul
@@ -48,7 +52,7 @@
               :class="{ 'text-red-600': isMenuFocused }"
               aria-current="page"
               @click="setFocus('menu')"
-              >Menu</RouterLink
+              >{{ $t('navbar.menu') }}</RouterLink
             >
           </li>
           <li>
@@ -57,12 +61,15 @@
               class="block py-2 px-3 text-xl sm:text-2xl dark:text-white text-gray-900 rounded-sm md:hover:bg-transparent md:border-0 md:p-0 hover:bg-gray-100 dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
               :class="{ 'text-red-600': isAboutFocused }"
               @click="setFocus('about')"
-              >About</RouterLink
+              >{{ $t('navbar.about') }}</RouterLink
             >
           </li>
         </ul>
       </div>
-      <DarkModeToggle v-if="screenWidth > MAX_MOBILE_SCREEN_WIDTH" />
+      <div class="flex items-center gap-2">
+        <LanguageSelector v-if="screenWidth > MAX_MOBILE_SCREEN_WIDTH" />
+        <DarkModeToggle v-if="screenWidth > MAX_MOBILE_SCREEN_WIDTH" />
+      </div>
     </div>
   </nav>
 </template>
@@ -71,6 +78,7 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import { RouterLink } from 'vue-router'
 import DarkModeToggle from './DarkModeToggle.vue'
+import LanguageSelector from './LanguageSelector.vue'
 
 const isMenuFocused = ref<boolean>(true)
 const isAboutFocused = ref<boolean>(false)
@@ -99,3 +107,8 @@ onUnmounted(() => {
   window.removeEventListener('resize', updateScreenWidth)
 })
 </script>
+<style scoped>
+.navbar {
+  z-index: 2;
+}
+</style>
