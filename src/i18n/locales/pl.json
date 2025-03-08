@@ -1,0 +1,18 @@
+{
+  "navbar": {
+    "menu": "Menu",
+    "about": "O nas"
+  },
+  "home": {
+    "mainPage": "To jest strona główna"
+  },
+  "brand": {
+    "name": "The Real King Kebab"
+  },
+  "about": {
+    "title": "To jest strona o nas"
+  },
+  "menuHeader": {
+    "title": "NASZE MENU"
+  }
+}

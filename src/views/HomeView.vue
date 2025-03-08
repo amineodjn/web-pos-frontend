@@ -4,12 +4,12 @@
       class="relative bg-white dark:bg-gray-900 lg:min-h-screen lg:flex lg:items-center flex-col"
     >
       <MenuHeader />
-      <CategoryItems />
+      <MenuContainer />
     </div>
   </div>
 </template>
 <script setup lang="ts">
 import MenuHeader from '../components/MenuHeader.vue'
-import CategoryItems from '../components/CategoryItems.vue'
+import MenuContainer from '../components/MenuContainer.vue'
 </script>
 <style scoped></style>
