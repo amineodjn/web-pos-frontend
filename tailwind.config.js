@@ -2,21 +2,22 @@
 import flowbite from 'flowbite/plugin'
 
 export default {
+  purge: ['./src/**/*.html', './src/**/*.vue', './src/**/*.jsx'],
   darkMode: 'class',
   content: [
-    "./index.html",
-    "./src/**/*.{vue,js,ts,jsx,tsx}",
-    "./node_modules/flowbite/**/*.js"
+    './index.html',
+    './src/**/*.{vue,js,ts,jsx,tsx}',
+    './node_modules/flowbite/**/*.js'
   ],
-  darkMode: 'class',
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Lobster', 'sans-serif'],
-      },
-    },
+        sans: ['Lobster', 'sans-serif']
+      }
+    }
   },
-  plugins: [
-    flowbite
-  ],
+  variants: {
+    extend: {}
+  },
+  plugins: [flowbite]
 }

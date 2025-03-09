@@ -1,5 +1,5 @@
 <template>
-  <nav class="bg-white border-gray-200 dark:bg-gray-900">
+  <nav class="navbar relative bg-white border-gray-200 dark:bg-gray-900">
     <div
       class="max-w-screen-xl flex flex-wrap items-center md:justify-between mx-auto p-4"
     >
@@ -107,3 +107,8 @@ onUnmounted(() => {
   window.removeEventListener('resize', updateScreenWidth)
 })
 </script>
+<style scoped>
+.navbar {
+  z-index: 2;
+}
+</style>

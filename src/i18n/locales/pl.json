@@ -11,5 +11,8 @@
   },
   "about": {
     "title": "To jest strona o nas"
+  },
+  "menuHeader": {
+    "title": "NASZE MENU"
   }
 }

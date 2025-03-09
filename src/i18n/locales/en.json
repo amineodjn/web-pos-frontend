@@ -11,5 +11,8 @@
   },
   "about": {
     "title": "This is an about page"
+  },
+  "menuHeader": {
+    "title": "OUR MENU"
   }
 }

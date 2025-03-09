@@ -1,17 +1,15 @@
 <template>
-  <main>
-    <div class="menu bg-white dark:bg-gray-900">
-      <h1 class="text-black dark:text-white">{{ $t('home.mainPage') }}</h1>
+  <div class="flex flex-col items-center justify-center min-h-screen">
+    <div
+      class="relative bg-white dark:bg-gray-900 lg:min-h-screen lg:flex lg:items-center flex-col"
+    >
+      <MenuHeader />
+      <MenuContainer />
     </div>
-  </main>
+  </div>
 </template>
-<script setup lang="ts"></script>
-<style>
-@media (min-width: 1024px) {
-  .menu {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-  }
-}
-</style>
+<script setup lang="ts">
+import MenuHeader from '../components/MenuHeader.vue'
+import MenuContainer from '../components/MenuContainer.vue'
+</script>
+<style scoped></style>
