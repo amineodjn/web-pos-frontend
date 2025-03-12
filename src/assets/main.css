@@ -3,7 +3,8 @@
 @tailwind utilities;
 
 html {
-  @apply bg-white dark:bg-gray-900;
+  @apply bg-white;
+  @apply dark:bg-[#121212];
   transition:
     background-color 0.3s ease-in-out,
     color 0.3s ease-in-out;
@@ -33,11 +34,7 @@ body {
 }
 
 nav {
-  @apply w-full text-center mt-8;
+  @apply w-full text-center;
   font-family: 'Lobster', sans-serif;
   font-size: 24px;
-}
-
-#app {
-  @apply max-w-7xl mx-auto p-8 font-normal;
 }

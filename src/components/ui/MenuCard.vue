@@ -1,11 +1,18 @@
 <template>
   <div
-    class="menu-card cursor-pointer w-full max-w-xs bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700"
+    class="menu-card cursor-pointer w-full max-w-xs bg-white border border-gray-200 rounded-lg hover:shadow-[0_8px_16px_rgba(0,0,0,0.3)] dark:bg-dark-bg dark:border-gray-700 dark:hover:shadow-dark-hover"
   >
     <div class="image-container overflow-hidden rounded-t-lg">
-      <img class="p-4" :src="imageUrl" :alt="name" />
+      <imagePlaceholder v-if="!imageLoaded" />
+      <img
+        v-if="imageUrl"
+        :src="imageUrl"
+        :alt="name"
+        loading="lazy"
+        @load="imageLoaded = true"
+      />
     </div>
-    <div class="px-4 pb-4">
+    <div class="p-4">
       <h5
         class="name text-lg font-semibold tracking-tight text-gray-900 dark:text-white"
       >
@@ -37,8 +44,9 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps } from 'vue'
+import { ref } from 'vue'
 import type { MenuItemDetails } from '../../types/MenuData'
+import imagePlaceholder from './imagePlaceholder.vue'
 
 defineProps({
   imageUrl: {
@@ -70,6 +78,8 @@ defineProps({
     default: 'Add to cart'
   }
 })
+
+const imageLoaded = ref<boolean>(false)
 </script>
 
 <style scoped>
@@ -77,8 +87,8 @@ defineProps({
   transition: box-shadow 0.3s ease;
 }
 
-.menu-card:hover {
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+.image-container {
+  aspect-ratio: 16 / 10;
 }
 
 .image-container img {

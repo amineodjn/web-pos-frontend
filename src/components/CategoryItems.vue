@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-center overflow-x-auto whitespace-nowrap gap-2 p-2">
+  <div class="badge-scroller overflow-x-auto whitespace-nowrap gap-2 p-2">
     <BadgeUI
       v-for="(badge, index) in CATEGORY_BADGES"
       :key="index"
@@ -9,6 +9,7 @@
     </BadgeUI>
   </div>
 </template>
+
 <script setup lang="ts">
 import BadgeUI from '../components/ui/BadgeUI.vue'
 
@@ -22,10 +23,25 @@ const CATEGORY_BADGES = [
   'Desserts',
   'Soups',
   'Salads',
-  'Kids Menu'
+  'Kids'
 ]
 
 function handleBadgeClick(badge: string) {
   emit('category-selected', badge)
 }
 </script>
+
+<style scoped>
+.badge-scroller {
+  display: grid;
+  grid-auto-flow: column;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+}
+
+@media (max-width: 639px) {
+  .badge-scroller {
+    grid-auto-columns: 30%;
+  }
+}
+</style>
