@@ -1,28 +1,26 @@
 <template>
-  <div class="flex flex-col items-center justify-center min-h-screen">
+  <div class="flex flex-col items-center justify-center min-h-screen menu-root">
     <div
       class="relative z-2 bg-white dark:bg-dark-bg lg:min-h-screen lg:flex lg:items-center flex-col menu-container w-full rounded-t-xl"
     >
-      <div class="relative flex items-center justify-center">
-        <CategoryItems @category-selected="handleCategorySelected" />
-      </div>
+      <MenuHeader
+        v-if="!isLoading"
+        ref="menuHeader"
+        :selectedCategory="selectedCategory"
+        @categorySelected="handleCategorySelected"
+      />
+      
       <div v-if="isLoading" class="flex justify-center items-center min-h-[300px]">
         <SpinnerUI />
       </div>
-      <div
-        v-else
-        class="flex flex-wrap justify-center gap-4 p-4"
-      >
-        <MenuCard
-          v-for="(item, index) in filteredMenuItems"
-          :key="index"
-          :imageUrl="item.imageUrl"
-          :name="item.name"
-          :description="item.description"
-          :details="item.details"
-          :price="item.price"
-          :currency="item.currency"
-          class="transform opacity-0 translate-y-4 animate-fadeIn"
+      
+      <div v-else class="menu-sections scroll-container">
+        <MenuCategorySection
+          v-for="category in availableCategories"
+          :key="category"
+          :category="category"
+          :items="categoryItems?.[category] || []"
+          :onIntersect="handleCategoryIntersection"
         />
       </div>
     </div>
@@ -30,56 +28,107 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import MenuCard from './ui/MenuCard.vue'
-import CategoryItems from './CategoryItems.vue'
-import SpinnerUI from './ui/SpinnerUI.vue'
+import { ref, computed, watch, onMounted } from 'vue'
+import type { MenuData } from '../types/MenuData'
 import { handleFetchPromise } from '../utils/HandleRequests'
 import { MENU_DATA_URL } from '../constants/urls'
-import type { MenuData } from '../types/MenuData'
+import SpinnerUI from './ui/SpinnerUI.vue'
+import MenuHeader from './menu/MenuHeader.vue'
+import MenuCategorySection from './menu/MenuCategorySection.vue'
 
+// Constants
+const DEBOUNCE_TIME = 150
+const SCROLL_DURATION = 1000
+
+// State
+const menuHeader = ref<InstanceType<typeof MenuHeader> | null>(null)
 const selectedCategory = ref<string>('Desserts')
 const menuData = ref<MenuData | null>(null)
 const isLoading = ref(true)
+const isScrolling = ref(false)
+const lastScrollTime = ref(Date.now())
+
+// Computed
 const categoryItems = computed(() => menuData.value?.categoryItems)
+const availableCategories = computed(() => 
+  Object.keys(menuData.value?.categoryItems || {})
+    .filter(category => menuData.value?.categoryItems[category]?.length)
+)
 
-const filteredMenuItems = computed(() => {
-  return categoryItems.value?.[selectedCategory.value] || []
-})
-
-function handleCategorySelected(category: string) {
-  selectedCategory.value = category
+// Utils
+const scrollToCategory = (category: string) => {
+  document.getElementById(`category-section-${category}`)
+    ?.scrollIntoView({ behavior: 'smooth', block: 'start' })
 }
 
-;(async () => {
-  try {
-    menuData.value = await handleFetchPromise(MENU_DATA_URL)
-  } catch (error) {
-    console.error('Failed to fetch menu data', error)
-  } finally {
-    isLoading.value = false
+const updateHeaderHeight = () => {
+  const header = document.querySelector('.menu-root') as HTMLElement
+  if (!header) return
+
+  const width = window.innerWidth
+  const height = width <= 768 ? '60px' : width <= 1024 ? '70px' : '80px'
+  header.style.setProperty('--header-height', height)
+}
+
+// Event Handlers
+function handleCategorySelected(category: string) {
+  selectedCategory.value = category
+  isScrolling.value = true
+  lastScrollTime.value = Date.now()
+  
+  scrollToCategory(category)
+  setTimeout(() => isScrolling.value = false, SCROLL_DURATION)
+}
+
+function handleCategoryIntersection(category: string) {
+  const now = Date.now()
+  if (!isScrolling.value && 
+      selectedCategory.value !== category && 
+      now - lastScrollTime.value > DEBOUNCE_TIME) {
+    selectedCategory.value = category
+    lastScrollTime.value = now
+    menuHeader.value?.scrollActiveBadgeIntoView()
   }
-})()
+}
+
+// Watchers
+watch(() => selectedCategory.value, () => {
+  if (!isScrolling.value) {
+    menuHeader.value?.scrollActiveBadgeIntoView()
+  }
+})
+
+// Lifecycle
+onMounted(() => {
+  window.addEventListener('resize', updateHeaderHeight)
+  updateHeaderHeight()
+
+  handleFetchPromise(MENU_DATA_URL)
+    .then(data => menuData.value = data)
+    .catch(error => console.error('Failed to fetch menu data:', error))
+    .finally(() => isLoading.value = false)
+})
 </script>
 
 <style scoped>
+.menu-root {
+  --header-height: 80px;
+  --header-height-mobile: 60px;
+  --header-height-tablet: 70px;
+}
+
 .menu-container {
   margin-top: -50px;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.scroll-container {
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
 }
 
-.animate-fadeIn {
-  animation: fadeIn 0.6s ease-out forwards;
-  animation-delay: calc(var(--tw-translate-y) * 50ms);
+@media (max-width: 768px) {
+  .menu-container { margin-top: -30px }
+  .scroll-container { scroll-padding-top: var(--header-height-mobile) }
 }
 </style>
