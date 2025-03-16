@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col items-center justify-center min-h-screen">
     <div
-      class="relative bg-white dark:bg-gray-900 lg:min-h-screen lg:flex lg:items-center flex-col"
+      class="relative bg-white dark:bg-dark-bg lg:min-h-screen lg:flex lg:items-center flex-col"
     >
       <MenuHeader />
       <MenuContainer />
