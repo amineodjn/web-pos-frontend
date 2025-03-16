@@ -37,7 +37,6 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps } from 'vue'
 import type { MenuItemDetails } from '../../types/MenuData'
 
 defineProps({
