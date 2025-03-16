@@ -1,7 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 html {
   @apply bg-white;
   @apply dark:bg-[#121212];
@@ -9,7 +8,6 @@ html {
     background-color 0.3s ease-in-out,
     color 0.3s ease-in-out;
 }
-
 body {
   margin: 0;
   @apply text-gray-900 dark:text-white;
@@ -32,7 +30,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
   transition: color 0.3s ease-in-out;
 }
-
 nav {
   @apply w-full text-center;
   font-family: 'Lobster', sans-serif;

@@ -1,11 +1,8 @@
 <template>
   <header>
-    <div class="wrapper">
-      <NavBar></NavBar>
-    </div>
+    <NavBar></NavBar>
   </header>
-
-  <RouterView />
+  <main><RouterView /></main>
 </template>
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
