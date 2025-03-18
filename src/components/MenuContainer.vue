@@ -2,9 +2,10 @@
   <div class="flex flex-col items-center justify-center min-h-screen menu-root">
     <div
       class="relative z-2 bg-white dark:bg-dark-bg lg:min-h-screen lg:flex lg:items-center flex-col menu-container w-full rounded-t-xl"
+      :class="{ 'bg-transparent dark:bg-transparent': hasError }"
     >
       <MenuHeader
-        v-if="!isLoading"
+        v-if="!isLoading && !hasError"
         ref="menuHeader"
         :selectedCategory="selectedCategory"
         @categorySelected="handleCategorySelected"
@@ -12,6 +13,13 @@
       
       <div v-if="isLoading" class="flex justify-center items-center min-h-[300px]">
         <SpinnerUI />
+      </div>
+      
+      <div v-else-if="hasError" class="flex justify-center items-center">
+        <ErrorUI 
+          errorType="menu"
+          @retry="fetchMenuData"
+        />
       </div>
       
       <div v-else class="menu-sections scroll-container">
@@ -33,29 +41,27 @@ import type { MenuData } from '../types/MenuData'
 import { handleFetchPromise } from '../utils/HandleRequests'
 import { MENU_DATA_URL } from '../constants/urls'
 import SpinnerUI from './ui/SpinnerUI.vue'
+import ErrorUI from './ui/ErrorUI.vue'
 import MenuHeader from './menu/MenuHeader.vue'
 import MenuCategorySection from './menu/MenuCategorySection.vue'
 
-// Constants
 const DEBOUNCE_TIME = 150
 const SCROLL_DURATION = 1000
 
-// State
 const menuHeader = ref<InstanceType<typeof MenuHeader> | null>(null)
 const selectedCategory = ref<string>('Desserts')
 const menuData = ref<MenuData | null>(null)
 const isLoading = ref(true)
+const hasError = ref(false)
 const isScrolling = ref(false)
 const lastScrollTime = ref(Date.now())
 
-// Computed
 const categoryItems = computed(() => menuData.value?.categoryItems)
 const availableCategories = computed(() => 
   Object.keys(menuData.value?.categoryItems || {})
     .filter(category => menuData.value?.categoryItems[category]?.length)
 )
 
-// Utils
 const scrollToCategory = (category: string) => {
   document.getElementById(`category-section-${category}`)
     ?.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -70,7 +76,22 @@ const updateHeaderHeight = () => {
   header.style.setProperty('--header-height', height)
 }
 
-// Event Handlers
+const fetchMenuData = () => {
+  isLoading.value = true
+  hasError.value = false
+  
+  handleFetchPromise(MENU_DATA_URL)
+    .then(data => {
+      menuData.value = data
+      hasError.value = false
+    })
+    .catch(error => {
+      console.error('Failed to fetch menu data:', error)
+      hasError.value = true
+    })
+    .finally(() => isLoading.value = false)
+}
+
 function handleCategorySelected(category: string) {
   selectedCategory.value = category
   isScrolling.value = true
@@ -91,22 +112,17 @@ function handleCategoryIntersection(category: string) {
   }
 }
 
-// Watchers
 watch(() => selectedCategory.value, () => {
   if (!isScrolling.value) {
     menuHeader.value?.scrollActiveBadgeIntoView()
   }
 })
 
-// Lifecycle
 onMounted(() => {
   window.addEventListener('resize', updateHeaderHeight)
   updateHeaderHeight()
 
-  handleFetchPromise(MENU_DATA_URL)
-    .then(data => menuData.value = data)
-    .catch(error => console.error('Failed to fetch menu data:', error))
-    .finally(() => isLoading.value = false)
+  fetchMenuData()
 })
 </script>
 
