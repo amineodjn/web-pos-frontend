@@ -14,5 +14,16 @@
   },
   "menuHeader": {
     "title": "OUR MENU"
+  },
+  "errors": {
+    "default": {
+      "title": "Oops! Something went wrong",
+      "message": "Failed to load the content. Please try again later."
+    },
+    "menu": {
+      "title": "Menu Loading Error",
+      "message": "Failed to load the menu data. Please check your connection and try again."
+    },
+    "retry": "Try Again"
   }
 }

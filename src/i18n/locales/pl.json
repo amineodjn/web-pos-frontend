@@ -14,5 +14,16 @@
   },
   "menuHeader": {
     "title": "NASZE MENU"
+  },
+  "errors": {
+    "default": {
+      "title": "Ups! Coś poszło nie tak",
+      "message": "Nie udało się załadować treści. Spróbuj ponownie później."
+    },
+    "menu": {
+      "title": "Błąd ładowania menu",
+      "message": "Nie udało się załadować danych menu. Sprawdź swoje połączenie i spróbuj ponownie."
+    },
+    "retry": "Spróbuj ponownie"
   }
 }
