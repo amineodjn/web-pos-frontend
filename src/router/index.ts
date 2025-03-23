@@ -17,7 +17,29 @@ const router = createRouter({
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/AboutView.vue'),
     },
+    {
+      path: '/admin',
+      name: 'admin',
+      component: () => import('../views/AdminView.vue'),
+      meta: {
+        requiresAuth: true // In a real app, this would be used for authentication
+      }
+    },
   ],
 })
+
+// In a real application, you would add a navigation guard for authentication
+// router.beforeEach((to, from, next) => {
+//   if (to.matched.some(record => record.meta.requiresAuth)) {
+//     // Check if user is authenticated
+//     // if (!isAuthenticated) {
+//     //   next({ name: 'login' })
+//     // } else {
+//     //   next()
+//     // }
+//   } else {
+//     next()
+//   }
+// })
 
 export default router

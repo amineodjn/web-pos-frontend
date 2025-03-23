@@ -25,5 +25,99 @@
       "message": "Failed to load the menu data. Please check your connection and try again."
     },
     "retry": "Try Again"
+  },
+  "adminView": {
+    "title": "Menu Management",
+    "loading": "Loading menu data...",
+    "error": {
+      "title": "Error loading menu data",
+      "retry": "Retry"
+    },
+    "processing": "Processing...",
+    "tabs": {
+      "categories": "Categories",
+      "items": "Menu Items"
+    },
+    "categories": {
+      "title": "Categories",
+      "addNew": "Add New Category",
+      "placeholder": "Category name",
+      "empty": "No categories found. Add one above."
+    },
+    "items": {
+      "title": "Menu Items",
+      "foundCount": "{count} item found",
+      "foundCountPlural": "{count} items found",
+      "searchPlaceholder": "Search by name or description...",
+      "filterLabel": "Filter by Category",
+      "filterPlaceholder": "All Categories",
+      "empty": {
+        "title": "No menu items found",
+        "description": "Add some items or select a different category"
+      }
+    },
+    "buttons": {
+      "add": "Add",
+      "addNew": "Add New Item",
+      "edit": "Edit",
+      "delete": "Delete",
+      "reset": "Reset Data",
+      "saving": "Saving..."
+    },
+    "confirmations": {
+      "deleteCategory": {
+        "title": "Delete Category",
+        "message": "Are you sure you want to delete the category \"{name}\" and all its items?"
+      },
+      "deleteItem": {
+        "title": "Delete Item",
+        "message": "Are you sure you want to delete \"{name}\"?"
+      },
+      "resetData": {
+        "title": "Reset Menu Data",
+        "message": "Are you sure you want to reset all menu data to the initial state? This cannot be undone."
+      }
+    }
+  },
+  "menuItemModal": {
+    "title": {
+      "add": "Add Menu Item",
+      "edit": "Edit Menu Item"
+    },
+    "fields": {
+      "name": "Name",
+      "category": "Category",
+      "price": "Price",
+      "currency": "Currency",
+      "description": "Description",
+      "imageUrl": "Image URL",
+      "available": "Available",
+      "details": "Item Details",
+      "ingredients": "Ingredients",
+      "meats": "Meats",
+      "sauces": "Sauces",
+      "sizes": "Sizes",
+      "tags": "Tags"
+    },
+    "placeholders": {
+      "category": "Select a category",
+      "ingredients": "Ice cream, Whipped cream, Nuts",
+      "meats": "Chicken, Beef, Pork",
+      "sauces": "Chocolate, Caramel, Strawberry",
+      "sizes": "Small, Regular, Large",
+      "tags": "Sweet, Cold, Spicy, Vegetarian"
+    },
+    "helpText": {
+      "commaSeparated": "Separate multiple {items} with commas"
+    },
+    "buttons": {
+      "cancel": "Cancel",
+      "save": "Save",
+      "saving": "Saving..."
+    },
+    "validation": {
+      "required": "This field is required"
+    },
+    "error": "An error occurred while saving the item. Please try again."
   }
 }

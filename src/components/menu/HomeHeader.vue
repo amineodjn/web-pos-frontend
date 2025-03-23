@@ -1,7 +1,7 @@
 <template>
   <div class="menu-header relative w-full">
     <img
-      src="../../images/bg.cd744ba5.jpg"
+      src="../../../images/bg.cd744ba5.jpg"
       alt="Background"
       class="menu-header-image"
     />

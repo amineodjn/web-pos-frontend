@@ -25,5 +25,99 @@
       "message": "Nie udało się załadować danych menu. Sprawdź swoje połączenie i spróbuj ponownie."
     },
     "retry": "Spróbuj ponownie"
+  },
+  "adminView": {
+    "title": "Zarządzanie Menu",
+    "loading": "Ładowanie danych menu...",
+    "error": {
+      "title": "Błąd ładowania danych menu",
+      "retry": "Spróbuj ponownie"
+    },
+    "processing": "Przetwarzanie...",
+    "tabs": {
+      "categories": "Kategorie",
+      "items": "Pozycje Menu"
+    },
+    "categories": {
+      "title": "Kategorie",
+      "addNew": "Dodaj Nową Kategorię",
+      "placeholder": "Nazwa kategorii",
+      "empty": "Nie znaleziono kategorii. Dodaj jedną powyżej."
+    },
+    "items": {
+      "title": "Pozycje Menu",
+      "foundCount": "Znaleziono {count} pozycję",
+      "foundCountPlural": "Znaleziono {count} pozycji",
+      "searchPlaceholder": "Szukaj po nazwie lub opisie...",
+      "filterLabel": "Filtruj według Kategorii",
+      "filterPlaceholder": "Wszystkie Kategorie",
+      "empty": {
+        "title": "Nie znaleziono pozycji menu",
+        "description": "Dodaj pozycje lub wybierz inną kategorię"
+      }
+    },
+    "buttons": {
+      "add": "Dodaj",
+      "addNew": "Dodaj Nową Pozycję",
+      "edit": "Edytuj",
+      "delete": "Usuń",
+      "reset": "Resetuj Dane",
+      "saving": "Zapisywanie..."
+    },
+    "confirmations": {
+      "deleteCategory": {
+        "title": "Usuń Kategorię",
+        "message": "Czy na pewno chcesz usunąć kategorię \"{name}\" i wszystkie jej pozycje?"
+      },
+      "deleteItem": {
+        "title": "Usuń Pozycję",
+        "message": "Czy na pewno chcesz usunąć \"{name}\"?"
+      },
+      "resetData": {
+        "title": "Resetuj Dane Menu",
+        "message": "Czy na pewno chcesz zresetować wszystkie dane menu do stanu początkowego? Tej operacji nie można cofnąć."
+      }
+    }
+  },
+  "menuItemModal": {
+    "title": {
+      "add": "Dodaj Pozycję Menu",
+      "edit": "Edytuj Pozycję Menu"
+    },
+    "fields": {
+      "name": "Nazwa",
+      "category": "Kategoria",
+      "price": "Cena",
+      "currency": "Waluta",
+      "description": "Opis",
+      "imageUrl": "URL Obrazu",
+      "available": "Dostępny",
+      "details": "Szczegóły Pozycji",
+      "ingredients": "Składniki",
+      "meats": "Mięsa",
+      "sauces": "Sosy",
+      "sizes": "Rozmiary",
+      "tags": "Tagi"
+    },
+    "placeholders": {
+      "category": "Wybierz kategorię",
+      "ingredients": "Lód, Bita śmietana, Orzechy",
+      "meats": "Kurczak, Wołowina, Wieprzowina",
+      "sauces": "Czekolada, Karmel, Truskawka",
+      "sizes": "Mały, Normalny, Duży",
+      "tags": "Słodki, Zimny, Ostry, Wegetariański"
+    },
+    "helpText": {
+      "commaSeparated": "Oddziel wiele {items} przecinkami"
+    },
+    "buttons": {
+      "cancel": "Anuluj",
+      "save": "Zapisz",
+      "saving": "Zapisywanie..."
+    },
+    "validation": {
+      "required": "To pole jest wymagane"
+    },
+    "error": "Wystąpił błąd podczas zapisywania pozycji. Spróbuj ponownie."
   }
 }
