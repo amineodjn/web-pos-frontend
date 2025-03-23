@@ -1,26 +1,28 @@
 <template>
   <div class="admin-view relative bg-white dark:bg-dark-bg p-5 rounded">
     <h1 class="text-2xl font-bold mb-6 text-gray-900 dark:text-white">
-      Menu Management
+      {{ translateAdminView('title') }}
     </h1>
     <div
       v-if="menuStore.isLoading"
       class="text-center py-8 flex flex-col items-center justify-center min-h-[200px]"
     >
       <SpinnerUI />
-      <p class="text-gray-600 dark:text-gray-300 mt-4">Loading menu data...</p>
+      <p class="text-gray-600 dark:text-gray-300 mt-4">
+        {{ translateAdminView('loading') }}
+      </p>
     </div>
     <div
       v-else-if="menuStore.error"
       class="bg-red-100 dark:bg-red-900/30 border border-red-400 dark:border-red-800 text-red-700 dark:text-red-400 px-4 py-3 rounded mb-6"
     >
-      <p class="font-bold">Error loading menu data</p>
+      <p class="font-bold">{{ translateAdminView('error.title') }}</p>
       <p>{{ menuStore.error }}</p>
       <button
         @click="menuStore.fetchMenuData()"
         class="mt-2 bg-red-500 hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-700 text-white px-4 py-1 rounded"
       >
-        Retry
+        {{ translateAdminView('error.retry') }}
       </button>
     </div>
     <div v-else class="relative">
@@ -30,7 +32,9 @@
       >
         <div class="text-center">
           <SpinnerUI />
-          <p class="text-gray-600 dark:text-gray-300 mt-4">Processing...</p>
+          <p class="text-gray-600 dark:text-gray-300 mt-4">
+            {{ translateAdminView('processing') }}
+          </p>
         </div>
       </div>
       <div class="flex mb-6">
@@ -39,7 +43,7 @@
             class="bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-white px-4 py-2 rounded"
             @click="activeTab = 'categories'"
           >
-            Categories
+            {{ translateAdminView('tabs.categories') }}
           </button>
         </div>
         <div class="mr-4">
@@ -47,7 +51,7 @@
             class="bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-white px-4 py-2 rounded"
             @click="activeTab = 'items'"
           >
-            Menu Items
+            {{ translateAdminView('tabs.items') }}
           </button>
         </div>
         <div class="ml-auto">
@@ -56,31 +60,31 @@
             :disabled="isProcessing"
             class="bg-yellow-500 hover:bg-yellow-600 dark:bg-yellow-600 dark:hover:bg-yellow-700 text-white px-4 py-2 rounded disabled:opacity-50"
           >
-            Reset Data
+            {{ translateButtons('reset') }}
           </button>
         </div>
       </div>
       <div v-if="activeTab === 'categories'" class="mb-8">
         <h2 class="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
-          Categories
+          {{ translateAdminView('categories.title') }}
         </h2>
         <div class="mb-6 p-4 bg-gray-100 dark:bg-gray-700 rounded">
           <h3 class="font-medium mb-2 text-gray-900 dark:text-white">
-            Add New Category
+            {{ translateAdminView('categories.addNew') }}
           </h3>
           <div class="flex">
             <input
               v-model="newCategory"
               class="border border-gray-300 dark:border-gray-600 p-2 rounded mr-2 flex-grow bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white"
-              placeholder="Category name"
+              :placeholder="translateAdminView('categories.placeholder')"
             />
             <button
               @click="addCategory"
               :disabled="!newCategory || isProcessing"
               class="bg-green-500 hover:bg-green-600 dark:bg-green-600 dark:hover:bg-green-700 text-white px-4 py-2 rounded disabled:opacity-50"
             >
-              <span v-if="isProcessing">Saving...</span>
-              <span v-else>Add</span>
+              <span v-if="isProcessing">{{ translateButtons('saving') }}</span>
+              <span v-else>{{ translateButtons('add') }}</span>
             </button>
           </div>
         </div>
@@ -96,35 +100,40 @@
               :disabled="isProcessing"
               class="bg-red-500 hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-700 text-white px-3 py-1 rounded text-sm disabled:opacity-50"
             >
-              Delete
+              {{ translateButtons('delete') }}
             </button>
           </div>
           <div
             v-if="menuStore.categories.length === 0"
             class="p-4 text-center text-gray-500 dark:text-gray-400 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-dark-bg"
           >
-            No categories found. Add one above.
+            {{ translateAdminView('categories.empty') }}
           </div>
         </div>
       </div>
       <div v-if="activeTab === 'items'" class="flex flex-col mb-8">
         <div class="flex justify-between items-center mb-4">
           <h2 class="text-xl font-semibold text-gray-900 dark:text-white">
-            Menu Items
+            {{ translateAdminView('items.title') }}
           </h2>
-          <span class="text-gray-500 dark:text-gray-400 text-sm"
-            >{{ filteredItems.length }} item{{
-              filteredItems.length !== 1 ? 's' : ''
+          <span class="text-gray-500 dark:text-gray-400 text-sm">
+            {{
+              filteredItems.length === 1
+                ? translateAdminView('items.foundCount', {
+                    count: filteredItems.length
+                  })
+                : translateAdminView('items.foundCountPlural', {
+                    count: filteredItems.length
+                  })
             }}
-            found</span
-          >
+          </span>
         </div>
         <div class="mb-4 flex items-center justify-between">
           <div class="flex-grow mr-4 max-w-xs">
             <SearchInputUI
               v-model="searchQuery"
               label="Search Items"
-              placeholder="Search by name or description..."
+              :placeholder="translateAdminView('items.searchPlaceholder')"
               class="w-full"
             />
           </div>
@@ -149,14 +158,14 @@
                   d="M5 12h14m-7 7V5"
                 />
               </svg>
-              Add New Item
+              {{ translateButtons('addNew') }}
             </button>
             <div class="flex flex-col">
               <SelectBoxUI
                 v-model="selectedCategory"
                 :options="categoryOptions"
-                label="Filter by Category"
-                placeholder="All Categories"
+                :label="translateAdminView('items.filterLabel')"
+                :placeholder="translateAdminView('items.filterPlaceholder')"
                 placeholderValue=""
               />
             </div>
@@ -259,10 +268,10 @@
             />
           </svg>
           <p class="text-lg font-medium text-gray-700 dark:text-gray-300">
-            No menu items found
+            {{ translateAdminView('items.empty.title') }}
           </p>
           <p class="mt-1 text-gray-500 dark:text-gray-400">
-            Add some items or select a different category
+            {{ translateAdminView('items.empty.description') }}
           </p>
           <button
             @click="showAddItemModal = true"
@@ -284,7 +293,7 @@
                 d="M5 12h14m-7 7V5"
               />
             </svg>
-            Add New Item
+            {{ translateButtons('addNew') }}
           </button>
         </div>
       </div>
@@ -318,6 +327,7 @@ import SelectBoxUI from '../components/ui/SelectBoxUI.vue'
 import SearchInputUI from '../components/ui/SearchInputUI.vue'
 import ConfirmationModal from '../components/ui/ConfirmationModal.vue'
 import MenuItemModal from '../components/ui/MenuItemModal.vue'
+import { useTranslate } from '../composables/useTranslate.ts'
 
 const menuStore = useMenuStore()
 const isProcessing = ref(false)
@@ -325,6 +335,12 @@ const formError = ref('')
 const searchQuery = ref('')
 const activeTab = ref('items')
 const newCategory = ref('')
+
+const { translate: translateAdminView } = useTranslate('adminView')
+const { translate: translateButtons } = useTranslate('adminView.buttons')
+const { translate: translateConfirmations } = useTranslate(
+  'adminView.confirmations'
+)
 
 async function addCategory() {
   if (newCategory.value.trim() && !isProcessing.value) {
@@ -442,24 +458,27 @@ async function confirmAction() {
 }
 
 function confirmDeleteCategory(category: string) {
-  confirmationTitle.value = 'Delete Category'
-  confirmationMessage.value = `Are you sure you want to delete the category "${category}" and all its items?`
+  confirmationTitle.value = translateConfirmations('deleteCategory.title')
+  confirmationMessage.value = translateConfirmations('deleteCategory.message', {
+    name: category
+  })
   pendingAction.value = () => menuStore.deleteCategory(category)
   showConfirmation.value = true
 }
 
 function confirmDeleteItem(item: MenuItem) {
   const category = getCategoryForItem(item)
-  confirmationTitle.value = 'Delete Item'
-  confirmationMessage.value = `Are you sure you want to delete "${item.name}"?`
+  confirmationTitle.value = translateConfirmations('deleteItem.title')
+  confirmationMessage.value = translateConfirmations('deleteItem.message', {
+    name: item.name
+  })
   pendingAction.value = () => menuStore.deleteMenuItem(category, item.id)
   showConfirmation.value = true
 }
 
 function confirmReset() {
-  confirmationTitle.value = 'Reset Menu Data'
-  confirmationMessage.value =
-    'Are you sure you want to reset all menu data to the initial state? This cannot be undone.'
+  confirmationTitle.value = translateConfirmations('resetData.title')
+  confirmationMessage.value = translateConfirmations('resetData.message')
   pendingAction.value = async () => {
     await resetMenuData()
     await menuStore.fetchMenuData()
