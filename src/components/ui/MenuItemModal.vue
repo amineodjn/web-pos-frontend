@@ -13,7 +13,7 @@
       class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
     >
       <div class="relative w-full max-w-2xl max-h-full">
-        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+        <div class="relative bg-white rounded-lg shadow dark:bg-dark-bg">
           <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
             <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
               {{ itemToEdit ? 'Edit' : 'Add' }} Menu Item
@@ -31,7 +31,7 @@
             </button>
           </div>
           <div class="p-4 md:p-5 space-y-4 relative">
-            <div v-if="isProcessing" class="absolute inset-0 bg-white bg-opacity-80 flex items-center justify-center z-10 dark:bg-gray-800 dark:bg-opacity-80">
+            <div v-if="isProcessing" class="absolute inset-0 bg-white bg-opacity-80 flex items-center justify-center z-10 dark:bg-dark-bg dark:bg-opacity-80">
               <div class="text-center">
                 <SpinnerUI />
                 <p class="text-gray-600 mt-4 dark:text-gray-300">Saving...</p>
@@ -44,7 +44,7 @@
                   v-model="form.name" 
                   type="text" 
                   id="item-name" 
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" 
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-dark-bg dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" 
                   required
                 />
               </div>
@@ -67,9 +67,9 @@
                 <input 
                   v-model.number="form.price" 
                   type="number" 
-                  step="0.01" 
+                  step="1" 
                   id="item-price" 
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" 
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-dark-bg dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" 
                   required
                 />
               </div>
@@ -79,7 +79,7 @@
                   v-model="form.currency" 
                   type="text" 
                   id="item-currency" 
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" 
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-dark-bg dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" 
                   required
                 />
               </div>
@@ -89,7 +89,7 @@
                   v-model="form.description" 
                   id="item-description" 
                   rows="3" 
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" 
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-dark-bg dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" 
                   required
                 ></textarea>
               </div>
@@ -99,7 +99,7 @@
                   v-model="form.imageUrl" 
                   type="text" 
                   id="item-image" 
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" 
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-dark-bg dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" 
                   required
                 />
               </div>
@@ -143,7 +143,7 @@
                             v-model="ingredientsText" 
                             type="text" 
                             id="item-ingredients" 
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" 
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-dark-bg dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" 
                             placeholder="Ice cream, Whipped cream, Nuts"
                           />
                           <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Separate multiple ingredients with commas</p>
@@ -154,7 +154,7 @@
                             v-model="meatsText" 
                             type="text" 
                             id="item-meats" 
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" 
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-dark-bg dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" 
                             placeholder="Chicken, Beef, Pork"
                           />
                           <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Separate multiple meats with commas</p>
@@ -165,7 +165,7 @@
                             v-model="saucesText" 
                             type="text" 
                             id="item-sauces" 
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" 
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-dark-bg dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" 
                             placeholder="Chocolate, Caramel, Strawberry"
                           />
                           <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Separate multiple sauces with commas</p>
@@ -176,7 +176,7 @@
                             v-model="sizesText" 
                             type="text" 
                             id="item-sizes" 
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" 
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-dark-bg dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" 
                             placeholder="Small, Regular, Large"
                           />
                           <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Separate multiple sizes with commas</p>
@@ -187,7 +187,7 @@
                             v-model="tagsText" 
                             type="text" 
                             id="item-tags" 
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" 
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-dark-bg dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" 
                             placeholder="Sweet, Cold, Spicy, Vegetarian"
                           />
                           <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Separate multiple tags with commas</p>
@@ -241,10 +241,12 @@
 </template>
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted, watch, nextTick } from 'vue';
-import type { MenuItem, MenuItemDetails } from '../../types/MenuData';
+import type { MenuItem } from '../../types/MenuData';
 import SpinnerUI from './SpinnerUI.vue';
 import SelectBoxUI from './SelectBoxUI.vue';
 import { Modal, initFlowbite } from 'flowbite';
+import { useMenuStore } from '../../stores/menuStore';
+
 interface MenuItemForm {
   name: string;
   category: string;
@@ -388,7 +390,17 @@ watch(() => props.itemToEdit, (newVal) => {
   }
 });
 function getCategoryFromItem(item: MenuItem): string {
-  return (item as any).category || '';
+  if ((item as any).category) {
+    return (item as any).category;
+  }
+
+  const menuStore = useMenuStore();
+  for (const category in menuStore.items) {
+    if (menuStore.items[category].some((i: any) => i.id === item.id)) {
+      return category;
+    }
+  }
+  return '';
 }
 function save() {
   if (!isFormValid.value || props.isProcessing) return;
