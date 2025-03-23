@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import BadgeUI from '../components/ui/BadgeUI.vue'
+import BadgeUI from '../common/BadgeUI.vue'
 
 defineProps({
   selectedCategory: {
@@ -31,7 +31,7 @@ const CATEGORY_BADGES = [
   'Salads',
   'Sides',
   'Soups',
-  'Starters',
+  'Starters'
 ]
 
 function handleBadgeClick(badge: string) {
@@ -64,7 +64,7 @@ function handleBadgeClick(badge: string) {
   color: rgba(220, 38, 38, 1) !important;
   font-weight: bold !important;
   transform: translateY(-2px) scale(1.02) !important;
-  box-shadow: 
+  box-shadow:
     0 4px 6px -1px rgba(0, 0, 0, 0.1),
     0 2px 4px -1px rgba(0, 0, 0, 0.06),
     0 0 0 1px rgba(255, 255, 255, 0.1) inset,

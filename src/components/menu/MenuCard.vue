@@ -46,7 +46,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import type { MenuItemDetails } from '../../types/MenuData'
-import imagePlaceholder from './imagePlaceholder.vue'
+import imagePlaceholder from '../common/imagePlaceholder.vue'
 
 defineProps({
   imageUrl: {

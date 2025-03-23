@@ -415,8 +415,8 @@
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted, watch, nextTick } from 'vue'
 import type { MenuItem } from '../../types/MenuData'
-import SpinnerUI from './SpinnerUI.vue'
-import SelectBoxUI from './SelectBoxUI.vue'
+import SpinnerUI from '../common/SpinnerUI.vue'
+import SelectBoxUI from '../common/SelectBoxUI.vue'
 import { Modal, initFlowbite } from 'flowbite'
 import { useMenuStore } from '../../stores/menuStore'
 import { useTranslate } from '../../composables/useTranslate'

@@ -1,8 +1,5 @@
 <template>
-  <MenuCategoryObserver
-    :category="category"
-    :onIntersect="onIntersect"
-  >
+  <MenuCategoryObserver :category="category" :onIntersect="onIntersect">
     <h2 class="text-xl font-bold mb-4 px-4">{{ category }}</h2>
     <div class="flex flex-wrap justify-center gap-4 px-4">
       <MenuCard
@@ -22,7 +19,7 @@
 
 <script setup lang="ts">
 import type { MenuItem } from '../../types/MenuData'
-import MenuCard from '../ui/MenuCard.vue'
+import MenuCard from './MenuCard.vue'
 import MenuCategoryObserver from './MenuCategoryObserver.vue'
 
 defineProps<{
@@ -48,4 +45,4 @@ defineProps<{
   animation: fadeIn 0.6s ease-out forwards;
   animation-delay: calc(var(--tw-translate-y) * 50ms);
 }
-</style> 
+</style>

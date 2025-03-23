@@ -1,14 +1,16 @@
 <template>
-  <div class="w-full sticky rounded-b-lg top-0 z-10 bg-white dark:bg-dark-bg pt-4 pb-2">
-    <CategoryItems 
+  <div
+    class="w-full sticky rounded-b-lg top-0 z-10 bg-white dark:bg-dark-bg pt-4 pb-2"
+  >
+    <CategoryItems
       :selectedCategory="selectedCategory"
-      @category-selected="onCategorySelected" 
+      @category-selected="onCategorySelected"
     />
   </div>
 </template>
 
 <script setup lang="ts">
-import CategoryItems from '../CategoryItems.vue'
+import CategoryItems from './CategoryItems.vue'
 
 defineProps<{
   selectedCategory: string
@@ -38,4 +40,4 @@ function scrollActiveBadgeIntoView() {
 defineExpose({
   scrollActiveBadgeIntoView
 })
-</script> 
+</script>

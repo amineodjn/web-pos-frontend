@@ -10,18 +10,21 @@
         :selectedCategory="selectedCategory"
         @categorySelected="handleCategorySelected"
       />
-      
-      <div v-if="isLoading" class="flex justify-center items-center min-h-[300px]">
-        <SpinnerUI />
+
+      <div v-if="isLoading" class="relative min-h-[300px] w-full">
+        <LoadingOverlay />
       </div>
-      
+
       <div v-else-if="hasError" class="flex justify-center items-center">
-        <ErrorUI 
+        <ErrorUI
           errorType="menu"
+          :title="translateErrors('menu.title')"
+          :message="translateErrors('menu.message')"
+          :retryText="translateErrors('retry')"
           @retry="fetchMenuData"
         />
       </div>
-      
+
       <div v-else class="menu-sections scroll-container">
         <MenuCategorySection
           v-for="category in availableCategories"
@@ -37,13 +40,16 @@
 
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from 'vue'
-import type { MenuData } from '../types/MenuData'
-import { handleFetchPromise } from '../utils/HandleRequests'
-import { MENU_DATA_URL } from '../constants/urls'
-import SpinnerUI from './ui/SpinnerUI.vue'
-import ErrorUI from './ui/ErrorUI.vue'
-import MenuHeader from './menu/MenuHeader.vue'
-import MenuCategorySection from './menu/MenuCategorySection.vue'
+import type { MenuData } from '../../types/MenuData'
+import { handleFetchPromise } from '../../utils/HandleRequests'
+import { MENU_DATA_URL } from '../../constants/urls'
+import LoadingOverlay from '../common/LoadingOverlay.vue'
+import ErrorUI from '../common/ErrorUI.vue'
+import MenuHeader from './MenuHeader.vue'
+import MenuCategorySection from './MenuCategorySection.vue'
+import { useTranslate } from '../../composables/useTranslate'
+
+const { translate: translateErrors } = useTranslate('errors')
 
 const DEBOUNCE_TIME = 150
 const SCROLL_DURATION = 1000
@@ -57,13 +63,15 @@ const isScrolling = ref(false)
 const lastScrollTime = ref(Date.now())
 
 const categoryItems = computed(() => menuData.value?.categoryItems)
-const availableCategories = computed(() => 
-  Object.keys(menuData.value?.categoryItems || {})
-    .filter(category => menuData.value?.categoryItems[category]?.length)
+const availableCategories = computed(() =>
+  Object.keys(menuData.value?.categoryItems || {}).filter(
+    category => menuData.value?.categoryItems[category]?.length
+  )
 )
 
 const scrollToCategory = (category: string) => {
-  document.getElementById(`category-section-${category}`)
+  document
+    .getElementById(`category-section-${category}`)
     ?.scrollIntoView({ behavior: 'smooth', block: 'start' })
 }
 
@@ -79,7 +87,7 @@ const updateHeaderHeight = () => {
 const fetchMenuData = () => {
   isLoading.value = true
   hasError.value = false
-  
+
   handleFetchPromise(MENU_DATA_URL)
     .then(data => {
       menuData.value = data
@@ -89,34 +97,39 @@ const fetchMenuData = () => {
       console.error('Failed to fetch menu data:', error)
       hasError.value = true
     })
-    .finally(() => isLoading.value = false)
+    .finally(() => (isLoading.value = false))
 }
 
 function handleCategorySelected(category: string) {
   selectedCategory.value = category
   isScrolling.value = true
   lastScrollTime.value = Date.now()
-  
+
   scrollToCategory(category)
-  setTimeout(() => isScrolling.value = false, SCROLL_DURATION)
+  setTimeout(() => (isScrolling.value = false), SCROLL_DURATION)
 }
 
 function handleCategoryIntersection(category: string) {
   const now = Date.now()
-  if (!isScrolling.value && 
-      selectedCategory.value !== category && 
-      now - lastScrollTime.value > DEBOUNCE_TIME) {
+  if (
+    !isScrolling.value &&
+    selectedCategory.value !== category &&
+    now - lastScrollTime.value > DEBOUNCE_TIME
+  ) {
     selectedCategory.value = category
     lastScrollTime.value = now
     menuHeader.value?.scrollActiveBadgeIntoView()
   }
 }
 
-watch(() => selectedCategory.value, () => {
-  if (!isScrolling.value) {
-    menuHeader.value?.scrollActiveBadgeIntoView()
+watch(
+  () => selectedCategory.value,
+  () => {
+    if (!isScrolling.value) {
+      menuHeader.value?.scrollActiveBadgeIntoView()
+    }
   }
-})
+)
 
 onMounted(() => {
   window.addEventListener('resize', updateHeaderHeight)
@@ -144,7 +157,11 @@ onMounted(() => {
 }
 
 @media (max-width: 768px) {
-  .menu-container { margin-top: -30px }
-  .scroll-container { scroll-padding-top: var(--header-height-mobile) }
+  .menu-container {
+    margin-top: -30px;
+  }
+  .scroll-container {
+    scroll-padding-top: var(--header-height-mobile);
+  }
 }
 </style>
