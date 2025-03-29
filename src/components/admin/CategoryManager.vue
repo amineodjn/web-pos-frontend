@@ -1,25 +1,25 @@
 <template>
   <div class="mb-8">
     <h2 class="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
-      {{ title }}
+      {{ config.title }}
     </h2>
     <div class="mb-6 p-4 bg-gray-100 dark:bg-gray-700 rounded">
       <h3 class="font-medium mb-2 text-gray-900 dark:text-white">
-        {{ addNewLabel }}
+        {{ config.addNewLabel }}
       </h3>
       <div class="flex">
         <input
           v-model="categoryName"
           class="border border-gray-300 dark:border-gray-600 p-2 rounded mr-2 flex-grow bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white"
-          :placeholder="placeholder"
+          :placeholder="config.placeholder"
         />
         <button
           @click="addCategory"
           :disabled="!categoryName || isProcessing"
           class="bg-green-500 hover:bg-green-600 dark:bg-green-600 dark:hover:bg-green-700 text-white px-4 py-2 rounded disabled:opacity-50"
         >
-          <span v-if="isProcessing">{{ savingLabel }}</span>
-          <span v-else>{{ addLabel }}</span>
+          <span v-if="isProcessing">{{ config.savingLabel }}</span>
+          <span v-else>{{ config.addLabel }}</span>
         </button>
       </div>
     </div>
@@ -35,14 +35,14 @@
           :disabled="isProcessing"
           class="bg-red-500 hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-700 text-white px-3 py-1 rounded text-sm disabled:opacity-50"
         >
-          {{ deleteLabel }}
+          {{ config.deleteLabel }}
         </button>
       </div>
       <div
         v-if="categories.length === 0"
         class="p-4 text-center text-gray-500 dark:text-gray-400 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-dark-bg"
       >
-        {{ emptyMessage }}
+        {{ config.emptyMessage }}
       </div>
     </div>
   </div>
@@ -54,13 +54,15 @@ import { ref } from 'vue'
 const props = defineProps<{
   categories: string[]
   isProcessing: boolean
-  title: string
-  addNewLabel: string
-  placeholder: string
-  savingLabel: string
-  addLabel: string
-  deleteLabel: string
-  emptyMessage: string
+  config: {
+    title: string
+    addNewLabel: string
+    placeholder: string
+    savingLabel: string
+    addLabel: string
+    deleteLabel: string
+    emptyMessage: string
+  }
 }>()
 
 const emit = defineEmits<{

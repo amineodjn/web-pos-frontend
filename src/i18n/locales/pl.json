@@ -26,7 +26,7 @@
     },
     "retry": "Spróbuj ponownie"
   },
-  "adminView": {
+  "menuView": {
     "title": "Zarządzanie Menu",
     "loading": "Ładowanie danych menu...",
     "error": {
@@ -119,5 +119,13 @@
       "required": "To pole jest wymagane"
     },
     "error": "Wystąpił błąd podczas zapisywania pozycji. Spróbuj ponownie."
+  },
+  "adminView": {
+    "sidebar": {
+      "dashboard": "Panel",
+      "menu": "Menu",
+      "orders": "Zamówienia",
+      "logout": "Wyloguj się"
+    }
   }
 }

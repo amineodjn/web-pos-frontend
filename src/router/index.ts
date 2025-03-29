@@ -7,7 +7,7 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomeView,
+      component: HomeView
     },
     {
       path: '/about',
@@ -15,17 +15,35 @@ const router = createRouter({
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue'),
+      component: () => import('../views/AboutView.vue')
     },
     {
       path: '/admin',
       name: 'admin',
-      component: () => import('../views/AdminView.vue'),
+      redirect: '/admin/menu',
+      component: () => import('../views/MenuView.vue'),
       meta: {
         requiresAuth: true // In a real app, this would be used for authentication
-      }
-    },
-  ],
+      },
+      children: [
+        {
+          path: 'dashboard',
+          name: 'admin-dashboard',
+          component: () => import('../views/DashboardView.vue')
+        },
+        {
+          path: 'menu',
+          name: 'admin-menu',
+          component: () => import('../views/MenuView.vue')
+        },
+        {
+          path: 'orders',
+          name: 'admin-orders',
+          component: () => import('../views/OrdersView.vue')
+        }
+      ]
+    }
+  ]
 })
 
 // In a real application, you would add a navigation guard for authentication
