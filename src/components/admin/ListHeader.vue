@@ -14,7 +14,7 @@
       <button
         @click="emit('add-item')"
         :disabled="isProcessing"
-        class="bg-red-600 mt-0.5 hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-700 text-white px-4 py-2 rounded-lg disabled:opacity-50 flex items-center gap-2 transition-all duration-300 shadow-md hover:shadow-lg"
+        class="bg-gray-900 mt-0.5 hover:bg-gray-800 dark:bg-gray-800 dark:hover:bg-gray-700 text-white px-4 py-2 rounded-lg disabled:opacity-50 flex items-center gap-2 transition-all duration-300 shadow-md hover:shadow-lg focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
       >
         <svg
           class="w-5 h-5"

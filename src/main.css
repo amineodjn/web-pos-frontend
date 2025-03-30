@@ -3,7 +3,7 @@
 @tailwind utilities;
 html {
   @apply bg-white;
-  @apply dark:bg-[#121212];
+  @apply dark:bg-dark-bg;
   transition:
     background-color 0.3s ease-in-out,
     color 0.3s ease-in-out;
