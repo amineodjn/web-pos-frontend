@@ -3,27 +3,44 @@
     <h2 class="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
       {{ config.title }}
     </h2>
-    <div class="mb-6 p-4 bg-gray-100 dark:bg-gray-700 rounded">
+    <div
+      class="mb-6 p-4 bg-gray-100 dark:bg-dark-bg border dark:border-gray-600 rounded"
+    >
       <h3 class="font-medium mb-2 text-gray-900 dark:text-white">
         {{ config.addNewLabel }}
       </h3>
       <div class="flex">
         <input
           v-model="categoryName"
-          class="border border-gray-300 dark:border-gray-600 p-2 rounded mr-2 flex-grow bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white"
+          class="border border-gray-300 dark:border-gray-600 p-2 rounded mr-2 flex-grow bg-gray-50 dark:bg-dark-bg text-gray-900 dark:text-white"
           :placeholder="config.placeholder"
         />
         <button
           @click="addCategory"
           :disabled="!categoryName || isProcessing"
-          class="bg-green-500 hover:bg-green-600 dark:bg-green-600 dark:hover:bg-green-700 text-white px-4 py-2 rounded disabled:opacity-50"
+          class="bg-gray-900 dark:bg-gray-800 dark:focus:ring-offset-gray-900 dark:hover:bg-gray-700 disabled:opacity-50 duration-300 flex focus:ring-2 focus:ring-offset-2 focus:ring-red-500 gap-2 hover:bg-gray-800 hover:shadow-lg items-center mt-0.5 px-4 py-2 rounded-lg shadow-md text-white transition-all"
         >
+          <svg
+            class="w-5 h-5"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M5 12h14m-7 7V5"
+            />
+          </svg>
           <span v-if="isProcessing">{{ config.savingLabel }}</span>
           <span v-else>{{ config.addLabel }}</span>
         </button>
       </div>
     </div>
-    <div class="grid grid-cols-1 gap-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       <div
         v-for="category in categories"
         :key="category"
@@ -33,9 +50,23 @@
         <button
           @click="$emit('delete', category)"
           :disabled="isProcessing"
-          class="bg-red-500 hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-700 text-white px-3 py-1 rounded text-sm disabled:opacity-50"
+          class="bg-red-500 hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-700 text-white p-2 rounded-full disabled:opacity-50 flex items-center transition-transform hover:scale-110"
         >
-          {{ config.deleteLabel }}
+          <svg
+            class="w-5 h-5 text-white"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"
+            />
+          </svg>
         </button>
       </div>
       <div
@@ -60,7 +91,6 @@ const props = defineProps<{
     placeholder: string
     savingLabel: string
     addLabel: string
-    deleteLabel: string
     emptyMessage: string
   }
 }>()

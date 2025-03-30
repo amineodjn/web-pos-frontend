@@ -1,33 +1,83 @@
 <template>
   <aside
-    class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
+    :class="[
+      'fixed top-0 left-0 z-40 h-screen transition-transform',
+      collapsed ? 'w-16' : 'w-64',
+      collapsed ? '-translate-x-0' : '-translate-x-full sm:translate-x-0'
+    ]"
   >
-    <div class="h-full px-3 py-4 overflow-y-auto bg-white dark:bg-dark-bg">
-      <div class="flex items-center mb-5">
-        <span
-          class="self-center text-xl font-semibold whitespace-nowrap dark:text-white"
-          >Admin Center</span
-        >
-      </div>
-      <ul class="space-y-2 font-medium">
-        <li v-for="item in menuItems" :key="item.path">
-          <router-link
-            :to="item.path"
-            class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-            :class="{ 'bg-gray-100 dark:bg-gray-700': isActive(item.path) }"
+    <div
+      class="h-full flex flex-col justify-between px-3 py-4 overflow-y-auto bg-white dark:bg-dark-bg"
+    >
+      <div>
+        <div class="flex items-center justify-between mb-5">
+          <span
+            v-if="!collapsed"
+            class="self-center text-xl font-semibold whitespace-nowrap dark:text-white"
+            >Admin Center</span
           >
-            <span
-              class="text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-              v-html="item.icon"
-            ></span>
-            <span class="ml-3">{{ item.name }}</span>
-          </router-link>
-        </li>
-      </ul>
+          <button
+            @click="toggleSidebar"
+            class="p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+          >
+            <svg
+              class="w-5 h-5"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                v-if="collapsed"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="m15 19-7-7 7-7"
+              />
+              <path
+                v-else
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="m9 5 7 7-7 7"
+              />
+            </svg>
+          </button>
+        </div>
+        <ul class="space-y-2 font-medium">
+          <li v-for="item in menuItems" :key="item.path">
+            <router-link
+              :to="item.path"
+              class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+              :class="{ 'bg-gray-100 dark:bg-gray-700': isActive(item.path) }"
+            >
+              <span
+                class="text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                v-html="item.icon"
+              ></span>
+              <span v-if="!collapsed" class="ml-3">{{ item.name }}</span>
+            </router-link>
+          </li>
+        </ul>
+      </div>
       <div
         class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700"
       >
         <div
+          v-if="collapsed"
+          class="flex items-center justify-center p-2 text-gray-900 rounded-lg dark:text-white"
+        >
+          <span
+            class="inline-flex items-center justify-center w-8 h-8 text-sm font-medium text-gray-800 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-300 aspect-square"
+          >
+            A
+          </span>
+        </div>
+        <div
+          v-if="!collapsed"
           class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white"
         >
           <div class="flex-shrink-0">
@@ -50,7 +100,7 @@
         </div>
         <button
           @click="handleLogout"
-          class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+          class="flex items-center justify-center w-full p-2 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
         >
           <svg
             class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
@@ -69,8 +119,9 @@
               d="M20 12H8m12 0-4 4m4-4-4-4M9 4H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h2"
             />
           </svg>
-
-          <span class="ms-3">{{ translateSideBar('logout') }}</span>
+          <span v-if="!collapsed" class="ms-3">{{
+            translateSideBar('logout')
+          }}</span>
         </button>
       </div>
     </div>
@@ -80,7 +131,7 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
 import { useTranslate } from '../../composables/useTranslate'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 
 const route = useRoute()
 const { translate: translateSideBar } = useTranslate('adminView.sidebar')
@@ -123,4 +174,15 @@ const menuItems = computed(() => [
     icon: icons.orders
   }
 ])
+
+const collapsed = ref(false)
+const toggleSidebar = () => {
+  collapsed.value = !collapsed.value
+}
 </script>
+
+<style scoped>
+.aspect-square {
+  aspect-ratio: 1 / 1;
+}
+</style>
