@@ -1,5 +1,5 @@
 <template>
-  <div class="flex h-screen bg-gray-100 dark:bg-gray-900">
+  <div class="flex h-screen dark:bg-dark-bg">
     <Sidebar />
     <div class="flex-1 ml-64">
       <div class="admin-view relative bg-white dark:bg-dark-bg p-5 rounded">
@@ -234,7 +234,6 @@ const categoryConfig = computed(() => ({
   placeholder: translateAdminView('categories.placeholder'),
   savingLabel: translateButtons('saving'),
   addLabel: translateButtons('add'),
-  deleteLabel: translateButtons('delete'),
   emptyMessage: translateAdminView('categories.empty')
 }))
 
