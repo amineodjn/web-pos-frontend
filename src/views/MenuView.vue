@@ -1,7 +1,10 @@
 <template>
   <div class="flex h-screen dark:bg-dark-bg">
-    <Sidebar />
-    <div class="flex-1 ml-64">
+    <Sidebar v-model="isSidebarCollapsed" />
+    <div
+      class="flex-1 transition-all duration-300"
+      :class="[isSidebarCollapsed ? 'ml-16' : 'ml-64']"
+    >
       <div class="admin-view relative bg-white dark:bg-dark-bg p-5 rounded">
         <!-- Menu Management Content -->
         <template v-if="$route.path === '/admin/menu'">
@@ -65,7 +68,7 @@
 
               <template #items-grid>
                 <div
-                  class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4"
+                  class="gap-x-16 gap-y-8 grid grid-cols-1 lg:grid-cols-4 xl:grid-cols-5 md:grid-cols-2 px-4"
                 >
                   <div
                     v-for="item in filteredItems"
@@ -161,6 +164,8 @@ const { translate: translateButtons } = useTranslate('menuView.buttons')
 const { translate: translateConfirmations } = useTranslate(
   'menuView.confirmations'
 )
+
+const isSidebarCollapsed = ref(false)
 
 async function addCategory(categoryName: string) {
   if (categoryName && !isProcessing.value) {
