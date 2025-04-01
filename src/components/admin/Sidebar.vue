@@ -2,8 +2,8 @@
   <aside
     :class="[
       'fixed top-0 left-0 z-40 h-screen transition-transform',
-      collapsed ? 'w-16' : 'w-64',
-      collapsed ? '-translate-x-0' : '-translate-x-full sm:translate-x-0'
+      modelValue ? 'w-16' : 'w-64',
+      modelValue ? '-translate-x-0' : '-translate-x-full sm:translate-x-0'
     ]"
   >
     <div
@@ -12,7 +12,7 @@
       <div>
         <div class="flex items-center justify-between mb-5">
           <span
-            v-if="!collapsed"
+            v-if="!modelValue"
             class="self-center text-xl font-semibold whitespace-nowrap dark:text-white"
             >Admin Center</span
           >
@@ -29,7 +29,7 @@
               stroke-width="2"
             >
               <path
-                v-if="collapsed"
+                v-if="modelValue"
                 stroke="currentColor"
                 stroke-linecap="round"
                 stroke-linejoin="round"
@@ -58,7 +58,7 @@
                 class="text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                 v-html="item.icon"
               ></span>
-              <span v-if="!collapsed" class="ml-3">{{ item.name }}</span>
+              <span v-if="!modelValue" class="ml-3">{{ item.name }}</span>
             </router-link>
           </li>
         </ul>
@@ -67,7 +67,7 @@
         class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700"
       >
         <div
-          v-if="collapsed"
+          v-if="modelValue"
           class="flex items-center justify-center p-2 text-gray-900 rounded-lg dark:text-white"
         >
           <span
@@ -77,7 +77,7 @@
           </span>
         </div>
         <div
-          v-if="!collapsed"
+          v-if="!modelValue"
           class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white"
         >
           <div class="flex-shrink-0">
@@ -119,7 +119,7 @@
               d="M20 12H8m12 0-4 4m4-4-4-4M9 4H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h2"
             />
           </svg>
-          <span v-if="!collapsed" class="ms-3">{{
+          <span v-if="!modelValue" class="ms-3">{{
             translateSideBar('logout')
           }}</span>
         </button>
@@ -131,7 +131,15 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
 import { useTranslate } from '../../composables/useTranslate'
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
+
+const props = defineProps<{
+  modelValue: boolean
+}>()
+
+const emit = defineEmits<{
+  (e: 'update:modelValue', value: boolean): void
+}>()
 
 const route = useRoute()
 const { translate: translateSideBar } = useTranslate('adminView.sidebar')
@@ -175,9 +183,8 @@ const menuItems = computed(() => [
   }
 ])
 
-const collapsed = ref(false)
 const toggleSidebar = () => {
-  collapsed.value = !collapsed.value
+  emit('update:modelValue', !props.modelValue)
 }
 </script>
 
