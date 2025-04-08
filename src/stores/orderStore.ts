@@ -8,14 +8,13 @@ interface OrderItem extends MenuItem {
 
 interface Order {
   id: string
-  tableNumber: number
-  server: string
+  tableNumber: number | null
+  orderType: 'dine-in' | 'takeaway'
   items: OrderItem[]
   status: 'pending' | 'in-progress' | 'completed' | 'cancelled'
   total: number
   tax: number
   createdAt: Date
-  guests: number
 }
 
 export const useOrderStore = defineStore('order', () => {
@@ -24,8 +23,7 @@ export const useOrderStore = defineStore('order', () => {
     items: [],
     status: 'pending',
     tax: 0,
-    total: 0,
-    guests: 1
+    total: 0
   })
 
   // Active orders
@@ -40,10 +38,16 @@ export const useOrderStore = defineStore('order', () => {
     )
   })
 
-  const tax = computed(() => subtotal.value * 0.08) // 8% tax rate
+  const taxRate = ref(8) // Default tax rate
+  const tax = computed(() => subtotal.value * (taxRate.value / 100))
   const total = computed(() => subtotal.value + tax.value)
 
   // Methods for current order
+  function setTaxRate(rate: number) {
+    taxRate.value = rate
+    updateOrderTotals()
+  }
+
   function addItemToOrder(item: MenuItem) {
     if (!currentOrder.value.items) {
       currentOrder.value.items = []
@@ -81,36 +85,33 @@ export const useOrderStore = defineStore('order', () => {
     currentOrder.value.tableNumber = tableNumber
   }
 
-  function setGuests(count: number) {
-    currentOrder.value.guests = count
-  }
-
   function clearOrder() {
     currentOrder.value = {
       items: [],
       status: 'pending',
       tax: 0,
-      total: 0,
-      guests: 1
+      total: 0
     }
   }
 
   // Methods for active orders
   async function placeOrder() {
-    if (!currentOrder.value.tableNumber || !currentOrder.value.items?.length) {
-      throw new Error('Cannot place order without table number and items')
+    if (!currentOrder.value.items?.length) {
+      throw new Error('Cannot place order without items')
     }
 
     const newOrder: Order = {
       id: `#${Math.floor(Math.random() * 90000) + 10000}`,
-      tableNumber: currentOrder.value.tableNumber,
-      server: 'Admin User', // This should come from auth store
+      tableNumber:
+        currentOrder.value.orderType === 'dine-in'
+          ? (currentOrder.value.tableNumber ?? null)
+          : null,
+      orderType: currentOrder.value.orderType || 'dine-in',
       items: currentOrder.value.items,
       status: 'in-progress',
       total: currentOrder.value.total!,
       tax: currentOrder.value.tax!,
-      createdAt: new Date(),
-      guests: currentOrder.value.guests!
+      createdAt: new Date()
     }
 
     // In a real app, this would be an API call
@@ -131,10 +132,11 @@ export const useOrderStore = defineStore('order', () => {
     subtotal,
     tax,
     total,
+    taxRate,
+    setTaxRate,
     addItemToOrder,
     removeItemFromOrder,
     setTable,
-    setGuests,
     clearOrder,
     placeOrder,
     updateOrderStatus
