@@ -58,7 +58,7 @@
             </div>
             <div class="ml-4">
               <h2 class="text-xl font-semibold">Revenue Today</h2>
-              <p class="text-3xl font-bold mt-2">$1,250</p>
+              <p class="text-3xl font-bold mt-2">PLN1,250</p>
             </div>
           </div>
         </div>
@@ -120,7 +120,7 @@
                 <td class="px-6 py-4">#12345</td>
                 <td class="px-6 py-4">John Doe</td>
                 <td class="px-6 py-4">3</td>
-                <td class="px-6 py-4">$45.00</td>
+                <td class="px-6 py-4">PLN45.00</td>
                 <td class="px-6 py-4">
                   <span
                     class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300"
@@ -135,7 +135,7 @@
                 <td class="px-6 py-4">#12344</td>
                 <td class="px-6 py-4">Jane Smith</td>
                 <td class="px-6 py-4">2</td>
-                <td class="px-6 py-4">$25.50</td>
+                <td class="px-6 py-4">PLN25.50</td>
                 <td class="px-6 py-4">
                   <span
                     class="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300"
