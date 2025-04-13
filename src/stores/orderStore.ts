@@ -90,7 +90,8 @@ export const useOrderStore = defineStore('order', () => {
       items: [],
       status: 'pending',
       tax: 0,
-      total: 0
+      total: 0,
+      tableNumber: null
     }
   }
 

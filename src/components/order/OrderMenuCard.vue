@@ -11,7 +11,7 @@
     </div>
     <button
       @click="addToOrder"
-      class="w-full text-white bg-indigo-deep hover:bg-primary-dark focus:ring-4 focus:outline-none focus:ring-primary-light font-medium rounded-b-lg text-sm px-4 py-2.5 text-center border-t border-gray-200 dark:border-gray-700 mt-auto"
+      class="w-full text-white bg-dark-bg dark:bg-gray-800 hover:bg-gray-800 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-primary-light dark:focus:ring-primary-light font-medium rounded-b-lg text-sm px-4 py-2.5 text-center border-t border-gray-200 dark:border-gray-700 mt-auto"
     >
       Add
     </button>

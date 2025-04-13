@@ -1,25 +1,22 @@
 <template>
   <div class="bg-white dark:bg-dark-bg rounded-lg shadow p-6">
-    <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-      Current Order
-    </h2>
     <div class="mb-4">
       <div class="flex gap-4 mb-2">
-        <label class="flex items-center">
+        <label class="flex items-center text-gray-900 dark:text-white">
           <input
             type="radio"
             v-model="orderType"
             value="dine-in"
-            class="mr-2 text-Indigo focus:ring-Indigo"
+            class="mr-2 text-gray-900 dark:text-gray-900 focus:ring-gray-900 dark:focus:ring-gray-900"
           />
           Dine-in
         </label>
-        <label class="flex items-center">
+        <label class="flex items-center text-gray-900 dark:text-white">
           <input
             type="radio"
             v-model="orderType"
             value="takeaway"
-            class="mr-2 text-Indigo focus:ring-Indigo"
+            class="mr-2 text-gray-900 dark:text-gray-900 focus:ring-gray-900 dark:focus:ring-gray-900"
           />
           Takeaway
         </label>
@@ -33,10 +30,12 @@
         />
       </div>
     </div>
-    <div class="mb-4 max-h-[200px] min-h-[200px] overflow-y-auto">
+    <div
+      class="md:max-h-[100px] md:min-h-[100px] xl:max-h-[330px] xl:min-h-[330px] mb-4 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600 scrollbar-track-transparent"
+    >
       <div
         v-if="!orderStore.currentOrder.items?.length"
-        class="text-center text-gray-500 mt-8"
+        class="text-center text-gray-500 dark:text-gray-400 mt-8"
       >
         No items in order yet
         <p class="text-sm">Select menu items to add</p>
@@ -45,21 +44,23 @@
         <div
           v-for="item in reversedOrderItems"
           :key="item.id"
-          class="flex justify-between items-center p-2 bg-gray-50 rounded"
+          class="flex justify-between items-center p-2 bg-gray-50 dark:bg-gray-800 rounded"
         >
           <div>
-            <span class="font-medium">{{ item.name }}</span>
-            <div class="text-sm text-gray-600">
+            <span class="font-medium text-gray-900 dark:text-white">{{
+              item.name
+            }}</span>
+            <div class="text-sm text-gray-600 dark:text-gray-400">
               PLN{{ item.price.toFixed(2) }} × {{ item.quantity }}
             </div>
           </div>
           <div class="flex items-center gap-2">
-            <span class="font-medium"
+            <span class="font-medium text-gray-900 dark:text-white"
               >PLN{{ (item.price * item.quantity).toFixed(2) }}</span
             >
             <button
               @click="orderStore.removeItemFromOrder(item.id)"
-              class="text-red-600 hover:text-red-800 p-1"
+              class="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 p-1"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -81,16 +82,18 @@
       </div>
     </div>
     <!-- Order Summary -->
-    <div class="border-t pt-4">
-      <div class="flex justify-between mb-2">
+    <div class="border-t border-gray-200 dark:border-gray-700 pt-4">
+      <div class="flex justify-between mb-2 text-gray-900 dark:text-white">
         <span>Subtotal</span>
         <span>PLN{{ orderStore.subtotal.toFixed(2) }}</span>
       </div>
-      <div class="flex justify-between mb-2">
+      <div class="flex justify-between mb-2 text-gray-900 dark:text-white">
         <span>Tax ({{ taxRate }}%)</span>
         <span>PLN{{ orderStore.tax.toFixed(2) }}</span>
       </div>
-      <div class="flex justify-between font-bold mb-4">
+      <div
+        class="flex justify-between font-bold mb-4 text-gray-900 dark:text-white"
+      >
         <span>Total</span>
         <span>PLN{{ orderStore.total.toFixed(2) }}</span>
       </div>
@@ -100,15 +103,15 @@
         :class="[
           'w-full py-2 rounded-md mb-2',
           canPlaceOrder
-            ? 'bg-primary text-white'
-            : 'bg-gray-200 text-gray-500 cursor-not-allowed'
+            ? 'bg-gray-900 text-white hover:bg-gray-800 dark:bg-gray-800 dark:hover:bg-gray-700'
+            : 'bg-gray-200 text-gray-500 cursor-not-allowed dark:bg-gray-700 dark:text-gray-400'
         ]"
       >
         Place Order
       </button>
       <button
         @click="orderStore.clearOrder"
-        class="w-full border border-gray-300 py-2 rounded-md"
+        class="w-full border border-gray-300 dark:border-gray-600 py-2 rounded-md text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
       >
         Clear Order
       </button>
@@ -156,7 +159,6 @@ async function placeOrder() {
     orderStore.currentOrder.orderType = orderType.value
     await orderStore.placeOrder()
     selectedTable.value = ''
-    orderType.value = 'dine-in'
   } catch (error) {
     console.error('Failed to place order:', error)
   }
@@ -173,14 +175,35 @@ const handleTableChange = () => {
 
 <style scoped>
 .bg-primary {
-  @apply bg-indigo-deep;
+  @apply bg-gray-900 dark:bg-gray-800;
 }
 
 input[type='radio'] {
-  @apply text-indigo-deep;
+  @apply text-gray-900 dark:text-gray-900;
 }
 
 input[type='radio']:checked {
-  @apply text-indigo-deep;
+  @apply text-gray-900 dark:text-gray-900;
+}
+
+/* Custom scrollbar styles */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+}
+
+.scrollbar-thumb-gray-300::-webkit-scrollbar-thumb {
+  background-color: #d1d5db;
+}
+
+.dark .scrollbar-thumb-gray-600::-webkit-scrollbar-thumb {
+  background-color: #4b5563;
 }
 </style>
