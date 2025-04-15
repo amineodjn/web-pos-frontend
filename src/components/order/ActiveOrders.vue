@@ -1,7 +1,7 @@
 <template>
   <div class="bg-white dark:bg-dark-bg rounded-lg shadow p-6">
     <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-      Active Orders
+      {{ translateActiveOrders('title') }}
     </h2>
     <div class="overflow-x-auto">
       <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -15,7 +15,7 @@
               scope="col"
               class="px-6 py-3"
             >
-              {{ header.label }}
+              {{ translateActiveOrders(`headers.${header.key}`) }}
             </th>
           </tr>
         </thead>
@@ -37,14 +37,14 @@
                   }
                 ]"
               >
-                {{ order.orderType }}
+                {{ translateOrderType(order.orderType) }}
               </span>
             </td>
             <td class="px-6 py-4">
               {{
                 order.orderType === 'dine-in'
                   ? `Table ${order.tableNumber}`
-                  : 'Takeaway'
+                  : translateOrderType('takeaway')
               }}
             </td>
             <td class="px-6 py-4">{{ order.items?.length || 0 }}</td>
@@ -61,7 +61,7 @@
                   }
                 ]"
               >
-                {{ order.status }}
+                {{ translateActiveOrders(`status.${order.status}`) }}
               </span>
             </td>
             <td class="px-6 py-4">
@@ -71,7 +71,7 @@
                   @click="action.handler(order)"
                   :class="action.class"
                 >
-                  {{ action.label }}
+                  {{ translateActiveOrders(`actions.${action.key}`) }}
                 </button>
               </template>
             </td>
@@ -84,6 +84,12 @@
 
 <script setup lang="ts">
 import { useOrderStore } from '../../stores/orderStore'
+import { useTranslate } from '../../composables/useTranslate'
+
+const { translate: translateOrderType } = useTranslate(
+  'orders.currentOrder.orderType'
+)
+const { translate: translateActiveOrders } = useTranslate('orders.activeOrders')
 
 const orderStore = useOrderStore()
 
@@ -99,12 +105,14 @@ const tableHeaders = [
 
 const orderActions = [
   {
+    key: 'view',
     label: 'View',
     handler: (order: any) => viewOrder(order),
     class: 'text-blue-600 hover:text-blue-900 mr-2',
     condition: null
   },
   {
+    key: 'complete',
     label: 'Complete',
     handler: (order: any) =>
       orderStore.updateOrderStatus(order.id, 'completed'),
@@ -112,6 +120,7 @@ const orderActions = [
     condition: (order: any) => order.status === 'in-progress'
   },
   {
+    key: 'cancel',
     label: 'Cancel',
     handler: (order: any) =>
       orderStore.updateOrderStatus(order.id, 'cancelled'),

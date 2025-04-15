@@ -13,7 +13,7 @@
       @click="addToOrder"
       class="w-full text-white bg-dark-bg dark:bg-gray-800 hover:bg-gray-800 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-primary-light dark:focus:ring-primary-light font-medium rounded-b-lg text-sm px-4 py-2.5 text-center border-t border-gray-200 dark:border-gray-700 mt-auto"
     >
-      Add
+      {{ translateCurrentOrder('add') }}
     </button>
   </div>
 </template>
@@ -21,6 +21,9 @@
 <script setup lang="ts">
 import type { MenuItem, MenuItemDetails } from '../../types/MenuData'
 import { useOrderStore } from '../../stores/orderStore'
+import { useTranslate } from '../../composables/useTranslate'
+
+const { translate: translateCurrentOrder } = useTranslate('orders.currentOrder')
 
 const orderStore = useOrderStore()
 
