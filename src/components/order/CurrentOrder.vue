@@ -9,7 +9,7 @@
             value="dine-in"
             class="mr-2 text-gray-900 dark:text-gray-900 focus:ring-gray-900 dark:focus:ring-gray-900"
           />
-          Dine-in
+          {{ translateOrderType('dineIn') }}
         </label>
         <label class="flex items-center text-gray-900 dark:text-white">
           <input
@@ -18,14 +18,14 @@
             value="takeaway"
             class="mr-2 text-gray-900 dark:text-gray-900 focus:ring-gray-900 dark:focus:ring-gray-900"
           />
-          Takeaway
+          {{ translateOrderType('takeaway') }}
         </label>
       </div>
       <div v-if="orderType === 'dine-in'" class="mb-4">
         <SelectBoxUI
           v-model="selectedTable"
           :options="tableOptions"
-          placeholder="Select Table"
+          :placeholder="translateCurrentOrder('selectTable')"
           @change="handleTableChange"
         />
       </div>
@@ -37,8 +37,8 @@
         v-if="!orderStore.currentOrder.items?.length"
         class="text-center text-gray-500 dark:text-gray-400 mt-8"
       >
-        No items in order yet
-        <p class="text-sm">Select menu items to add</p>
+        {{ translateCurrentOrder('noItems') }}
+        <p class="text-sm">{{ translateCurrentOrder('selectItems') }}</p>
       </div>
       <div v-else class="space-y-2 pr-2">
         <div
@@ -84,17 +84,17 @@
     <!-- Order Summary -->
     <div class="border-t border-gray-200 dark:border-gray-700 pt-4">
       <div class="flex justify-between mb-2 text-gray-900 dark:text-white">
-        <span>Subtotal</span>
+        <span>{{ translateCurrentOrder('subtotal') }}</span>
         <span>PLN{{ orderStore.subtotal.toFixed(2) }}</span>
       </div>
       <div class="flex justify-between mb-2 text-gray-900 dark:text-white">
-        <span>Tax ({{ taxRate }}%)</span>
+        <span>{{ translateCurrentOrder('tax') }} ({{ taxRate }}%)</span>
         <span>PLN{{ orderStore.tax.toFixed(2) }}</span>
       </div>
       <div
         class="flex justify-between font-bold mb-4 text-gray-900 dark:text-white"
       >
-        <span>Total</span>
+        <span>{{ translateCurrentOrder('total') }}</span>
         <span>PLN{{ orderStore.total.toFixed(2) }}</span>
       </div>
       <button
@@ -107,13 +107,13 @@
             : 'bg-gray-200 text-gray-500 cursor-not-allowed dark:bg-gray-700 dark:text-gray-400'
         ]"
       >
-        Place Order
+        {{ translateCurrentOrder('placeOrder') }}
       </button>
       <button
         @click="orderStore.clearOrder"
         class="w-full border border-gray-300 dark:border-gray-600 py-2 rounded-md text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
       >
-        Clear Order
+        {{ translateCurrentOrder('clearOrder') }}
       </button>
     </div>
   </div>
@@ -123,6 +123,12 @@
 import { ref, computed } from 'vue'
 import { useOrderStore } from '../../stores/orderStore'
 import SelectBoxUI from '../common/SelectBoxUI.vue'
+import { useTranslate } from '../../composables/useTranslate'
+
+const { translate: translateOrderType } = useTranslate(
+  'orders.currentOrder.orderType'
+)
+const { translate: translateCurrentOrder } = useTranslate('orders.currentOrder')
 
 const props = defineProps<{
   numberOfTables: number

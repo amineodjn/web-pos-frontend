@@ -127,5 +127,48 @@
       "orders": "Zamówienia",
       "logout": "Wyloguj się"
     }
+  },
+  "orders": {
+    "tabs": {
+      "add": "Dodaj Zamówienie",
+      "history": "Historia Zamówień"
+    },
+    "currentOrder": {
+      "orderType": {
+        "dineIn": "Na miejscu",
+        "takeaway": "Na wynos"
+      },
+      "selectTable": "Wybierz stolik",
+      "noItems": "Brak pozycji w zamówieniu",
+      "selectItems": "Wybierz pozycje z menu",
+      "subtotal": "Suma częściowa",
+      "tax": "Podatek",
+      "total": "Razem",
+      "placeOrder": "Złóż zamówienie",
+      "clearOrder": "Wyczyść zamówienie",
+      "add": "Dodaj"
+    },
+    "activeOrders": {
+      "title": "Aktywne Zamówienia",
+      "headers": {
+        "id": "ID Zamówienia",
+        "type": "Typ",
+        "table": "Stolik",
+        "items": "Pozycje",
+        "total": "Suma",
+        "status": "Status",
+        "actions": "Akcje"
+      },
+      "status": {
+        "in-progress": "W trakcie",
+        "completed": "Zakończone",
+        "cancelled": "Anulowane"
+      },
+      "actions": {
+        "view": "Podgląd",
+        "complete": "Zakończ",
+        "cancel": "Anuluj"
+      }
+    }
   }
 }

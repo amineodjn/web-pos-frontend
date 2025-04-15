@@ -127,5 +127,48 @@
       "orders": "Orders",
       "logout": "Logout"
     }
+  },
+  "orders": {
+    "tabs": {
+      "add": "Add Order",
+      "history": "Order History"
+    },
+    "currentOrder": {
+      "orderType": {
+        "dineIn": "Dine-in",
+        "takeaway": "Takeaway"
+      },
+      "selectTable": "Select Table",
+      "noItems": "No items in order yet",
+      "selectItems": "Select menu items to add",
+      "subtotal": "Subtotal",
+      "tax": "Tax",
+      "total": "Total",
+      "placeOrder": "Place Order",
+      "clearOrder": "Clear Order",
+      "add": "Add"
+    },
+    "activeOrders": {
+      "title": "Active Orders",
+      "headers": {
+        "id": "Order ID",
+        "type": "Type",
+        "table": "Table",
+        "items": "Items",
+        "total": "Total",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "status": {
+        "in-progress": "In Progress",
+        "completed": "Completed",
+        "cancelled": "Cancelled"
+      },
+      "actions": {
+        "view": "View",
+        "complete": "Complete",
+        "cancel": "Cancel"
+      }
+    }
   }
 }

@@ -3,8 +3,8 @@
     <div class="flex justify-end mb-6">
       <TabsBar
         :tabs="[
-          { label: 'Add Order', value: 'add' },
-          { label: 'Order History', value: 'history' }
+          { label: translateOrdersTabs('add'), value: 'add' },
+          { label: translateOrdersTabs('history'), value: 'history' }
         ]"
         :active-tab="currentView"
         @update:active-tab="currentView = $event"
@@ -36,6 +36,9 @@ import CurrentOrder from '../components/order/CurrentOrder.vue'
 import ActiveOrders from '../components/order/ActiveOrders.vue'
 import TabsBar from '../components/admin/TabsBar.vue'
 import { ref } from 'vue'
+import { useTranslate } from '../composables/useTranslate'
+
+const { translate: translateOrdersTabs } = useTranslate('orders.tabs')
 
 const numberOfTables = ref(5)
 const guestsPerTable = ref([6, 6, 4, 4, 4])
