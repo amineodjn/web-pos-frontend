@@ -2,7 +2,7 @@
   <div class="relative w-full mb-4">
     <button
       @click="scrollCategories('left')"
-      class="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white shadow-md rounded-full w-8 h-8 flex items-center justify-center"
+      class="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white dark:bg-gray-800/80 dark:hover:bg-gray-700 shadow-md rounded-full w-8 h-8 flex items-center justify-center"
       :class="{ invisible: isScrolledLeft }"
     >
       <svg
@@ -29,8 +29,8 @@
         :class="[
           'px-4 py-2 rounded-md whitespace-nowrap flex-shrink-0',
           modelValue === category
-            ? 'bg-indigo-deep text-white'
-            : 'bg-gray-200 hover:bg-gray-300'
+            ? 'bg-dark-bg text-white border border-gray-600 dark:shadow-dark-hover'
+            : 'dark:bg-gray-800 hover:bg-dark-bg hover:text-white border border-gray-700'
         ]"
       >
         {{ category }}
@@ -38,7 +38,7 @@
     </div>
     <button
       @click="scrollCategories('right')"
-      class="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white shadow-md rounded-full w-8 h-8 flex items-center justify-center"
+      class="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white dark:bg-gray-800/80 dark:hover:bg-gray-700 shadow-md rounded-full w-8 h-8 flex items-center justify-center"
       :class="{ invisible: isScrolledRight }"
     >
       <svg

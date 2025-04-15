@@ -1,15 +1,14 @@
 <template>
   <div class="bg-white dark:bg-dark-bg rounded-lg shadow p-6">
     <div class="mb-4">
-      <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-        Menu Items
-      </h2>
       <CategoryNavigation
         v-model="selectedCategory"
         :categories="menuStore.categories"
       />
       <!-- Menu Categories -->
-      <div class="space-y-8 max-h-[370px] overflow-y-auto">
+      <div
+        class="space-y-8 md:max-h-[270px] md:min-h-[270px] xl:max-h-[500px] xl:min-h-[500px] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600 scrollbar-track-transparent"
+      >
         <template v-if="selectedCategory === 'All'">
           <OrderCategorySection
             v-for="category in menuStore.categories"
@@ -40,3 +39,26 @@ import CategoryNavigation from './CategoryNavigation.vue'
 const menuStore = useMenuStore()
 const selectedCategory = ref('All')
 </script>
+
+<style>
+/* Custom scrollbar styles */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+}
+
+.scrollbar-thumb-gray-300::-webkit-scrollbar-thumb {
+  background-color: #d1d5db;
+}
+
+.dark .scrollbar-thumb-gray-600::-webkit-scrollbar-thumb {
+  background-color: #4b5563;
+}
+</style>
