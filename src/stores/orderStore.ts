@@ -2,8 +2,9 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import type { MenuItem } from '../types/MenuData'
 
-interface OrderItem extends MenuItem {
+export interface OrderItem extends MenuItem {
   quantity: number
+  comment?: string
 }
 
 interface Order {
@@ -127,6 +128,15 @@ export const useOrderStore = defineStore('order', () => {
     }
   }
 
+  function updateItemComment(itemId: number, comment: string) {
+    if (!currentOrder.value.items) return
+
+    const item = currentOrder.value.items.find(i => i.id === itemId)
+    if (item) {
+      item.comment = comment
+    }
+  }
+
   return {
     currentOrder,
     activeOrders,
@@ -140,6 +150,7 @@ export const useOrderStore = defineStore('order', () => {
     setTable,
     clearOrder,
     placeOrder,
-    updateOrderStatus
+    updateOrderStatus,
+    updateItemComment
   }
 })

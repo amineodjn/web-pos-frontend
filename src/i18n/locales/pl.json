@@ -135,7 +135,7 @@
     },
     "currentOrder": {
       "orderType": {
-        "dineIn": "Na miejscu",
+        "dine-in": "Na miejscu",
         "takeaway": "Na wynos"
       },
       "selectTable": "Wybierz stolik",
@@ -146,7 +146,11 @@
       "total": "Razem",
       "placeOrder": "Złóż zamówienie",
       "clearOrder": "Wyczyść zamówienie",
-      "add": "Dodaj"
+      "add": "Dodaj",
+      "addComment": "Dodaj komentarz",
+      "commentPlaceholder": "Wpisz swój komentarz...",
+      "cancel": "Anuluj",
+      "save": "Zapisz"
     },
     "activeOrders": {
       "title": "Aktywne Zamówienia",
