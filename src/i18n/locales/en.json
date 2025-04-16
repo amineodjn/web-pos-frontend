@@ -135,7 +135,7 @@
     },
     "currentOrder": {
       "orderType": {
-        "dineIn": "Dine-in",
+        "dine-in": "Dine-in",
         "takeaway": "Takeaway"
       },
       "selectTable": "Select Table",
@@ -146,7 +146,11 @@
       "total": "Total",
       "placeOrder": "Place Order",
       "clearOrder": "Clear Order",
-      "add": "Add"
+      "add": "Add",
+      "addComment": "Add Comment",
+      "commentPlaceholder": "Enter your comment here...",
+      "cancel": "Cancel",
+      "save": "Save"
     },
     "activeOrders": {
       "title": "Active Orders",
