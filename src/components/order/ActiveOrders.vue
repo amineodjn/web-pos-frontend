@@ -61,7 +61,7 @@
                   }
                 ]"
               >
-                {{ translateActiveOrders(`status.${order.status}`) }}
+                {{ translateStatus(`${order.status}`) }}
               </span>
             </td>
             <td class="px-6 py-4">
@@ -90,6 +90,7 @@ const { translate: translateOrderType } = useTranslate(
   'orders.currentOrder.orderType'
 )
 const { translate: translateActiveOrders } = useTranslate('orders.activeOrders')
+const { translate: translateStatus } = useTranslate('status')
 
 const orderStore = useOrderStore()
 

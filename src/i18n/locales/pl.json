@@ -125,6 +125,7 @@
       "dashboard": "Panel",
       "menu": "Menu",
       "orders": "Zamówienia",
+      "kitchen": "Kuchnia",
       "logout": "Wyloguj się"
     }
   },
@@ -163,16 +164,29 @@
         "status": "Status",
         "actions": "Akcje"
       },
-      "status": {
-        "in-progress": "W trakcie",
-        "completed": "Zakończone",
-        "cancelled": "Anulowane"
-      },
       "actions": {
         "view": "Podgląd",
         "complete": "Zakończ",
         "cancel": "Anuluj"
       }
     }
+  },
+  "kitchen": {
+    "display": {
+      "title": "Wyświetlacz Kuchni",
+      "comments": "Komentarze",
+      "complete": "Zakończ Zamówienie",
+      "status": {
+        "pending": "Oczekujące",
+        "in-progress": "W trakcie",
+        "completed": "Zakończone",
+        "cancelled": "Anulowane"
+      }
+    }
+  },
+  "status": {
+    "in-progress": "W trakcie",
+    "completed": "Zakończone",
+    "cancelled": "Anulowane"
   }
 }
