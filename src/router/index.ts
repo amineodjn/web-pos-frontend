@@ -22,9 +22,6 @@ const router = createRouter({
       name: 'admin',
       redirect: '/admin/menu',
       component: () => import('../views/MenuView.vue'),
-      meta: {
-        requiresAuth: true // In a real app, this would be used for authentication
-      },
       children: [
         {
           path: 'dashboard',
@@ -40,6 +37,11 @@ const router = createRouter({
           path: 'orders',
           name: 'admin-orders',
           component: () => import('../views/OrdersView.vue')
+        },
+        {
+          path: 'kitchen',
+          name: 'admin-kitchen',
+          component: () => import('../views/KitchenView.vue')
         }
       ]
     }

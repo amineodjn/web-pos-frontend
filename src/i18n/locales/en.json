@@ -125,6 +125,7 @@
       "dashboard": "Dashboard",
       "menu": "Menu",
       "orders": "Orders",
+      "kitchen": "Kitchen",
       "logout": "Logout"
     }
   },
@@ -163,16 +164,23 @@
         "status": "Status",
         "actions": "Actions"
       },
-      "status": {
-        "in-progress": "In Progress",
-        "completed": "Completed",
-        "cancelled": "Cancelled"
-      },
       "actions": {
         "view": "View",
         "complete": "Complete",
         "cancel": "Cancel"
       }
     }
+  },
+  "kitchen": {
+    "display": {
+      "title": "Kitchen Display",
+      "comments": "Comments",
+      "complete": "Completed"
+    }
+  },
+  "status": {
+    "in-progress": "In Progress",
+    "completed": "Completed",
+    "cancelled": "Cancelled"
   }
 }
