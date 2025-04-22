@@ -168,7 +168,54 @@
         "view": "Podgląd",
         "complete": "Zakończ",
         "cancel": "Anuluj"
+      },
+      "table": {
+        "dineIn": "Stolik {number}",
+        "takeaway": "Na wynos"
       }
+    },
+    "table": {
+      "orderId": "ID Zamówienia",
+      "type": "Typ",
+      "items": "Pozycje",
+      "total": "Suma",
+      "status": "Status",
+      "actions": "Akcje"
+    },
+    "types": {
+      "dine-in": "Na miejscu",
+      "takeaway": "Na wynos"
+    },
+    "actions": {
+      "start": "Rozpocznij",
+      "complete": "Zakończ",
+      "cancel": "Anuluj"
+    }
+  },
+  "kitchen": {
+    "display": {
+      "title": "Wyświetlacz Kuchni",
+      "comments": "Komentarze",
+      "complete": "Zakończ Zamówienie"
+    }
+  },
+  "status": {
+    "pending": "Oczekujące",
+    "in-progress": "W trakcie",
+    "completed": "Zakończone",
+    "cancelled": "Anulowane"
+  },
+  "dashboard": {
+    "title": "Panel",
+    "cards": {
+      "ordersToday": "Zamówienia Dzisiaj",
+      "revenueToday": "Przychód Dzisiaj",
+      "menuItems": "Pozycje Menu"
+    },
+    "recentOrders": "Ostatnie Zamówienia",
+    "timeLabels": {
+      "today": "Dzisiaj",
+      "total": "Razem"
     }
   },
   "kitchen": {

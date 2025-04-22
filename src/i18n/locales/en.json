@@ -130,6 +130,44 @@
     }
   },
   "orders": {
+    "table": {
+      "orderId": "Order ID",
+      "type": "Type",
+      "items": "Items",
+      "total": "Total",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "types": {
+      "dine-in": "Dine-in",
+      "takeaway": "Takeaway"
+    },
+    "actions": {
+      "start": "Start",
+      "complete": "Complete",
+      "cancel": "Cancel"
+    },
+    "activeOrders": {
+      "title": "Active Orders",
+      "headers": {
+        "id": "Order ID",
+        "type": "Type",
+        "table": "Table",
+        "items": "Items",
+        "total": "Total",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "actions": {
+        "view": "View",
+        "complete": "Complete",
+        "cancel": "Cancel"
+      },
+      "table": {
+        "dineIn": "Table {number}",
+        "takeaway": "Takeaway"
+      }
+    },
     "tabs": {
       "add": "Add Order",
       "history": "Order History"
@@ -152,23 +190,32 @@
       "commentPlaceholder": "Enter your comment here...",
       "cancel": "Cancel",
       "save": "Save"
+    }
+  },
+  "kitchen": {
+    "display": {
+      "title": "Kitchen Display",
+      "comments": "Comments",
+      "complete": "Completed"
+    }
+  },
+  "status": {
+    "pending": "Pending",
+    "in-progress": "In Progress",
+    "completed": "Completed",
+    "cancelled": "Cancelled"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "cards": {
+      "ordersToday": "Orders Today",
+      "revenueToday": "Revenue Today",
+      "menuItems": "Menu Items"
     },
-    "activeOrders": {
-      "title": "Active Orders",
-      "headers": {
-        "id": "Order ID",
-        "type": "Type",
-        "table": "Table",
-        "items": "Items",
-        "total": "Total",
-        "status": "Status",
-        "actions": "Actions"
-      },
-      "actions": {
-        "view": "View",
-        "complete": "Complete",
-        "cancel": "Cancel"
-      }
+    "recentOrders": "Recent Orders",
+    "timeLabels": {
+      "today": "Today",
+      "total": "Total"
     }
   },
   "kitchen": {

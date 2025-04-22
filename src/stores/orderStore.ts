@@ -7,7 +7,7 @@ export interface OrderItem extends MenuItem {
   comment?: string
 }
 
-interface Order {
+export interface Order {
   id: string
   tableNumber: number | null
   orderType: 'dine-in' | 'takeaway'
@@ -108,7 +108,7 @@ export const useOrderStore = defineStore('order', () => {
         currentOrder.value.orderType === 'dine-in'
           ? (currentOrder.value.tableNumber ?? null)
           : null,
-      orderType: currentOrder.value.orderType || 'dine-in',
+      orderType: currentOrder.value.orderType || 'takeaway',
       items: currentOrder.value.items,
       status: 'in-progress',
       total: currentOrder.value.total!,
