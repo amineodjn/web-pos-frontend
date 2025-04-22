@@ -43,8 +43,10 @@
             <td class="px-6 py-4">
               {{
                 order.orderType === 'dine-in'
-                  ? `Table ${order.tableNumber}`
-                  : translateOrderType('takeaway')
+                  ? translateActiveOrders('table.dineIn', {
+                      number: order.tableNumber
+                    })
+                  : translateActiveOrders('table.takeaway')
               }}
             </td>
             <td class="px-6 py-4">{{ order.items?.length || 0 }}</td>
