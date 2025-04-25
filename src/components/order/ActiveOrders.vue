@@ -82,11 +82,19 @@
       </table>
     </div>
   </div>
+  <OrderDetailsModal
+    v-if="selectedOrder"
+    :is-open="isModalOpen"
+    :order="selectedOrder"
+    @close="closeModal"
+  />
 </template>
 
 <script setup lang="ts">
 import { useOrderStore } from '../../stores/orderStore'
 import { useTranslate } from '../../composables/useTranslate'
+import OrderDetailsModal from './OrderDetailsModal.vue'
+import { ref } from 'vue'
 
 const { translate: translateOrderType } = useTranslate(
   'orders.currentOrder.orderType'
@@ -95,6 +103,19 @@ const { translate: translateActiveOrders } = useTranslate('orders.activeOrders')
 const { translate: translateStatus } = useTranslate('status')
 
 const orderStore = useOrderStore()
+
+const isModalOpen = ref(false)
+const selectedOrder = ref(null)
+
+function viewOrder(order: any) {
+  selectedOrder.value = order
+  isModalOpen.value = true
+}
+
+function closeModal() {
+  isModalOpen.value = false
+  selectedOrder.value = null
+}
 
 const tableHeaders = [
   { key: 'id', label: 'Order ID' },
@@ -131,9 +152,4 @@ const orderActions = [
     condition: (order: any) => order.status === 'in-progress'
   }
 ]
-
-function viewOrder(order: any) {
-  // Implement order details view
-  console.log('View order:', order)
-}
 </script>

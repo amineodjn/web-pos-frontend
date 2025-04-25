@@ -190,6 +190,13 @@
       "commentPlaceholder": "Enter your comment here...",
       "cancel": "Cancel",
       "save": "Save"
+    },
+    "orderDetails": {
+      "title": "Order #{orderId} Details",
+      "orderType": "Order Type",
+      "items": "Items",
+      "total": "Total",
+      "close": "Close"
     }
   },
   "kitchen": {

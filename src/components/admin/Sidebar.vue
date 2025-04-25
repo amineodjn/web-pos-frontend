@@ -11,11 +11,13 @@
     >
       <div>
         <div class="flex items-center justify-between mb-5">
-          <span
-            v-if="!modelValue"
-            class="self-center text-xl font-semibold whitespace-nowrap dark:text-white"
-            >Admin Center</span
-          >
+          <div class="flex items-center gap-2">
+            <span
+              v-if="!modelValue"
+              class="self-center text-xl font-semibold whitespace-nowrap dark:text-white"
+              >Order Center</span
+            >
+          </div>
           <button
             @click="toggleSidebar"
             class="p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -66,63 +68,48 @@
       <div
         class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700"
       >
-        <div
-          v-if="modelValue"
-          class="flex items-center justify-center p-2 text-gray-900 rounded-lg dark:text-white"
-        >
-          <span
-            class="inline-flex items-center justify-center w-8 h-8 text-sm font-medium text-gray-800 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-300 aspect-square"
+        <div class="flex items-center gap-2 p-2">
+          <div
+            class="h-8 w-8 rounded-full bg-red-600 flex items-center justify-center text-white font-semibold aspect-square"
           >
-            A
-          </span>
-        </div>
-        <div
-          v-if="!modelValue"
-          class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white"
-        >
-          <div class="flex-shrink-0">
-            <span
-              class="inline-flex items-center justify-center w-8 h-8 text-sm font-medium text-gray-800 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-300"
-            >
-              A
-            </span>
+            D
           </div>
-          <div class="flex-1 min-w-0 ms-3">
-            <p
-              class="text-sm font-medium text-gray-900 truncate dark:text-white"
+          <div v-if="!modelValue" class="flex flex-col">
+            <span class="text-sm font-medium dark:text-white">John Doe</span>
+            <span class="text-xs text-gray-500 dark:text-gray-400"
+              >admin@example.com</span
             >
-              Admin User
-            </p>
-            <p class="text-sm text-gray-500 truncate dark:text-gray-400">
-              admin@example.com
-            </p>
           </div>
         </div>
-        <button
-          @click="handleLogout"
-          class="flex items-center justify-center w-full p-2 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-        >
-          <svg
-            class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            fill="none"
-            viewBox="0 0 24 24"
+        <div class="flex items-center justify-around p-2">
+          <div v-if="!modelValue" class="flex items-center">
+            <LanguageSelector />
+          </div>
+          <DarkModeToggle />
+          <button
+            v-if="!modelValue"
+            @click="handleLogout"
+            class="p-2 text-gray-500 rounded-lg hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700"
           >
-            <path
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M20 12H8m12 0-4 4m4-4-4-4M9 4H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h2"
-            />
-          </svg>
-          <span v-if="!modelValue" class="ms-3">{{
-            translateSideBar('logout')
-          }}</span>
-        </button>
+            <svg
+              class="w-5 h-5"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M20 12H8m12 0-4 4m4-4-4-4M9 4H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h2"
+              />
+            </svg>
+          </button>
+        </div>
       </div>
     </div>
   </aside>
@@ -132,6 +119,8 @@
 import { useRoute } from 'vue-router'
 import { useTranslate } from '../../composables/useTranslate'
 import { computed } from 'vue'
+import DarkModeToggle from '../navbar/DarkModeToggle.vue'
+import LanguageSelector from '../navbar/LanguageSelector.vue'
 
 const props = defineProps<{
   modelValue: boolean
@@ -155,7 +144,7 @@ const icons = {
   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 4h3a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3m0 3h6m-3 5h3m-6 0h.01M12 16h3m-6 0h.01M10 3v4h4V3h-4Z"/>
 </svg>`,
   kitchen: `<svg class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M6 14h2m3 0h5M3 7v10a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1Z"/>
+  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.011 13H20c-.367 2.5551-2.32 4.6825-4.9766 5.6162V20H8.97661v-1.3838C6.31996 17.6825 4.36697 15.5551 4 13h14.011Zm0 0c1.0995-.0059 1.989-.8991 1.989-2 0-.8637-.5475-1.59948-1.3143-1.87934M18.011 13H18m0-3.99997c.2409 0 .4718.04258.6857.12063m0 0c.8367-1.0335.7533-2.67022-.2802-3.50694-1.0335-.83672-2.5496-.6772-3.3864.35631-.293-1.50236-1.7485-2.15377-3.2509-1.8607-1.5023.29308-2.48263 1.74856-2.18956 3.25092C8.9805 6.17263 7.6182 5.26418 6.15462 6.00131 4.967 6.59945 4.45094 8.19239 5.04909 9.38002m0 0C4.37083 9.66467 4 10.3357 4 11.1174 4 12.1571 4.84288 13 5.88263 13m-.83354-3.61998c.2866-.12029 1.09613-.40074 2.04494.3418m5.27497-.89091c1.0047-.4589 2.1913-.01641 2.6502.98832"/>
 </svg>`
 }
 

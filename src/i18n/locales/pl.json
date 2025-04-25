@@ -190,6 +190,13 @@
       "start": "Rozpocznij",
       "complete": "Zakończ",
       "cancel": "Anuluj"
+    },
+    "orderDetails": {
+      "title": "Szczegóły Zamówienia #{orderId}",
+      "orderType": "Typ Zamówienia",
+      "items": "Pozycje",
+      "total": "Suma",
+      "close": "Zamknij"
     }
   },
   "kitchen": {
