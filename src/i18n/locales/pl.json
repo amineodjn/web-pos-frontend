@@ -149,6 +149,7 @@
       "clearOrder": "Wyczyść zamówienie",
       "add": "Dodaj",
       "addComment": "Dodaj komentarz",
+      "recentComments": "Ostatnie Komentarze",
       "commentPlaceholder": "Wpisz swój komentarz...",
       "cancel": "Anuluj",
       "save": "Zapisz"
@@ -190,6 +191,13 @@
       "start": "Rozpocznij",
       "complete": "Zakończ",
       "cancel": "Anuluj"
+    },
+    "orderDetails": {
+      "title": "Szczegóły Zamówienia #{orderId}",
+      "orderType": "Typ Zamówienia",
+      "items": "Pozycje",
+      "total": "Suma",
+      "close": "Zamknij"
     }
   },
   "kitchen": {

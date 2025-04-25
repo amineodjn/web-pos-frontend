@@ -111,12 +111,20 @@ const formatTime = (timestamp: Date) => {
 }
 
 const refreshOrders = () => {
-  activeOrders.value = orderStore.activeOrders
+  activeOrders.value = orderStore.activeOrders.filter(
+    order => order.status === 'in-progress'
+  )
 }
 
 const updateOrderStatus = (orderId: string, status: Order['status']) => {
   orderStore.updateOrderStatus(orderId, status)
-  refreshOrders()
+  if (status === 'completed') {
+    activeOrders.value = activeOrders.value.filter(
+      order => order.id !== orderId
+    )
+  } else {
+    refreshOrders()
+  }
 }
 
 onMounted(() => {

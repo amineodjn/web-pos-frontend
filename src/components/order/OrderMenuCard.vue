@@ -1,6 +1,7 @@
 <template>
   <div
-    class="menu-card w-full bg-white border border-gray-200 rounded-lg hover:shadow-[0_8px_16px_rgba(0,0,0,0.3)] dark:bg-dark-bg dark:border-gray-700 dark:hover:shadow-dark-hover flex flex-col h-full"
+    @click="addToOrder"
+    class="menu-card w-full bg-white border border-gray-200 rounded-lg hover:shadow-[0_8px_16px_rgba(0,0,0,0.3)] dark:bg-dark-bg dark:border-gray-700 dark:hover:shadow-dark-hover flex flex-col h-full cursor-pointer"
   >
     <div class="p-4 flex-grow">
       <h5
@@ -9,12 +10,6 @@
         {{ name }}
       </h5>
     </div>
-    <button
-      @click="addToOrder"
-      class="w-full text-white bg-dark-bg dark:bg-gray-800 hover:bg-gray-800 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-primary-light dark:focus:ring-primary-light font-medium rounded-b-lg text-sm px-4 py-2.5 text-center border-t border-gray-200 dark:border-gray-700 mt-auto"
-    >
-      {{ translateCurrentOrder('add') }}
-    </button>
   </div>
 </template>
 

@@ -187,9 +187,17 @@
       "clearOrder": "Clear Order",
       "add": "Add",
       "addComment": "Add Comment",
+      "recentComments": "Recent Comments",
       "commentPlaceholder": "Enter your comment here...",
       "cancel": "Cancel",
       "save": "Save"
+    },
+    "orderDetails": {
+      "title": "Order #{orderId} Details",
+      "orderType": "Order Type",
+      "items": "Items",
+      "total": "Total",
+      "close": "Close"
     }
   },
   "kitchen": {
