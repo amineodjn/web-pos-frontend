@@ -136,11 +136,15 @@
       "items": "Items",
       "total": "Total",
       "status": "Status",
-      "actions": "Actions"
-    },
-    "types": {
-      "dine-in": "Dine-in",
-      "takeaway": "Takeaway"
+      "actions": "Actions",
+      "empty": {
+        "title": "No orders found",
+        "description": "There are currently no orders in the system."
+      },
+      "types": {
+        "dine-in": "Dine-in",
+        "takeaway": "Takeaway"
+      }
     },
     "actions": {
       "start": "Start",
@@ -166,6 +170,10 @@
       "table": {
         "dineIn": "Table {number}",
         "takeaway": "Takeaway"
+      },
+      "empty": {
+        "title": "No active orders",
+        "description": "There are currently no active orders in the system."
       }
     },
     "tabs": {
@@ -204,7 +212,17 @@
     "display": {
       "title": "Kitchen Display",
       "comments": "Comments",
-      "complete": "Completed"
+      "complete": "Complete",
+      "empty": {
+        "title": "No active orders",
+        "description": "There are currently no orders in progress. New orders will appear here."
+      },
+      "status": {
+        "pending": "Pending",
+        "in-progress": "In Progress",
+        "completed": "Completed",
+        "cancelled": "Cancelled"
+      }
     }
   },
   "status": {
@@ -225,17 +243,5 @@
       "today": "Today",
       "total": "Total"
     }
-  },
-  "kitchen": {
-    "display": {
-      "title": "Kitchen Display",
-      "comments": "Comments",
-      "complete": "Completed"
-    }
-  },
-  "status": {
-    "in-progress": "In Progress",
-    "completed": "Completed",
-    "cancelled": "Cancelled"
   }
 }
