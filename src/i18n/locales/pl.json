@@ -173,6 +173,10 @@
       "table": {
         "dineIn": "Stolik {number}",
         "takeaway": "Na wynos"
+      },
+      "empty": {
+        "title": "Brak aktywnych zamówień",
+        "description": "Obecnie nie ma żadnych aktywnych zamówień w systemie."
       }
     },
     "table": {
@@ -181,11 +185,15 @@
       "items": "Pozycje",
       "total": "Suma",
       "status": "Status",
-      "actions": "Akcje"
-    },
-    "types": {
-      "dine-in": "Na miejscu",
-      "takeaway": "Na wynos"
+      "actions": "Akcje",
+      "empty": {
+        "title": "Brak zamówień",
+        "description": "Obecnie nie ma żadnych zamówień w systemie."
+      },
+      "types": {
+        "dine-in": "Na miejscu",
+        "takeaway": "Na wynos"
+      }
     },
     "actions": {
       "start": "Rozpocznij",
@@ -204,7 +212,17 @@
     "display": {
       "title": "Wyświetlacz Kuchni",
       "comments": "Komentarze",
-      "complete": "Zakończ Zamówienie"
+      "complete": "Zakończ",
+      "empty": {
+        "title": "Brak aktywnych zamówień",
+        "description": "Obecnie nie ma żadnych zamówień w trakcie realizacji. Nowe zamówienia pojawią się tutaj."
+      },
+      "status": {
+        "pending": "Oczekujące",
+        "in-progress": "W trakcie",
+        "completed": "Zakończone",
+        "cancelled": "Anulowane"
+      }
     }
   },
   "status": {
@@ -225,23 +243,5 @@
       "today": "Dzisiaj",
       "total": "Razem"
     }
-  },
-  "kitchen": {
-    "display": {
-      "title": "Wyświetlacz Kuchni",
-      "comments": "Komentarze",
-      "complete": "Zakończ Zamówienie",
-      "status": {
-        "pending": "Oczekujące",
-        "in-progress": "W trakcie",
-        "completed": "Zakończone",
-        "cancelled": "Anulowane"
-      }
-    }
-  },
-  "status": {
-    "in-progress": "W trakcie",
-    "completed": "Zakończone",
-    "cancelled": "Anulowane"
   }
 }
