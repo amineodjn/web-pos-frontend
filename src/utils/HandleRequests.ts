@@ -1,8 +1,16 @@
 import type { MenuData } from '../types/MenuData'
 
-export async function handleFetchPromise(url: string): Promise<MenuData> {
+export async function handleFetchPromise(
+  url: string,
+  organization_id?: string
+): Promise<MenuData> {
   try {
-    const response = await fetch(url)
+    const requestUrl = organization_id
+      ? `${url}?organization_id=${organization_id}`
+      : url
+
+    const response = await fetch(requestUrl)
+
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`)
     }

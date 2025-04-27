@@ -8,6 +8,7 @@
         v-if="!isLoading && !hasError"
         ref="menuHeader"
         :selectedCategory="selectedCategory"
+        :categoryBadges="categoryBadges"
         @categorySelected="handleCategorySelected"
       />
 
@@ -27,7 +28,7 @@
 
       <div v-else class="menu-sections scroll-container">
         <MenuCategorySection
-          v-for="category in availableCategories"
+          v-for="category in categoryBadges"
           :key="category"
           :category="category"
           :items="categoryItems?.[category] || []"
@@ -42,7 +43,7 @@
 import { ref, computed, watch, onMounted } from 'vue'
 import type { MenuData } from '../../types/MenuData'
 import { handleFetchPromise } from '../../utils/HandleRequests'
-import { MENU_DATA_URL } from '../../constants/urls'
+import { MENU_DATA_URL, ORGANIZATION_ID } from '../../constants/urls'
 import LoadingOverlay from '../common/LoadingOverlay.vue'
 import ErrorUI from '../common/ErrorUI.vue'
 import MenuHeader from './MenuHeader.vue'
@@ -63,11 +64,7 @@ const isScrolling = ref(false)
 const lastScrollTime = ref(Date.now())
 
 const categoryItems = computed(() => menuData.value?.categoryItems)
-const availableCategories = computed(() =>
-  Object.keys(menuData.value?.categoryItems || {}).filter(
-    category => menuData.value?.categoryItems[category]?.length
-  )
-)
+const categoryBadges = computed(() => menuData.value?.categoryBadges)
 
 const scrollToCategory = (category: string) => {
   document
@@ -84,11 +81,11 @@ const updateHeaderHeight = () => {
   header.style.setProperty('--header-height', height)
 }
 
-const fetchMenuData = () => {
+const fetchMenuData = async () => {
   isLoading.value = true
   hasError.value = false
 
-  handleFetchPromise(MENU_DATA_URL)
+  await handleFetchPromise(MENU_DATA_URL, ORGANIZATION_ID)
     .then(data => {
       menuData.value = data
       hasError.value = false
