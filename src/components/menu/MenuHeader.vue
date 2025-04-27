@@ -4,6 +4,7 @@
   >
     <CategoryItems
       :selectedCategory="selectedCategory"
+      :categoryBadges="categoryBadges"
       @category-selected="onCategorySelected"
     />
   </div>
@@ -14,6 +15,7 @@ import CategoryItems from './CategoryItems.vue'
 
 defineProps<{
   selectedCategory: string
+  categoryBadges: string[]
 }>()
 
 const emit = defineEmits<{

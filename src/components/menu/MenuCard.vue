@@ -6,7 +6,7 @@
       <imagePlaceholder v-if="!imageLoaded" />
       <img
         v-if="imageUrl"
-        src="../../../images/doner_kebab.jpg"
+        :src="imageUrl"
         :alt="name"
         loading="lazy"
         @load="imageLoaded = true"
