@@ -1,7 +1,7 @@
 <template>
   <div class="badge-scroller overflow-x-auto whitespace-nowrap gap-2 p-2">
     <BadgeUI
-      v-for="(badge, index) in CATEGORY_BADGES"
+      v-for="(badge, index) in categoryBadges"
       :key="index"
       :class="{ 'active-badge': badge === selectedCategory }"
       @click="handleBadgeClick(badge)"
@@ -18,21 +18,14 @@ defineProps({
   selectedCategory: {
     type: String,
     required: true
+  },
+  categoryBadges: {
+    type: Array as PropType<string[]>,
+    required: true
   }
 })
 
 const emit = defineEmits(['category-selected'])
-
-const CATEGORY_BADGES = [
-  'Desserts',
-  'Drinks',
-  'Kids Menu',
-  'Main',
-  'Salads',
-  'Sides',
-  'Soups',
-  'Starters'
-]
 
 function handleBadgeClick(badge: string) {
   emit('category-selected', badge)
