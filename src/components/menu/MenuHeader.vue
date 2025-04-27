@@ -15,7 +15,7 @@ import CategoryItems from './CategoryItems.vue'
 
 defineProps<{
   selectedCategory: string
-  categoryBadges: PropType<string[]>
+  categoryBadges: string[]
 }>()
 
 const emit = defineEmits<{

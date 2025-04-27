@@ -20,7 +20,7 @@ defineProps({
     required: true
   },
   categoryBadges: {
-    type: Array as PropType<string[]>,
+    type: Array as () => string[],
     required: true
   }
 })
