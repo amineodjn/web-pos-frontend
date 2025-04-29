@@ -1,18 +1,18 @@
 import { defineStore } from 'pinia'
 import { ref, computed, onMounted } from 'vue'
-import type { MenuItem, MenuData } from '../types/MenuData'
+import type { MenuItem, MenuData, Category } from '../types/MenuData'
 import { api } from '../services/api'
 
 export const useMenuStore = defineStore('menu', () => {
-  const categories = ref<string[]>([])
+  const categories = ref<Category[]>([])
   const items = ref<Record<string, MenuItem[]>>({})
   const isLoading = ref<boolean>(false)
   const error = ref<string | null>(null)
 
   const allItems = computed((): MenuItem[] => {
     let result: MenuItem[] = []
-    for (const category in items.value) {
-      result = [...result, ...items.value[category]]
+    for (const categoryId in items.value) {
+      result = [...result, ...items.value[categoryId]]
     }
     return result
   })
@@ -22,13 +22,15 @@ export const useMenuStore = defineStore('menu', () => {
     error.value = null
 
     try {
-      const data = await api.getMenu()
-      categories.value = data.categoryBadges
-      items.value = data.categoryItems
+      const data: MenuData = await api.getMenu()
+      categories.value = data.menu
+      items.value = {}
+      for (const cat of data.menu) {
+        items.value[cat.categoryId] = cat.categoryItems
+      }
     } catch (err) {
       console.error('Error fetching menu data:', err)
       error.value = err instanceof Error ? err.message : 'Unknown error'
-
       categories.value = []
       items.value = {}
     } finally {
@@ -37,57 +39,88 @@ export const useMenuStore = defineStore('menu', () => {
   }
 
   async function addMenuItem(
-    category: string,
+    categoryId: string,
     item: Omit<MenuItem, 'id' | 'itemNumber'>
   ) {
-    if (!items.value[category]) {
-      items.value[category] = []
+    if (!items.value[categoryId]) {
+      items.value[categoryId] = []
     }
 
-    const maxId = Math.max(0, ...allItems.value.map(item => item.id))
+    const newId = Date.now().toString()
+    const maxItemNumber = Math.max(
+      0,
+      ...allItems.value.map(item => item.itemNumber)
+    )
     const newItem: MenuItem = {
       ...(item as any),
-      id: maxId + 1,
-      itemNumber: maxId + 1
+      id: newId,
+      itemNumber: maxItemNumber + 1
     }
 
-    items.value[category].push(newItem)
+    items.value[categoryId].push(newItem)
     await saveChanges()
   }
 
-  async function updateMenuItem(category: string, updatedItem: MenuItem) {
-    const index = items.value[category].findIndex(
+  async function updateMenuItem(categoryId: string, updatedItem: MenuItem) {
+    const index = items.value[categoryId].findIndex(
       item => item.id === updatedItem.id
     )
     if (index !== -1) {
-      items.value[category][index] = updatedItem
+      items.value[categoryId][index] = updatedItem
       await saveChanges()
     }
   }
 
-  async function deleteMenuItem(category: string, id: number) {
-    items.value[category] = items.value[category].filter(item => item.id !== id)
+  async function deleteMenuItem(categoryId: string, id: string) {
+    items.value[categoryId] = items.value[categoryId].filter(
+      item => item.id !== id
+    )
     await saveChanges()
   }
 
   async function addCategory(categoryName: string) {
-    if (!categories.value.includes(categoryName)) {
-      categories.value.push(categoryName)
-      items.value[categoryName] = []
-      await saveChanges()
+    if (!categories.value.some(cat => cat.categoryName === categoryName)) {
+      try {
+        const data = await api.addCategory(categoryName)
+        const newCategory = data.menu.find(
+          cat => cat.categoryName === categoryName
+        )
+        if (newCategory) {
+          categories.value.push(newCategory)
+          items.value[newCategory.categoryId] = []
+        }
+      } catch (err) {
+        console.error('Error adding category:', err)
+        error.value =
+          err instanceof Error ? err.message : 'Failed to add category'
+        throw err
+      }
     }
   }
 
-  async function deleteCategory(categoryName: string) {
-    categories.value = categories.value.filter(cat => cat !== categoryName)
-    delete items.value[categoryName]
-    await saveChanges()
+  async function deleteCategory(categoryId: string) {
+    try {
+      await api.deleteCategory(categoryId)
+      categories.value = categories.value.filter(
+        cat => cat.categoryId !== categoryId
+      )
+      delete items.value[categoryId]
+    } catch (err) {
+      console.error('Error deleting category:', err)
+      error.value =
+        err instanceof Error ? err.message : 'Failed to delete category'
+      throw err
+    }
   }
 
   async function saveChanges() {
+    const menu: Category[] = categories.value.map(cat => ({
+      ...cat,
+      categoryItems: items.value[cat.categoryId] || []
+    }))
     const menuDataToSave: MenuData = {
-      categoryBadges: categories.value,
-      categoryItems: items.value
+      menu,
+      organizationId: ''
     }
 
     try {

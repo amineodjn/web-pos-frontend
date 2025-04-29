@@ -12,16 +12,16 @@
         <template v-if="selectedCategory === 'All'">
           <OrderCategorySection
             v-for="category in menuStore.categories"
-            :key="category"
-            :category="category"
-            :items="menuStore.items[category]"
+            :key="category.categoryId"
+            :category="category.categoryName"
+            :items="category.categoryItems || []"
             :onIntersect="() => {}"
           />
         </template>
         <template v-else>
           <OrderCategorySection
             :category="selectedCategory"
-            :items="menuStore.items[selectedCategory] || []"
+            :items="selectedCategoryItems"
             :onIntersect="() => {}"
           />
         </template>
@@ -31,13 +31,22 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useMenuStore } from '../../stores/menuStore'
 import OrderCategorySection from './OrderCategorySection.vue'
 import CategoryNavigation from './CategoryNavigation.vue'
+import type { Category } from '../../types/MenuData'
 
 const menuStore = useMenuStore()
 const selectedCategory = ref('All')
+
+const selectedCategoryItems = computed(() => {
+  if (selectedCategory.value === 'All') return []
+  const category = menuStore.categories.find(
+    c => c.categoryName === selectedCategory.value
+  )
+  return category?.categoryItems || []
+})
 </script>
 
 <style>

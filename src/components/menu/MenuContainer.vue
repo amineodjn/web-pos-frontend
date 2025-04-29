@@ -28,10 +28,10 @@
 
       <div v-else class="menu-sections scroll-container">
         <MenuCategorySection
-          v-for="category in categoryBadges"
-          :key="category"
-          :category="category"
-          :items="categoryItems?.[category] || []"
+          v-for="category in categories"
+          :key="category.categoryId"
+          :category="category.categoryName"
+          :items="category.categoryItems || []"
           :onIntersect="handleCategoryIntersection"
         />
       </div>
@@ -56,15 +56,17 @@ const DEBOUNCE_TIME = 150
 const SCROLL_DURATION = 1000
 
 const menuHeader = ref<InstanceType<typeof MenuHeader> | null>(null)
-const selectedCategory = ref<string>('Desserts')
+const selectedCategory = ref<string>('')
 const menuData = ref<MenuData | null>(null)
 const isLoading = ref(true)
 const hasError = ref(false)
 const isScrolling = ref(false)
 const lastScrollTime = ref(Date.now())
 
-const categoryItems = computed(() => menuData.value?.categoryItems)
-const categoryBadges = computed(() => menuData.value?.categoryBadges)
+const categories = computed(() => menuData.value?.menu || [])
+const categoryBadges = computed(() =>
+  categories.value.map(cat => cat.categoryName)
+)
 
 const scrollToCategory = (category: string) => {
   document
@@ -89,6 +91,9 @@ const fetchMenuData = async () => {
     .then(data => {
       menuData.value = data
       hasError.value = false
+      if (categories.value.length > 0) {
+        selectedCategory.value = categories.value[0].categoryName
+      }
     })
     .catch(error => {
       console.error('Failed to fetch menu data:', error)

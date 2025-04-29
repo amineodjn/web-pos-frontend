@@ -23,7 +23,7 @@
       class="flex gap-2 overflow-x-auto py-2 no-scrollbar px-10 scroll-smooth"
     >
       <button
-        v-for="category in ['All', ...categories]"
+        v-for="category in ['All', ...categories.map(c => c.categoryName)]"
         :key="category"
         @click="$emit('update:modelValue', category)"
         :class="[
@@ -59,9 +59,10 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, nextTick } from 'vue'
+import type { Category } from '../../types/MenuData'
 
 defineProps<{
-  categories: string[]
+  categories: Category[]
   modelValue: string
 }>()
 

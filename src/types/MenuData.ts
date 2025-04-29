@@ -11,15 +11,21 @@ export interface MenuItem {
   currency: string
   description: string
   details: MenuItemDetails
-  id: number
+  id: string
   imageUrl: string
   itemNumber: number
   name: string
   price: number
-  tags: string[] | null
+}
+
+export interface Category {
+  categoryId: string
+  categoryName: string
+  sortOrder: number
+  categoryItems: MenuItem[]
 }
 
 export interface MenuData {
-  categoryBadges: string[]
-  categoryItems: Record<string, MenuItem[]>
+  menu: Category[]
+  organizationId: string
 }

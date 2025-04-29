@@ -186,7 +186,8 @@ const itemToEdit = ref<MenuItem | null>(null)
 
 const filteredItems = computed(() => {
   let items = selectedCategory.value
-    ? menuStore.items[selectedCategory.value] || []
+    ? menuStore.categories.find(c => c.categoryId === selectedCategory.value)
+        ?.categoryItems || []
     : menuStore.allItems
 
   if (searchQuery.value.trim()) {
@@ -209,9 +210,9 @@ const tabs = [
 ]
 
 const categoryOptions = computed(() => {
-  return menuStore.categories.map(category => ({
-    label: category,
-    value: category
+  return (menuStore.categories || []).map(category => ({
+    label: category.categoryName,
+    value: category.categoryId
   }))
 })
 
@@ -243,12 +244,10 @@ const categoryConfig = computed(() => ({
 }))
 
 function getCategoryForItem(item: MenuItem): string {
-  for (const category in menuStore.items) {
-    if (menuStore.items[category].some(i => i.id === item.id)) {
-      return category
-    }
-  }
-  return 'Unknown'
+  const category = menuStore.categories.find(cat =>
+    cat.categoryItems?.some(i => i.id === item.id)
+  )
+  return category?.categoryName || 'Unknown'
 }
 
 function editItem(item: MenuItem) {
@@ -263,14 +262,20 @@ async function handleItemSave(itemData: any) {
     isProcessing.value = true
     formError.value = ''
     if (itemToEdit.value) {
-      const category = getCategoryForItem(itemToEdit.value)
-      if (category !== itemData.category) {
-        await menuStore.deleteMenuItem(category, itemToEdit.value.id)
+      const currentCategory = menuStore.categories.find(cat =>
+        cat.categoryItems?.some(i => i.id === itemToEdit.value?.id)
+      )
+
+      if (currentCategory?.categoryId !== itemData.category) {
+        await menuStore.deleteMenuItem(
+          currentCategory?.categoryId || '',
+          itemToEdit.value.id
+        )
         await menuStore.addMenuItem(itemData.category, {
           ...itemData
         } as Omit<MenuItem, 'id' | 'itemNumber'>)
       } else {
-        await menuStore.updateMenuItem(category, {
+        await menuStore.updateMenuItem(currentCategory?.categoryId || '', {
           ...itemData,
           id: itemToEdit.value.id,
           itemNumber: itemToEdit.value.itemNumber
@@ -316,12 +321,12 @@ async function confirmAction() {
   }
 }
 
-function confirmDeleteCategory(category: string) {
+function confirmDeleteCategory(category: any) {
   confirmationTitle.value = translateConfirmations('deleteCategory.title')
   confirmationMessage.value = translateConfirmations('deleteCategory.message', {
-    name: category
+    name: category.categoryName
   })
-  pendingAction.value = () => menuStore.deleteCategory(category)
+  pendingAction.value = () => menuStore.deleteCategory(category.categoryId)
   showConfirmation.value = true
 }
 
