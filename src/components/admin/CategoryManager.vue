@@ -43,10 +43,10 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
       <div
         v-for="category in categories"
-        :key="category"
+        :key="category.categoryId"
         class="p-4 border border-gray-300 dark:border-gray-600 rounded flex justify-between items-center bg-white dark:bg-dark-bg text-gray-900 dark:text-white"
       >
-        <span>{{ category }}</span>
+        <span>{{ category.categoryName }}</span>
         <button
           @click="$emit('delete', category)"
           :disabled="isProcessing"
@@ -81,9 +81,10 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import type { Category } from '../../types/MenuData'
 
 const props = defineProps<{
-  categories: string[]
+  categories: Category[]
   isProcessing: boolean
   config: {
     title: string
@@ -97,7 +98,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'add', value: string): void
-  (e: 'delete', value: string): void
+  (e: 'delete', value: Category): void
 }>()
 
 const categoryName = ref('')
