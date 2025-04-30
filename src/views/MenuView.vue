@@ -152,12 +152,14 @@ import MenuCardActions from '../components/admin/MenuCardActions.vue'
 import EmptyItemsView from '../components/admin/EmptyItemsView.vue'
 import ErrorUI from '../components/common/ErrorUI.vue'
 import Sidebar from '../components/admin/Sidebar.vue'
+import { useToast } from '../composables/useToast.ts'
 
 const menuStore = useMenuStore()
 const isProcessing = ref(false)
 const formError = ref('')
 const searchQuery = ref('')
 const activeTab = ref('items')
+const toast = useToast()
 
 const { translate: translateAdminView } = useTranslate('menuView')
 const { translate: translateButtons } = useTranslate('menuView.buttons')
@@ -172,8 +174,16 @@ async function addCategory(categoryName: string) {
     try {
       isProcessing.value = true
       await menuStore.addCategory(categoryName)
+      toast.success(
+        translateAdminView('toast.success.addCategory', { name: categoryName })
+      )
     } catch (err) {
       console.error('Failed to add category:', err)
+      toast.error(
+        translateAdminView('toast.error.addCategory', {
+          message: err instanceof Error ? err.message : 'Unknown error'
+        })
+      )
     } finally {
       isProcessing.value = false
     }
@@ -274,23 +284,34 @@ async function handleItemSave(itemData: any) {
         await menuStore.addMenuItem(itemData.category, {
           ...itemData
         } as Omit<MenuItem, 'id' | 'itemNumber'>)
+        toast.success(translateAdminView('toast.success.updateItem'))
       } else {
         await menuStore.updateMenuItem(currentCategory?.categoryId || '', {
           ...itemData,
           id: itemToEdit.value.id,
           itemNumber: itemToEdit.value.itemNumber
         })
+        toast.success(translateAdminView('toast.success.updateItem'))
       }
     } else {
       await menuStore.addMenuItem(itemData.category, itemData)
+      toast.success(translateAdminView('toast.success.addItem'))
     }
     cancelItemEdit()
   } catch (err) {
     console.error('Failed to save item:', err)
-    formError.value =
-      err instanceof Error
-        ? err.message
-        : 'Failed to save item. Please try again.'
+    const errorMessage = err instanceof Error ? err.message : 'Unknown error'
+    formError.value = errorMessage
+
+    if (itemToEdit.value) {
+      toast.error(
+        translateAdminView('toast.error.updateItem', { message: errorMessage })
+      )
+    } else {
+      toast.error(
+        translateAdminView('toast.error.addItem', { message: errorMessage })
+      )
+    }
   } finally {
     isProcessing.value = false
   }
@@ -314,8 +335,29 @@ async function confirmAction() {
     isProcessing.value = true
     await pendingAction.value()
     showConfirmation.value = false
+
+    if (
+      confirmationTitle.value === translateConfirmations('deleteCategory.title')
+    ) {
+      toast.success(translateAdminView('toast.success.deleteCategory'))
+    }
   } catch (err) {
     console.error('Action failed:', err)
+    const errorMessage = err instanceof Error ? err.message : 'Unknown error'
+
+    if (
+      confirmationTitle.value === translateConfirmations('deleteCategory.title')
+    ) {
+      toast.error(
+        translateAdminView('toast.error.deleteCategory', {
+          message: errorMessage
+        })
+      )
+    } else {
+      toast.error(
+        translateAdminView('toast.error.generic', { message: errorMessage })
+      )
+    }
   } finally {
     isProcessing.value = false
   }
@@ -336,7 +378,10 @@ function confirmDeleteItem(item: MenuItem) {
   confirmationMessage.value = translateConfirmations('deleteItem.message', {
     name: item.name
   })
-  pendingAction.value = () => menuStore.deleteMenuItem(category, item.id)
+  pendingAction.value = async () => {
+    await menuStore.deleteMenuItem(category, item.id)
+    toast.success(translateAdminView('toast.success.deleteItem'))
+  }
   showConfirmation.value = true
 }
 

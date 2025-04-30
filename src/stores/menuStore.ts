@@ -91,8 +91,6 @@ export const useMenuStore = defineStore('menu', () => {
         }
       } catch (err) {
         console.error('Error adding category:', err)
-        error.value =
-          err instanceof Error ? err.message : 'Failed to add category'
         throw err
       }
     }
@@ -107,8 +105,6 @@ export const useMenuStore = defineStore('menu', () => {
       delete items.value[categoryId]
     } catch (err) {
       console.error('Error deleting category:', err)
-      error.value =
-        err instanceof Error ? err.message : 'Failed to delete category'
       throw err
     }
   }

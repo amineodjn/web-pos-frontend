@@ -1,4 +1,4 @@
-import type { MenuData, Category } from '../types/MenuData'
+import type { MenuData } from '../types/MenuData'
 import initialMenuData from '../data/MenuData.json'
 import { MENU_DATA_URL, ORGANIZATION_ID } from '../constants/urls'
 
@@ -59,7 +59,7 @@ export const api = {
 
     if (!response.ok) {
       const errorData = await response.json()
-      const errorMessage = errorData.message || 'Failed to delete category'
+      const errorMessage = errorData.message || 'Unknown error'
       throw new Error(errorMessage)
     }
     return response.json()
