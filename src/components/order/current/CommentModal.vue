@@ -120,7 +120,7 @@ watch(
   newValue => {
     if (newValue && props.itemId !== null) {
       const item = orderStore.currentOrder.items?.find(
-        i => i.id === props.itemId
+        i => Number(i.id) === props.itemId
       )
       comment.value = item?.comment || ''
       commentHistory.value = commentHistoryStore.getComments()

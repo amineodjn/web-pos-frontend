@@ -70,7 +70,7 @@ defineProps<{
 }>()
 
 defineEmits<{
-  (e: 'edit-comment', itemId: number): void
-  (e: 'remove', itemId: number): void
+  (e: 'edit-comment', itemId: string): void
+  (e: 'remove', itemId: string): void
 }>()
 </script>
