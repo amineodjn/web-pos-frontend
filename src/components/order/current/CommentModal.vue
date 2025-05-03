@@ -103,7 +103,7 @@ const commentHistoryStore = useCommentHistoryStore()
 
 const props = defineProps<{
   modelValue: boolean
-  itemId: number | null
+  itemId: string | null
 }>()
 
 const emit = defineEmits<{
