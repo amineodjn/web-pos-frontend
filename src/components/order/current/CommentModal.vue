@@ -103,7 +103,7 @@ const commentHistoryStore = useCommentHistoryStore()
 
 const props = defineProps<{
   modelValue: boolean
-  itemId: number | null
+  itemId: string | null
 }>()
 
 const emit = defineEmits<{
@@ -118,7 +118,7 @@ const visibleComments = ref<string[]>([])
 watch(
   () => props.modelValue,
   newValue => {
-    if (newValue && props.itemId !== null) {
+    if (newValue && props.itemId) {
       const item = orderStore.currentOrder.items?.find(
         i => i.id === props.itemId
       )
@@ -154,7 +154,7 @@ const close = () => {
 }
 
 const save = () => {
-  if (props.itemId !== null) {
+  if (props.itemId) {
     orderStore.updateItemComment(props.itemId, comment.value)
     if (comment.value.trim()) {
       commentHistoryStore.addComment(comment.value)

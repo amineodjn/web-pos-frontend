@@ -42,8 +42,7 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from 'vue'
 import type { MenuData } from '../../types/MenuData'
-import { handleFetchPromise } from '../../utils/HandleRequests'
-import { MENU_DATA_URL, ORGANIZATION_ID } from '../../constants/urls'
+import { menuApi } from '../../services/menuApi'
 import LoadingOverlay from '../common/LoadingOverlay.vue'
 import ErrorUI from '../common/ErrorUI.vue'
 import MenuHeader from './MenuHeader.vue'
@@ -87,7 +86,8 @@ const fetchMenuData = async () => {
   isLoading.value = true
   hasError.value = false
 
-  await handleFetchPromise(MENU_DATA_URL, ORGANIZATION_ID)
+  await menuApi
+    .getMenu()
     .then(data => {
       menuData.value = data
       hasError.value = false
