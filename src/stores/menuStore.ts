@@ -1,7 +1,8 @@
 import { defineStore } from 'pinia'
 import { ref, computed, onMounted } from 'vue'
 import type { MenuItem, MenuData, Category } from '../types/MenuData'
-import { api } from '../services/api'
+import { menuApi } from '../services/menuApi'
+import { categoryApi } from '../services/categoryApi'
 
 export const useMenuStore = defineStore('menu', () => {
   const categories = ref<Category[]>([])
@@ -22,7 +23,7 @@ export const useMenuStore = defineStore('menu', () => {
     error.value = null
 
     try {
-      const data: MenuData = await api.getMenu()
+      const data: MenuData = await menuApi.getMenu()
       categories.value = data.menu
       items.value = {}
       for (const cat of data.menu) {
@@ -81,7 +82,7 @@ export const useMenuStore = defineStore('menu', () => {
   async function addCategory(categoryName: string) {
     if (!categories.value.some(cat => cat.categoryName === categoryName)) {
       try {
-        const data = await api.addCategory(categoryName)
+        const data = await categoryApi.addCategory(categoryName)
         const newCategory = data.menu.find(
           cat => cat.categoryName === categoryName
         )
@@ -98,7 +99,7 @@ export const useMenuStore = defineStore('menu', () => {
 
   async function deleteCategory(categoryId: string) {
     try {
-      await api.deleteCategory(categoryId)
+      await categoryApi.deleteCategory(categoryId)
       categories.value = categories.value.filter(
         cat => cat.categoryId !== categoryId
       )
@@ -120,7 +121,7 @@ export const useMenuStore = defineStore('menu', () => {
     }
 
     try {
-      await api.saveMenu(menuDataToSave)
+      await menuApi.saveMenu(menuDataToSave)
     } catch (err) {
       console.error('Error saving menu data:', err)
       error.value =

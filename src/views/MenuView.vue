@@ -137,7 +137,6 @@
 import { ref, computed } from 'vue'
 import { useMenuStore } from '../stores/menuStore.ts'
 import type { MenuItem } from '../types/MenuData.ts'
-import { resetMenuData } from '../services/api.ts'
 import SpinnerUI from '../components/common/SpinnerUI.vue'
 import MenuCard from '../components/menu/MenuCard.vue'
 import SelectBoxUI from '../components/common/SelectBoxUI.vue'
@@ -381,16 +380,6 @@ function confirmDeleteItem(item: MenuItem) {
   pendingAction.value = async () => {
     await menuStore.deleteMenuItem(category, item.id)
     toast.success(translateAdminView('toast.success.deleteItem'))
-  }
-  showConfirmation.value = true
-}
-
-function confirmReset() {
-  confirmationTitle.value = translateConfirmations('resetData.title')
-  confirmationMessage.value = translateConfirmations('resetData.message')
-  pendingAction.value = async () => {
-    await resetMenuData()
-    await menuStore.fetchMenuData()
   }
   showConfirmation.value = true
 }
