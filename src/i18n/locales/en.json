@@ -77,6 +77,23 @@
         "title": "Reset Menu Data",
         "message": "Are you sure you want to reset all menu data to the initial state? This cannot be undone."
       }
+    },
+    "toast": {
+      "success": {
+        "addCategory": "Category '{name}' has been added successfully",
+        "deleteCategory": "Category deleted successfully",
+        "updateItem": "Menu item updated successfully",
+        "addItem": "Menu item added successfully",
+        "deleteItem": "Menu item deleted successfully"
+      },
+      "error": {
+        "addCategory": "Failed to add category: {message}",
+        "deleteCategory": "Failed to delete category: {message}",
+        "updateItem": "Failed to update menu item: {message}",
+        "addItem": "Failed to add menu item: {message}",
+        "deleteItem": "Failed to delete menu item: {message}",
+        "generic": "An error occurred: {message}"
+      }
     }
   },
   "menuItemModal": {

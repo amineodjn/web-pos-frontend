@@ -77,6 +77,23 @@
         "title": "Resetuj Dane Menu",
         "message": "Czy na pewno chcesz zresetować wszystkie dane menu do stanu początkowego? Tej operacji nie można cofnąć."
       }
+    },
+    "toast": {
+      "success": {
+        "addCategory": "Kategoria '{name}' została pomyślnie dodana",
+        "deleteCategory": "Kategoria została pomyślnie usunięta",
+        "updateItem": "Pozycja menu została pomyślnie zaktualizowana",
+        "addItem": "Pozycja menu została pomyślnie dodana",
+        "deleteItem": "Pozycja menu została pomyślnie usunięta"
+      },
+      "error": {
+        "addCategory": "Nie udało się dodać kategorii: {message}",
+        "deleteCategory": "Nie udało się usunąć kategorii: {message}",
+        "updateItem": "Nie udało się zaktualizować pozycji menu: {message}",
+        "addItem": "Nie udało się dodać pozycji menu: {message}",
+        "deleteItem": "Nie udało się usunąć pozycji menu: {message}",
+        "generic": "Wystąpił błąd: {message}"
+      }
     }
   },
   "menuItemModal": {

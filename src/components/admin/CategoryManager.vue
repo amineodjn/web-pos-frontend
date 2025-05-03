@@ -104,8 +104,12 @@ const emit = defineEmits<{
 const categoryName = ref('')
 
 function addCategory() {
-  if (categoryName.value.trim() && !props.isProcessing) {
-    emit('add', categoryName.value.trim())
+  if (categoryName.value.trim().toLocaleLowerCase() && !props.isProcessing) {
+    emit(
+      'add',
+      categoryName.value.trim().charAt(0).toUpperCase() +
+        categoryName.value.slice(1)
+    )
     categoryName.value = ''
   }
 }
