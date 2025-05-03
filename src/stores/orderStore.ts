@@ -63,7 +63,7 @@ export const useOrderStore = defineStore('order', () => {
     updateOrderTotals()
   }
 
-  function removeItemFromOrder(itemId: number) {
+  function removeItemFromOrder(itemId: string) {
     if (!currentOrder.value.items) return
 
     const index = currentOrder.value.items.findIndex(item => item.id === itemId)
@@ -128,7 +128,7 @@ export const useOrderStore = defineStore('order', () => {
     }
   }
 
-  function updateItemComment(itemId: number, comment: string) {
+  function updateItemComment(itemId: string, comment: string) {
     if (!currentOrder.value.items) return
 
     const item = currentOrder.value.items.find(i => i.id === itemId)

@@ -43,7 +43,7 @@ const props = defineProps<{
 
 const orderStore = useOrderStore()
 const showCommentModal = ref(false)
-const selectedItemId = ref<number | null>(null)
+const selectedItemId = ref<string | null>(null)
 
 const canPlaceOrder = computed(() => {
   if (orderStore.currentOrder.orderType === 'dine-in') {
@@ -71,7 +71,7 @@ const handleTableChange = (tableNumber: number | null) => {
   }
 }
 
-const handleEditComment = (itemId: number) => {
+const handleEditComment = (itemId: string) => {
   selectedItemId.value = itemId
   showCommentModal.value = true
 }
