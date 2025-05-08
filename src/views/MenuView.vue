@@ -33,7 +33,7 @@
 
           <div v-else class="relative">
             <LoadingOverlay
-              v-if="isProcessing"
+              v-if="itemProcessing"
               :message="translateAdminView('processing')"
             />
 
@@ -44,7 +44,7 @@
             <CategoryManager
               v-if="activeTab === 'categories'"
               :categories="menuStore.categories"
-              :is-processing="isProcessing"
+              :is-processing="categoryProcessing"
               :config="categoryConfig"
               @add="addCategory"
               @delete="confirmDeleteCategory"
@@ -85,8 +85,8 @@
                         :currency="item.currency"
                       />
                       <MenuCardActions
-                        :is-processing="isProcessing"
-                        :category="getCategoryForItem(item)"
+                        :is-processing="itemProcessing"
+                        :category="getCategoryNameForItem(item)"
                         @edit="editItem(item)"
                         @delete="confirmDeleteItem(item)"
                       />
@@ -100,7 +100,7 @@
                   :title="translateAdminView('items.empty.title')"
                   :description="translateAdminView('items.empty.description')"
                   :button-label="translateButtons('addNew')"
-                  :is-processing="isProcessing"
+                  :is-processing="itemProcessing"
                   @add-item="showAddItemModal = true"
                 />
               </template>
@@ -110,7 +110,7 @@
               v-model:show="showAddItemModal"
               :item-to-edit="itemToEdit"
               :category-options="categoryOptions"
-              :is-processing="isProcessing"
+              :is-processing="itemProcessing"
               :form-error="formError"
               @save="handleItemSave"
               @cancel="cancelItemEdit"
@@ -120,7 +120,7 @@
               v-model="showConfirmation"
               :title="confirmationTitle"
               :message="confirmationMessage"
-              :is-processing="isProcessing"
+              :is-processing="itemProcessing"
               @confirm="confirmAction"
             />
           </div>
@@ -137,12 +137,20 @@
 import { ref, computed } from 'vue'
 import { useMenuStore } from '../stores/menuStore.ts'
 import type { MenuItem } from '../types/MenuData.ts'
+import type {
+  TabConfig,
+  HeaderConfig,
+  StateConfig,
+  CategoryConfig
+} from '../types/menu'
+import { useMenuItem } from '../composables/useMenuItem'
+import { useCategory } from '../composables/useCategory'
+import { useTranslate } from '../composables/useTranslate.ts'
 import SpinnerUI from '../components/common/SpinnerUI.vue'
 import MenuCard from '../components/menu/MenuCard.vue'
 import SelectBoxUI from '../components/common/SelectBoxUI.vue'
 import ConfirmationModal from '../components/common/ConfirmationModal.vue'
 import MenuItemModal from '../components/admin/MenuItemModal.vue'
-import { useTranslate } from '../composables/useTranslate.ts'
 import LoadingOverlay from '../components/admin/LoadingOverlay.vue'
 import TabsBar from '../components/admin/TabsBar.vue'
 import CategoryManager from '../components/admin/CategoryManager.vue'
@@ -151,47 +159,37 @@ import MenuCardActions from '../components/admin/MenuCardActions.vue'
 import EmptyItemsView from '../components/admin/EmptyItemsView.vue'
 import ErrorUI from '../components/common/ErrorUI.vue'
 import Sidebar from '../components/admin/Sidebar.vue'
-import { useToast } from '../composables/useToast.ts'
 
 const menuStore = useMenuStore()
-const isProcessing = ref(false)
-const formError = ref('')
-const searchQuery = ref('')
-const activeTab = ref('items')
-const toast = useToast()
-
 const { translate: translateAdminView } = useTranslate('menuView')
 const { translate: translateButtons } = useTranslate('menuView.buttons')
-const { translate: translateConfirmations } = useTranslate(
-  'menuView.confirmations'
-)
 
 const isSidebarCollapsed = ref(false)
-
-async function addCategory(categoryName: string) {
-  if (categoryName && !isProcessing.value) {
-    try {
-      isProcessing.value = true
-      await menuStore.addCategory(categoryName)
-      toast.success(
-        translateAdminView('toast.success.addCategory', { name: categoryName })
-      )
-    } catch (err) {
-      console.error('Failed to add category:', err)
-      toast.error(
-        translateAdminView('toast.error.addCategory', {
-          message: err instanceof Error ? err.message : 'Unknown error'
-        })
-      )
-    } finally {
-      isProcessing.value = false
-    }
-  }
-}
-
+const searchQuery = ref('')
+const activeTab = ref('items')
 const selectedCategory = ref('')
-const showAddItemModal = ref(false)
-const itemToEdit = ref<MenuItem | null>(null)
+
+const {
+  isProcessing: itemProcessing,
+  formError,
+  itemToEdit,
+  showAddItemModal,
+  editItem,
+  cancelItemEdit,
+  handleItemSave
+} = useMenuItem(menuStore)
+
+const {
+  isProcessing: categoryProcessing,
+  showConfirmation,
+  confirmationTitle,
+  confirmationMessage,
+  addCategory,
+  getCategoryNameForItem,
+  confirmAction,
+  confirmDeleteCategory,
+  confirmDeleteItem
+} = useCategory(menuStore)
 
 const filteredItems = computed(() => {
   let items = selectedCategory.value
@@ -210,7 +208,7 @@ const filteredItems = computed(() => {
   return items
 })
 
-const tabs = [
+const tabs: TabConfig[] = [
   {
     label: translateAdminView('tabs.categories'),
     value: 'categories'
@@ -225,7 +223,7 @@ const categoryOptions = computed(() => {
   }))
 })
 
-const headerConfig = computed(() => ({
+const headerConfig = computed<HeaderConfig>(() => ({
   title: translateAdminView('items.title'),
   items: filteredItems.value,
   itemsCountSingular: translateAdminView('items.foundCount', {
@@ -238,12 +236,12 @@ const headerConfig = computed(() => ({
   addButtonLabel: translateButtons('addNew')
 }))
 
-const stateConfig = computed(() => ({
-  isProcessing: isProcessing.value,
+const stateConfig = computed<StateConfig>(() => ({
+  isProcessing: itemProcessing.value,
   initialSearchQuery: searchQuery.value
 }))
 
-const categoryConfig = computed(() => ({
+const categoryConfig = computed<CategoryConfig>(() => ({
   title: translateAdminView('categories.title'),
   addNewLabel: translateAdminView('categories.addNew'),
   placeholder: translateAdminView('categories.placeholder'),
@@ -251,138 +249,6 @@ const categoryConfig = computed(() => ({
   addLabel: translateButtons('add'),
   emptyMessage: translateAdminView('categories.empty')
 }))
-
-function getCategoryForItem(item: MenuItem): string {
-  const category = menuStore.categories.find(cat =>
-    cat.categoryItems?.some(i => i.id === item.id)
-  )
-  return category?.categoryName || 'Unknown'
-}
-
-function editItem(item: MenuItem) {
-  itemToEdit.value = item
-  showAddItemModal.value = true
-  formError.value = ''
-}
-
-async function handleItemSave(itemData: any) {
-  if (isProcessing.value) return
-  try {
-    isProcessing.value = true
-    formError.value = ''
-    if (itemToEdit.value) {
-      const currentCategory = menuStore.categories.find(cat =>
-        cat.categoryItems?.some(i => i.id === itemToEdit.value?.id)
-      )
-
-      if (currentCategory?.categoryId !== itemData.category) {
-        await menuStore.deleteMenuItem(
-          currentCategory?.categoryId || '',
-          itemToEdit.value.id
-        )
-        await menuStore.addMenuItem(itemData.category, {
-          ...itemData
-        } as Omit<MenuItem, 'id' | 'itemNumber'>)
-        toast.success(translateAdminView('toast.success.updateItem'))
-      } else {
-        await menuStore.updateMenuItem(currentCategory?.categoryId || '', {
-          ...itemData,
-          id: itemToEdit.value.id,
-          itemNumber: itemToEdit.value.itemNumber
-        })
-        toast.success(translateAdminView('toast.success.updateItem'))
-      }
-    } else {
-      await menuStore.addMenuItem(itemData.category, itemData)
-      toast.success(translateAdminView('toast.success.addItem'))
-    }
-    cancelItemEdit()
-  } catch (err) {
-    console.error('Failed to save item:', err)
-    const errorMessage = err instanceof Error ? err.message : 'Unknown error'
-    formError.value = errorMessage
-
-    if (itemToEdit.value) {
-      toast.error(
-        translateAdminView('toast.error.updateItem', { message: errorMessage })
-      )
-    } else {
-      toast.error(
-        translateAdminView('toast.error.addItem', { message: errorMessage })
-      )
-    }
-  } finally {
-    isProcessing.value = false
-  }
-}
-
-function cancelItemEdit() {
-  if (isProcessing.value) return
-  itemToEdit.value = null
-  showAddItemModal.value = false
-  formError.value = ''
-}
-
-const showConfirmation = ref(false)
-const confirmationTitle = ref('Confirm Action')
-const confirmationMessage = ref('')
-const pendingAction = ref<() => Promise<void>>(() => Promise.resolve())
-
-async function confirmAction() {
-  if (isProcessing.value) return
-  try {
-    isProcessing.value = true
-    await pendingAction.value()
-    showConfirmation.value = false
-
-    if (
-      confirmationTitle.value === translateConfirmations('deleteCategory.title')
-    ) {
-      toast.success(translateAdminView('toast.success.deleteCategory'))
-    }
-  } catch (err) {
-    console.error('Action failed:', err)
-    const errorMessage = err instanceof Error ? err.message : 'Unknown error'
-
-    if (
-      confirmationTitle.value === translateConfirmations('deleteCategory.title')
-    ) {
-      toast.error(
-        translateAdminView('toast.error.deleteCategory', {
-          message: errorMessage
-        })
-      )
-    } else {
-      toast.error(
-        translateAdminView('toast.error.generic', { message: errorMessage })
-      )
-    }
-  } finally {
-    isProcessing.value = false
-  }
-}
-
-function confirmDeleteCategory(category: any) {
-  confirmationTitle.value = translateConfirmations('deleteCategory.title')
-  confirmationMessage.value = translateConfirmations('deleteCategory.message', {
-    name: category.categoryName
-  })
-  pendingAction.value = () => menuStore.deleteCategory(category.categoryId)
-  showConfirmation.value = true
-}
-
-function confirmDeleteItem(item: MenuItem) {
-  const category = getCategoryForItem(item)
-  confirmationTitle.value = translateConfirmations('deleteItem.title')
-  confirmationMessage.value = translateConfirmations('deleteItem.message', {
-    name: item.name
-  })
-  pendingAction.value = async () => {
-    await menuStore.deleteMenuItem(category, item.id)
-    toast.success(translateAdminView('toast.success.deleteItem'))
-  }
-  showConfirmation.value = true
-}
 
 function updateSearchQuery(query: string) {
   searchQuery.value = query

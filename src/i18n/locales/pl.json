@@ -260,5 +260,13 @@
       "today": "Dzisiaj",
       "total": "Razem"
     }
+  },
+  "imageUploader": {
+    "upload": {
+      "clickToUpload": "Kliknij, aby przesłać",
+      "orDragAndDrop": "lub przeciągnij i upuść",
+      "supportedFormats": "PNG, JPG, GIF do 10MB",
+      "preview": "Podgląd obrazu"
+    }
   }
 }

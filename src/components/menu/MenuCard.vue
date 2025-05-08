@@ -3,13 +3,14 @@
     class="menu-card cursor-pointer w-full max-w-xs bg-white border border-gray-200 rounded-lg hover:shadow-[0_8px_16px_rgba(0,0,0,0.3)] dark:bg-dark-bg dark:border-gray-700 dark:hover:shadow-dark-hover"
   >
     <div class="image-container overflow-hidden rounded-t-lg">
-      <imagePlaceholder v-if="!imageLoaded" />
+      <imagePlaceholder v-if="!imageLoaded || !imageUrl" />
       <img
         v-if="imageUrl"
         :src="imageUrl"
         :alt="name"
         loading="lazy"
         @load="imageLoaded = true"
+        @error="imageLoaded = false"
       />
     </div>
     <div class="p-4">
@@ -30,7 +31,7 @@
       </div>
       <div class="flex items-center justify-between mt-5">
         <span class="text-2xl font-bold text-gray-900 dark:text-white">
-          {{ currency }}{{ price }}
+          {{ price }} {{ currency }}
         </span>
         <!-- <button
           @click="addToCart"
@@ -48,36 +49,15 @@ import { ref } from 'vue'
 import type { MenuItemDetails } from '../../types/MenuData'
 import imagePlaceholder from '../common/imagePlaceholder.vue'
 
-defineProps({
-  imageUrl: {
-    type: String,
-    required: true
-  },
-  name: {
-    type: String,
-    required: true
-  },
-  description: {
-    type: String,
-    required: true
-  },
-  details: {
-    type: Object as () => MenuItemDetails,
-    required: true
-  },
-  price: {
-    type: Number,
-    required: true
-  },
-  currency: {
-    type: String,
-    default: 'PLN'
-  },
-  buttonText: {
-    type: String,
-    default: 'Add to cart'
-  }
-})
+defineProps<{
+  imageUrl: string
+  name: string
+  description: string
+  details: MenuItemDetails
+  price: number
+  currency?: string
+  buttonText?: string
+}>()
 
 const imageLoaded = ref<boolean>(false)
 </script>

@@ -8,6 +8,7 @@ export interface MenuItemDetails {
 
 export interface MenuItem {
   available: boolean
+  is_available?: boolean
   currency: string
   description: string
   details: MenuItemDetails
@@ -16,6 +17,8 @@ export interface MenuItem {
   itemNumber: number
   name: string
   price: number
+  organization_id: string
+  category_id: string
 }
 
 export interface Category {

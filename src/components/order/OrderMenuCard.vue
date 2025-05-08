@@ -9,6 +9,12 @@
       >
         {{ name }}
       </h5>
+      <p class="text-gray-700 dark:text-gray-300 mt-2">{{ description }}</p>
+      <div class="flex items-center justify-between mt-5">
+        <span class="text-2xl font-bold text-gray-900 dark:text-white">
+          {{ price }} {{ currency }}
+        </span>
+      </div>
     </div>
   </div>
 </template>

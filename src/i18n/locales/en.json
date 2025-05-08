@@ -260,5 +260,13 @@
       "today": "Today",
       "total": "Total"
     }
+  },
+  "imageUploader": {
+    "upload": {
+      "clickToUpload": "Click to upload",
+      "orDragAndDrop": "or drag and drop",
+      "supportedFormats": "PNG, JPG, GIF up to 10MB",
+      "preview": "Image preview"
+    }
   }
 }
