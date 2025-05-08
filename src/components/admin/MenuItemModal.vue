@@ -420,7 +420,7 @@ import { useModal } from '../../composables/useModal'
 const { translate: t } = useTranslate('menuItemModal')
 
 const props = defineProps<{
-  show: boolean
+  modelValue: boolean
   itemToEdit: MenuItem | null
   categoryOptions: { label: string; value: string }[]
   isProcessing: boolean
@@ -428,7 +428,7 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  (e: 'update:show', value: boolean): void
+  (e: 'update:modelValue', value: boolean): void
   (e: 'save', item: Omit<MenuItemForm, 'price'> & { price: number }): void
   (e: 'cancel'): void
 }>()
@@ -446,10 +446,10 @@ const {
   prepareFormData
 } = useMenuItemForm(props.isProcessing)
 
-const { isVisible, show, hide } = useModal('menuItemModal')
+const { show, hide } = useModal('menuItemModal')
 
 watch(
-  () => props.show,
+  () => props.modelValue,
   newVal => {
     if (newVal) {
       if (props.itemToEdit) {
@@ -482,7 +482,7 @@ function save() {
 }
 
 function cancel() {
-  emit('update:show', false)
+  emit('update:modelValue', false)
   emit('cancel')
 }
 </script>

@@ -182,6 +182,10 @@ const menuItems = computed(() => [
 const toggleSidebar = () => {
   emit('update:modelValue', !props.modelValue)
 }
+
+defineOptions({
+  name: 'AdminSidebar'
+})
 </script>
 
 <style scoped>

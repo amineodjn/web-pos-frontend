@@ -11,7 +11,23 @@ import { useToast } from './useToast'
 import { useTranslate } from './useTranslate'
 import config from '../config/api.config'
 
-export function useMenuItem(menuStore: any) {
+type Category = {
+  categoryId: string
+  categoryName: string
+  categoryItems?: MenuItem[]
+}
+
+type MenuStore = {
+  categories: Category[]
+  addMenuItem: (
+    categoryId: string,
+    item: Omit<MenuItem, 'id' | 'itemNumber' | 'organization_id'>
+  ) => Promise<void>
+  updateMenuItem: (categoryId: string, item: MenuItem) => Promise<void>
+  deleteMenuItem: (categoryId: string, itemId: string) => Promise<void>
+}
+
+export function useMenuItem(menuStore: MenuStore) {
   const isProcessing = ref(false)
   const formError = ref('')
   const itemToEdit = ref<MenuItem | null>(null)
@@ -101,8 +117,8 @@ export function useMenuItem(menuStore: any) {
       throw new Error('No item selected for update')
     }
 
-    const currentCategory = menuStore.categories.find((cat: any) =>
-      cat.categoryItems?.some((i: any) => i.id === itemToEdit.value?.id)
+    const currentCategory = menuStore.categories.find(cat =>
+      cat.categoryItems?.some(i => i.id === itemToEdit.value?.id)
     )
 
     if (!currentCategory) {
@@ -110,7 +126,7 @@ export function useMenuItem(menuStore: any) {
     }
 
     const itemExists = currentCategory.categoryItems?.some(
-      (item: MenuItem) => item.id === itemToEdit.value?.id
+      item => item.id === itemToEdit.value?.id
     )
 
     if (!itemExists) {

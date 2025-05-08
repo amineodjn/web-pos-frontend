@@ -136,18 +136,6 @@ const totalMenuItems = computed(() => {
   return menuStore.allItems.length
 })
 
-const averageOrdersPerHour = computed(() => {
-  return Math.round(todayOrdersCount.value / 24)
-})
-
-const averageRevenuePerOrder = computed(() => {
-  return (Number(todayRevenue.value) / todayOrdersCount.value).toFixed(2)
-})
-
-const averageItemsPerCategory = computed(() => {
-  return Math.round(totalMenuItems.value / 8)
-})
-
 const recentOrders = computed(() => {
   return [...orderStore.activeOrders]
     .sort(

@@ -268,5 +268,11 @@
       "supportedFormats": "PNG, JPG, GIF up to 10MB",
       "preview": "Image preview"
     }
+  },
+  "confirmationModal": {
+    "buttons": {
+      "confirm": "Confirm",
+      "cancel": "Cancel"
+    }
   }
 }

@@ -1,4 +1,5 @@
 import type { MenuItemDetails } from './MenuData'
+import type { MenuItem } from './MenuData'
 
 export interface MenuItemForm {
   name: string
@@ -27,14 +28,9 @@ export interface CategoryOption {
   value: string
 }
 
-export interface TabConfig {
-  label: string
-  value: string
-}
-
 export interface HeaderConfig {
   title: string
-  items: any[]
+  items: MenuItem[]
   itemsCountSingular: string
   itemsCountPlural: string
   searchPlaceholder: string

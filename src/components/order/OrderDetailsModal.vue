@@ -105,10 +105,11 @@
 
 <script setup lang="ts">
 import { useTranslate } from '../../composables/useTranslate'
+import type { Order } from '../../stores/orderStore'
 
-const props = defineProps<{
+defineProps<{
   isOpen: boolean
-  order: any
+  order: Order
 }>()
 
 const emit = defineEmits<{

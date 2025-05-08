@@ -31,7 +31,7 @@
       </div>
       <div class="flex items-center justify-between mt-5">
         <span class="text-2xl font-bold text-gray-900 dark:text-white">
-          {{ price }} {{ currency }}
+          {{ price }} {{ displayCurrency }}
         </span>
         <!-- <button
           @click="addToCart"
@@ -45,11 +45,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import type { MenuItemDetails } from '../../types/MenuData'
 import imagePlaceholder from '../common/imagePlaceholder.vue'
 
-defineProps<{
+const props = defineProps<{
   imageUrl: string
   name: string
   description: string
@@ -60,6 +60,7 @@ defineProps<{
 }>()
 
 const imageLoaded = ref<boolean>(false)
+const displayCurrency = computed(() => props.currency || 'PLN')
 </script>
 
 <style scoped>

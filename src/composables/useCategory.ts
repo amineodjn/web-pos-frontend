@@ -3,7 +3,20 @@ import type { MenuItem } from '../types/MenuData'
 import { useToast } from './useToast'
 import { useTranslate } from './useTranslate'
 
-export function useCategory(menuStore: any) {
+type Category = {
+  categoryId: string
+  categoryName: string
+  categoryItems?: MenuItem[]
+}
+
+type MenuStore = {
+  categories: Category[]
+  addCategory: (name: string) => Promise<void>
+  deleteCategory: (id: string) => Promise<void>
+  deleteMenuItem: (categoryId: string, itemId: string) => Promise<void>
+}
+
+export function useCategory(menuStore: MenuStore) {
   const isProcessing = ref(false)
   const toast = useToast()
   const { translate: translateAdminView } = useTranslate('menuView')
@@ -14,7 +27,20 @@ export function useCategory(menuStore: any) {
   const showConfirmation = ref(false)
   const confirmationTitle = ref('Confirm Action')
   const confirmationMessage = ref('')
-  const pendingAction = ref<() => Promise<void>>(() => Promise.resolve())
+  const confirmationResolve = ref<((value: boolean) => void) | null>(null)
+
+  function showConfirmationDialog(
+    title: string,
+    message: string
+  ): Promise<boolean> {
+    confirmationTitle.value = title
+    confirmationMessage.value = message
+    showConfirmation.value = true
+
+    return new Promise(resolve => {
+      confirmationResolve.value = resolve
+    })
+  }
 
   async function addCategory(categoryName: string) {
     if (categoryName && !isProcessing.value) {
@@ -40,78 +66,76 @@ export function useCategory(menuStore: any) {
   }
 
   function getCategoryIdForItem(item: MenuItem): string {
-    const category = menuStore.categories.find((cat: any) =>
-      cat.categoryItems?.some((i: any) => i.id === item.id)
+    const category = menuStore.categories.find(cat =>
+      cat.categoryItems?.some(i => i.id === item.id)
     )
     return category?.categoryId || ''
   }
 
   function getCategoryNameForItem(item: MenuItem): string {
-    const category = menuStore.categories.find((cat: any) =>
-      cat.categoryItems?.some((i: any) => i.id === item.id)
+    const category = menuStore.categories.find(cat =>
+      cat.categoryItems?.some(i => i.id === item.id)
     )
     return category?.categoryName || ''
   }
 
-  function isCategoryDeletion(): boolean {
-    return (
-      confirmationTitle.value === translateConfirmations('deleteCategory.title')
-    )
+  function handleConfirmation(confirmed: boolean) {
+    showConfirmation.value = false
+    if (confirmationResolve.value) {
+      confirmationResolve.value(confirmed)
+      confirmationResolve.value = null
+    }
   }
 
-  async function confirmAction() {
-    if (isProcessing.value) return
+  async function confirmDeleteCategory(category: Category) {
+    const confirmed = await showConfirmationDialog(
+      translateConfirmations('deleteCategory.title'),
+      translateConfirmations('deleteCategory.message', {
+        name: category.categoryName
+      })
+    )
 
-    try {
-      isProcessing.value = true
-      await pendingAction.value()
-      showConfirmation.value = false
-
-      if (isCategoryDeletion()) {
+    if (confirmed) {
+      try {
+        isProcessing.value = true
+        await menuStore.deleteCategory(category.categoryId)
         toast.success(translateAdminView('toast.success.deleteCategory'))
-      }
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Unknown error'
-
-      if (isCategoryDeletion()) {
+      } catch (err) {
         toast.error(
           translateAdminView('toast.error.deleteCategory', {
-            message: errorMessage
+            message: err instanceof Error ? err.message : 'Unknown error'
           })
         )
-      } else {
-        toast.error(
-          translateAdminView('toast.error.generic', { message: errorMessage })
-        )
+      } finally {
+        isProcessing.value = false
       }
-    } finally {
-      isProcessing.value = false
     }
   }
 
-  function confirmDeleteCategory(category: any) {
-    confirmationTitle.value = translateConfirmations('deleteCategory.title')
-    confirmationMessage.value = translateConfirmations(
-      'deleteCategory.message',
-      {
-        name: category.categoryName
-      }
-    )
-    pendingAction.value = () => menuStore.deleteCategory(category.categoryId)
-    showConfirmation.value = true
-  }
-
-  function confirmDeleteItem(item: MenuItem) {
+  async function confirmDeleteItem(item: MenuItem) {
     const categoryId = getCategoryIdForItem(item)
-    confirmationTitle.value = translateConfirmations('deleteItem.title')
-    confirmationMessage.value = translateConfirmations('deleteItem.message', {
-      name: item.name
-    })
-    pendingAction.value = async () => {
-      await menuStore.deleteMenuItem(categoryId, item.id)
-      toast.success(translateAdminView('toast.success.deleteItem'))
+    const confirmed = await showConfirmationDialog(
+      translateConfirmations('deleteItem.title'),
+      translateConfirmations('deleteItem.message', {
+        name: item.name
+      })
+    )
+
+    if (confirmed) {
+      try {
+        isProcessing.value = true
+        await menuStore.deleteMenuItem(categoryId, item.id)
+        toast.success(translateAdminView('toast.success.deleteItem'))
+      } catch (err) {
+        toast.error(
+          translateAdminView('toast.error.generic', {
+            message: err instanceof Error ? err.message : 'Unknown error'
+          })
+        )
+      } finally {
+        isProcessing.value = false
+      }
     }
-    showConfirmation.value = true
   }
 
   return {
@@ -121,7 +145,7 @@ export function useCategory(menuStore: any) {
     confirmationMessage,
     addCategory,
     getCategoryNameForItem,
-    confirmAction,
+    handleConfirmation,
     confirmDeleteCategory,
     confirmDeleteItem
   }

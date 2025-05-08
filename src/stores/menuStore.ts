@@ -77,7 +77,8 @@ export const useMenuStore = defineStore('menu', () => {
           : 'Regular',
         tags: Array.isArray(item.details?.tags)
           ? item.details.tags.join(', ')
-          : 'New'
+          : 'New',
+        currency: item.currency || 'PLN'
       }
 
       const data = await itemApi.addItem(requestBody)
@@ -118,7 +119,8 @@ export const useMenuStore = defineStore('menu', () => {
           : 'Regular',
         tags: Array.isArray(updatedItem.details?.tags)
           ? updatedItem.details.tags.join(', ')
-          : 'New'
+          : 'New',
+        currency: updatedItem.currency || 'PLN'
       }
 
       const data = await itemApi.updateItem(requestBody)

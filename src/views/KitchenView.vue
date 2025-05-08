@@ -45,10 +45,10 @@
           />
         </svg>
         <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-gray-100">
-          {{ translate('empty.title') }}
+          {{ translateKitchView('empty.title') }}
         </h3>
         <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-          {{ translate('empty.description') }}
+          {{ translateKitchView('empty.description') }}
         </p>
       </div>
 
@@ -78,7 +78,7 @@
                 }
               ]"
             >
-              {{ translate(`status.${order.status}`) }}
+              {{ translateStatus(`${order.status}`) }}
             </span>
           </div>
 
@@ -100,7 +100,9 @@
                 v-if="item.comment"
                 class="mt-1 text-sm text-gray-600 dark:text-gray-300"
               >
-                <span class="font-medium">{{ translate('comments') }}:</span>
+                <span class="font-medium"
+                  >{{ translateKitchView('comments') }}:</span
+                >
                 {{ item.comment }}
               </div>
             </div>
@@ -112,7 +114,7 @@
               @click="updateOrderStatus(order.id, 'completed')"
               class="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700 transition-colors"
             >
-              {{ translate('complete') }}
+              {{ translateKitchView('complete') }}
             </button>
           </div>
         </div>
@@ -127,7 +129,7 @@ import { useOrderStore } from '../stores/orderStore'
 import { useTranslate } from '../composables/useTranslate'
 import type { Order } from '../types/order'
 
-const { translate } = useTranslate('kitchen.display')
+const { translate: translateKitchView } = useTranslate('kitchen.display')
 const { translate: translateStatus } = useTranslate('status')
 const orderStore = useOrderStore()
 const activeOrders = ref<Order[]>([])

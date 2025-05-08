@@ -107,7 +107,7 @@
             </MenuItemsContainer>
 
             <MenuItemModal
-              v-model:show="showAddItemModal"
+              v-model="showAddItemModal"
               :item-to-edit="itemToEdit"
               :category-options="categoryOptions"
               :is-processing="itemProcessing"
@@ -120,8 +120,9 @@
               v-model="showConfirmation"
               :title="confirmationTitle"
               :message="confirmationMessage"
-              :is-processing="itemProcessing"
-              @confirm="confirmAction"
+              :is-processing="categoryProcessing"
+              @confirm="() => handleConfirmation(true)"
+              @cancel="() => handleConfirmation(false)"
             />
           </div>
         </template>
@@ -136,13 +137,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useMenuStore } from '../stores/menuStore.ts'
-import type { MenuItem } from '../types/MenuData.ts'
-import type {
-  TabConfig,
-  HeaderConfig,
-  StateConfig,
-  CategoryConfig
-} from '../types/menu'
+import type { HeaderConfig, StateConfig, CategoryConfig } from '../types/menu'
 import { useMenuItem } from '../composables/useMenuItem'
 import { useCategory } from '../composables/useCategory'
 import { useTranslate } from '../composables/useTranslate.ts'
@@ -186,7 +181,7 @@ const {
   confirmationMessage,
   addCategory,
   getCategoryNameForItem,
-  confirmAction,
+  handleConfirmation,
   confirmDeleteCategory,
   confirmDeleteItem
 } = useCategory(menuStore)
@@ -208,13 +203,16 @@ const filteredItems = computed(() => {
   return items
 })
 
-const tabs: TabConfig[] = [
+const tabs = computed(() => [
   {
     label: translateAdminView('tabs.categories'),
     value: 'categories'
   },
-  { label: translateAdminView('tabs.items'), value: 'items' }
-]
+  {
+    label: translateAdminView('tabs.items'),
+    value: 'items'
+  }
+])
 
 const categoryOptions = computed(() => {
   return (menuStore.categories || []).map(category => ({

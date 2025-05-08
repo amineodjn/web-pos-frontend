@@ -3,6 +3,10 @@ import type { MenuItem } from '../types/MenuData'
 import { useMenuStore } from '../stores/menuStore'
 import { DEFAULT_FORM } from '../constants/menu'
 
+type ExtendedMenuItem = MenuItem & {
+  category?: string
+}
+
 export function useMenuItemForm(isProcessing: boolean) {
   const form = reactive({ ...DEFAULT_FORM })
   const ingredientsText = ref('')
@@ -66,13 +70,14 @@ export function useMenuItemForm(isProcessing: boolean) {
   }
 
   function getCategoryFromItem(item: MenuItem): string {
-    if ((item as any).category) {
-      return (item as any).category
+    const extendedItem = item as ExtendedMenuItem
+    if (extendedItem.category) {
+      return extendedItem.category
     }
 
     const menuStore = useMenuStore()
     for (const category in menuStore.items) {
-      if (menuStore.items[category].some((i: any) => i.id === item.id)) {
+      if (menuStore.items[category].some(i => i.id === item.id)) {
         return category
       }
     }

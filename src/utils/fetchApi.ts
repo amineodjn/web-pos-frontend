@@ -1,12 +1,12 @@
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE'
 
-export interface FetchOptions<T = any> {
+export interface FetchOptions<T = unknown> {
   method?: HttpMethod
   body?: T
   headers?: Record<string, string>
 }
 
-export async function fetchApi<T = any, R = any>(
+export async function fetchApi<T = unknown, R = unknown>(
   url: string,
   options: FetchOptions<T> = {}
 ): Promise<R> {

@@ -1,7 +1,9 @@
 import { useI18n } from 'vue-i18n'
 import type { Ref } from 'vue'
 
-type TranslateParams = Record<string, any> | undefined
+type TranslateParams =
+  | Record<string, string | number | boolean | undefined>
+  | undefined
 type DateTimeOptions = Intl.DateTimeFormatOptions | string
 
 interface TranslateComposable {

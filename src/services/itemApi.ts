@@ -1,5 +1,6 @@
 import { fetchApi } from '../utils/fetchApi'
 import { buildApiUrl } from '../config/api.config'
+import type { Category } from '../types/MenuData'
 
 interface DeleteItemRequest {
   category_id: string
@@ -21,22 +22,30 @@ interface ItemRequest {
   sauces: string
   sizes: string
   tags: string
+  currency: string
+}
+
+interface ApiResponse<T> {
+  data: T
+  message: string
+  status: number
+  menu: Category[]
 }
 
 export const itemApi = {
-  async deleteItem(data: DeleteItemRequest): Promise<any> {
+  async deleteItem(data: DeleteItemRequest): Promise<ApiResponse<void>> {
     return fetchApi(buildApiUrl('item'), {
       method: 'DELETE',
       body: data
     })
   },
-  async addItem(data: ItemRequest): Promise<any> {
+  async addItem(data: ItemRequest): Promise<ApiResponse<ItemRequest>> {
     return fetchApi(buildApiUrl('item'), {
       method: 'POST',
       body: data
     })
   },
-  async updateItem(data: ItemRequest): Promise<any> {
+  async updateItem(data: ItemRequest): Promise<ApiResponse<ItemRequest>> {
     return fetchApi(buildApiUrl('item'), {
       method: 'PUT',
       body: data
