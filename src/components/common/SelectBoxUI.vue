@@ -1,19 +1,29 @@
 <template>
   <div class="select-box-component">
-    <label v-if="$slots.label || label" :for="id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+    <label
+      v-if="$slots.label || label"
+      :for="id"
+      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+    >
       <slot name="label">{{ label }}</slot>
     </label>
-    <select 
+    <select
       :id="id"
       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-dark-bg dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500"
       v-model="internalValue"
       @change="onChange"
       :required="required"
     >
-      <option v-if="placeholder" :value="placeholderValue" :disabled="placeholderDisabled">{{ placeholder }}</option>
-      <option 
-        v-for="(option, index) in options" 
-        :key="index" 
+      <option
+        v-if="placeholder"
+        :value="placeholderValue"
+        :disabled="placeholderDisabled"
+      >
+        {{ placeholder }}
+      </option>
+      <option
+        v-for="(option, index) in options"
+        :key="index"
         :value="getOptionValue(option)"
         :disabled="isOptionDisabled(option)"
       >
@@ -28,7 +38,7 @@ import { ref, watch } from 'vue'
 
 type OptionObject = {
   label: string
-  value: any
+  value: string | number
   disabled?: boolean
 }
 
@@ -81,11 +91,14 @@ const emit = defineEmits(['update:modelValue', 'change'])
 
 const internalValue = ref(props.modelValue)
 
-watch(() => props.modelValue, (newValue) => {
-  internalValue.value = newValue
-})
+watch(
+  () => props.modelValue,
+  newValue => {
+    internalValue.value = newValue
+  }
+)
 
-watch(internalValue, (newValue) => {
+watch(internalValue, newValue => {
   emit('update:modelValue', newValue)
 })
 
@@ -97,19 +110,21 @@ const isOptionObject = (option: OptionItem): option is OptionObject => {
   return typeof option === 'object' && option !== null
 }
 
-const getOptionValue = (option: OptionItem): any => {
+const getOptionValue = (option: OptionItem): string | number => {
   if (isOptionObject(option)) {
-    return option[props.valueKey as keyof OptionObject] !== undefined 
-      ? option[props.valueKey as keyof OptionObject] 
-      : option
+    const value = option[props.valueKey as keyof OptionObject]
+    if (typeof value === 'string' || typeof value === 'number') {
+      return value
+    }
+    return option.value
   }
   return option
 }
 
 const getOptionLabel = (option: OptionItem): string => {
   if (isOptionObject(option)) {
-    return option[props.labelKey as keyof OptionObject] !== undefined 
-      ? String(option[props.labelKey as keyof OptionObject]) 
+    return option[props.labelKey as keyof OptionObject] !== undefined
+      ? String(option[props.labelKey as keyof OptionObject])
       : String(option)
   }
   return String(option)
@@ -132,4 +147,4 @@ const isOptionDisabled = (option: OptionItem): boolean => {
   background-repeat: no-repeat;
   background-size: 1.5em;
 }
-</style> 
+</style>

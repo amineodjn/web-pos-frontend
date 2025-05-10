@@ -35,7 +35,6 @@ import { ref, computed } from 'vue'
 import { useMenuStore } from '../../stores/menuStore'
 import OrderCategorySection from './OrderCategorySection.vue'
 import CategoryNavigation from './CategoryNavigation.vue'
-import type { Category } from '../../types/MenuData'
 
 const menuStore = useMenuStore()
 const selectedCategory = ref('All')

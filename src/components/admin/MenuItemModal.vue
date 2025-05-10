@@ -74,7 +74,7 @@
               </div>
               <div>
                 <SelectBoxUI
-                  v-model="form.category"
+                  v-model="form.category_id"
                   :options="categoryOptions"
                   :placeholder="t('placeholders.category')"
                   placeholderValue=""
@@ -95,11 +95,11 @@
                   <span class="text-red-500">*</span></label
                 >
                 <input
-                  v-model.number="form.price"
-                  type="number"
-                  step="1"
+                  v-model="form.price"
+                  type="text"
                   id="item-price"
                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-dark-bg dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+                  placeholder="e.g. 19.99"
                   required
                 />
               </div>
@@ -140,13 +140,7 @@
                   >{{ t('fields.imageUrl') }}
                   <span class="text-red-500">*</span></label
                 >
-                <input
-                  v-model="form.imageUrl"
-                  type="text"
-                  id="item-image"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-dark-bg dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
-                  required
-                />
+                <ImageUploader v-model="form.imageUrl" />
               </div>
               <div>
                 <div class="flex items-center">
@@ -413,214 +407,82 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted, watch, nextTick } from 'vue'
+import { watch } from 'vue'
 import type { MenuItem } from '../../types/MenuData'
+import type { MenuItemForm } from '../../types/menu'
 import SpinnerUI from '../common/SpinnerUI.vue'
 import SelectBoxUI from '../common/SelectBoxUI.vue'
-import { Modal, initFlowbite } from 'flowbite'
-import { useMenuStore } from '../../stores/menuStore'
 import { useTranslate } from '../../composables/useTranslate'
+import ImageUploader from '../common/ImageUploader.vue'
+import { useMenuItemForm } from '../../composables/useMenuItemForm'
+import { useModal } from '../../composables/useModal'
 
-// Import translations
 const { translate: t } = useTranslate('menuItemModal')
 
-interface MenuItemForm {
-  name: string
-  category: string
-  price: number
-  currency: string
-  description: string
-  imageUrl: string
-  available: boolean
-  details: {
-    ingredients: string[]
-    meats: string[]
-    sauces: string[]
-    sizes: string[]
-    tags: string[]
-  }
-  tags: null | string[]
-}
 const props = defineProps<{
-  show: boolean
+  modelValue: boolean
   itemToEdit: MenuItem | null
   categoryOptions: { label: string; value: string }[]
   isProcessing: boolean
   formError: string
 }>()
+
 const emit = defineEmits<{
-  (e: 'update:show', value: boolean): void
-  (e: 'save', item: any): void
+  (e: 'update:modelValue', value: boolean): void
+  (e: 'save', item: Omit<MenuItemForm, 'price'> & { price: number }): void
   (e: 'cancel'): void
 }>()
-const defaultForm: MenuItemForm = {
-  name: '',
-  category: '',
-  price: 0,
-  currency: 'PLN',
-  description: '',
-  imageUrl: '../../../images/default.jpg',
-  available: true,
-  details: {
-    ingredients: [],
-    meats: [],
-    sauces: [],
-    sizes: ['Regular'],
-    tags: []
-  },
-  tags: null
-}
-const form = reactive<MenuItemForm>({ ...defaultForm })
-const ingredientsText = ref('')
-const meatsText = ref('')
-const saucesText = ref('')
-const sizesText = ref('')
-const tagsText = ref('')
-watch(ingredientsText, newVal => {
-  form.details.ingredients = parseCommaSeparatedText(newVal)
-})
-watch(meatsText, newVal => {
-  form.details.meats = parseCommaSeparatedText(newVal)
-})
-watch(saucesText, newVal => {
-  form.details.sauces = parseCommaSeparatedText(newVal)
-})
-watch(sizesText, newVal => {
-  form.details.sizes = parseCommaSeparatedText(newVal)
-})
-watch(tagsText, newVal => {
-  form.details.tags = parseCommaSeparatedText(newVal)
-})
-function parseCommaSeparatedText(text: string): string[] {
-  if (!text) return []
-  return text
-    .split(',')
-    .map(item => item.trim())
-    .filter(item => item !== '')
-}
-function arrayToCommaSeparatedText(arr: string[] | undefined): string {
-  if (!arr || !Array.isArray(arr)) return ''
-  return arr.join(', ')
-}
-const isFormValid = computed(() => {
-  return (
-    form.name.trim() !== '' &&
-    form.category !== '' &&
-    form.price > 0 &&
-    form.currency.trim() !== '' &&
-    form.description.trim() !== '' &&
-    form.imageUrl.trim() !== ''
-  )
-})
-let modal: any = null
-onMounted(() => {
-  initFlowbite()
-  const $modalElement = document.getElementById('menuItemModal')
-  if ($modalElement) {
-    modal = new Modal($modalElement, {
-      placement: 'center',
-      backdrop: 'static',
-      closable: true
-    })
-  }
-})
+
+const {
+  form,
+  ingredientsText,
+  meatsText,
+  saucesText,
+  sizesText,
+  tagsText,
+  isFormValid,
+  resetForm,
+  initializeForm,
+  prepareFormData
+} = useMenuItemForm(props.isProcessing)
+
+const { show, hide } = useModal('menuItemModal')
+
 watch(
-  () => props.show,
-  async newVal => {
-    if (!modal) return
+  () => props.modelValue,
+  newVal => {
     if (newVal) {
       if (props.itemToEdit) {
-        const category = getCategoryFromItem(props.itemToEdit)
-        Object.assign(form, defaultForm, {
-          ...props.itemToEdit,
-          category
-        })
-        ingredientsText.value = arrayToCommaSeparatedText(
-          props.itemToEdit.details?.ingredients
-        )
-        meatsText.value = arrayToCommaSeparatedText(
-          props.itemToEdit.details?.meats
-        )
-        saucesText.value = arrayToCommaSeparatedText(
-          props.itemToEdit.details?.sauces
-        )
-        sizesText.value = arrayToCommaSeparatedText(
-          props.itemToEdit.details?.sizes
-        )
-        tagsText.value = arrayToCommaSeparatedText(
-          props.itemToEdit.details?.tags
-        )
+        initializeForm(props.itemToEdit)
       } else {
-        Object.assign(form, defaultForm)
-        ingredientsText.value = ''
-        meatsText.value = ''
-        saucesText.value = ''
-        sizesText.value = 'Regular'
-        tagsText.value = ''
+        resetForm()
       }
-      await nextTick()
-      modal.show()
-      nextTick(() => {
-        initFlowbite()
-      })
+      show()
     } else {
-      modal.hide()
+      hide()
     }
   }
 )
+
 watch(
   () => props.itemToEdit,
   newVal => {
     if (newVal) {
-      const category = getCategoryFromItem(newVal)
-      Object.assign(form, defaultForm, {
-        ...newVal,
-        category
-      })
-      ingredientsText.value = arrayToCommaSeparatedText(
-        newVal.details?.ingredients
-      )
-      meatsText.value = arrayToCommaSeparatedText(newVal.details?.meats)
-      saucesText.value = arrayToCommaSeparatedText(newVal.details?.sauces)
-      sizesText.value = arrayToCommaSeparatedText(newVal.details?.sizes)
-      tagsText.value = arrayToCommaSeparatedText(newVal.details?.tags)
+      initializeForm(newVal)
     }
   }
 )
-function getCategoryFromItem(item: MenuItem): string {
-  if ((item as any).category) {
-    return (item as any).category
-  }
 
-  const menuStore = useMenuStore()
-  for (const category in menuStore.items) {
-    if (menuStore.items[category].some((i: any) => i.id === item.id)) {
-      return category
-    }
-  }
-  return ''
-}
 function save() {
-  if (!isFormValid.value || props.isProcessing) return
-  form.details.ingredients = parseCommaSeparatedText(ingredientsText.value)
-  form.details.meats = parseCommaSeparatedText(meatsText.value)
-  form.details.sauces = parseCommaSeparatedText(saucesText.value)
-  form.details.sizes = parseCommaSeparatedText(sizesText.value) || ['Regular']
-  form.details.tags = parseCommaSeparatedText(tagsText.value)
-  emit('save', {
-    name: form.name,
-    category: form.category,
-    price: form.price,
-    currency: form.currency,
-    description: form.description,
-    imageUrl: form.imageUrl,
-    available: form.available,
-    details: form.details,
-    tags: form.tags
-  })
+  const formData = prepareFormData()
+  if (formData) {
+    emit('save', formData)
+    cancel()
+  }
 }
+
 function cancel() {
-  emit('update:show', false)
+  emit('update:modelValue', false)
   emit('cancel')
 }
 </script>

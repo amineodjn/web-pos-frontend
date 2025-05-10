@@ -69,7 +69,7 @@
               {{
                 order.orderType === 'dine-in'
                   ? translateActiveOrders('table.dineIn', {
-                      number: order.tableNumber
+                      number: order.tableNumber ?? 0
                     })
                   : translateActiveOrders('table.takeaway')
               }}
@@ -116,7 +116,7 @@
 </template>
 
 <script setup lang="ts">
-import { useOrderStore } from '../../stores/orderStore'
+import { useOrderStore, type Order } from '../../stores/orderStore'
 import { useTranslate } from '../../composables/useTranslate'
 import OrderDetailsModal from './OrderDetailsModal.vue'
 import { ref } from 'vue'
@@ -130,9 +130,9 @@ const { translate: translateStatus } = useTranslate('status')
 const orderStore = useOrderStore()
 
 const isModalOpen = ref(false)
-const selectedOrder = ref(null)
+const selectedOrder = ref<Order | null>(null)
 
-function viewOrder(order: any) {
+function viewOrder(order: Order) {
   selectedOrder.value = order
   isModalOpen.value = true
 }
@@ -156,25 +156,25 @@ const orderActions = [
   {
     key: 'view',
     label: 'View',
-    handler: (order: any) => viewOrder(order),
+    handler: (order: Order) => viewOrder(order),
     class: 'text-blue-600 hover:text-blue-900 mr-2',
     condition: null
   },
   {
     key: 'complete',
     label: 'Complete',
-    handler: (order: any) =>
+    handler: (order: Order) =>
       orderStore.updateOrderStatus(order.id, 'completed'),
     class: 'text-green-600 hover:text-green-900 mr-2',
-    condition: (order: any) => order.status === 'in-progress'
+    condition: (order: Order) => order.status === 'in-progress'
   },
   {
     key: 'cancel',
     label: 'Cancel',
-    handler: (order: any) =>
+    handler: (order: Order) =>
       orderStore.updateOrderStatus(order.id, 'cancelled'),
     class: 'text-red-600 hover:text-red-900',
-    condition: (order: any) => order.status === 'in-progress'
+    condition: (order: Order) => order.status === 'in-progress'
   }
 ]
 </script>

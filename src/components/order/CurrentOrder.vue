@@ -29,16 +29,19 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { useOrderStore } from '../../stores/orderStore'
+import { useOrderStore, type Order } from '../../stores/orderStore'
 import OrderTypeSelector from './current/OrderTypeSelector.vue'
 import OrderItemsList from './current/OrderItemsList.vue'
 import OrderSummary from './current/OrderSummary.vue'
 import CommentModal from './current/CommentModal.vue'
 
-const props = defineProps<{
+defineProps<{
   numberOfTables: number
   guestsPerTable: number[]
   taxRate: number
+  order: Order
+  isProcessing: boolean
+  formError: string
 }>()
 
 const orderStore = useOrderStore()
@@ -75,6 +78,12 @@ const handleEditComment = (itemId: string) => {
   selectedItemId.value = itemId
   showCommentModal.value = true
 }
+
+defineEmits<{
+  (e: 'update:show', value: boolean): void
+  (e: 'update:order', order: Order): void
+  (e: 'cancel'): void
+}>()
 </script>
 
 <style scoped>

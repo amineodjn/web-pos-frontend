@@ -10,7 +10,9 @@ interface ApiConfig {
     }
     category: {
       path: string
-      requiredParams: string[]
+    }
+    item: {
+      path: string
     }
   }
 }
@@ -26,8 +28,10 @@ const config: ApiConfig = {
       requiredParams: ['organization_id']
     },
     category: {
-      path: '/menu/category',
-      requiredParams: ['organization_id']
+      path: '/menu/category'
+    },
+    item: {
+      path: '/menu/item'
     }
   }
 }
