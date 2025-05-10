@@ -11,9 +11,9 @@
         isDragging
           ? 'border-red-500 bg-red-50 dark:bg-red-900/20'
           : 'border-gray-300 dark:border-gray-600 hover:border-red-500 dark:hover:border-red-500',
-        'dark:bg-dark-bg'
+        'dark:bg-dark-bg',
       ]"
-      @click="triggerFileInput"
+      @click="handleTriggerFileInput"
     >
       <input
         ref="fileInput"
@@ -39,9 +39,7 @@
           />
         </svg>
         <div class="text-sm text-gray-600 dark:text-gray-400">
-          <span
-            class="font-medium text-red-600 dark:text-red-400 hover:text-red-500"
-          >
+          <span class="font-medium text-red-600 dark:text-red-400 hover:text-red-500">
             {{ translateImageUploader('upload.clickToUpload') }}
           </span>
           {{ translateImageUploader('upload.orDragAndDrop') }}
@@ -58,15 +56,10 @@
           class="mx-auto max-h-48 rounded-lg object-contain"
         />
         <button
-          @click.stop="removeImage"
           class="absolute top-2 right-2 p-1 bg-red-600 text-white rounded-full hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+          @click.stop="handleRemoveImage"
         >
-          <svg
-            class="w-4 h-4"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -81,61 +74,63 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useTranslate } from '../../composables/useTranslate'
+  import { ref } from 'vue';
+  import { useTranslate } from '../../composables/useTranslate';
+  import { useToast } from '../../composables/useToast';
 
-const { translate: translateImageUploader } = useTranslate('imageUploader')
+  const { translate: translateImageUploader } = useTranslate('imageUploader');
+  const { error: showError } = useToast();
 
-const props = defineProps<{
-  modelValue: string
-}>()
+  const props = defineProps<{
+    modelValue: string;
+  }>();
 
-const emit = defineEmits<{
-  (e: 'update:modelValue', value: string): void
-}>()
+  const emit = defineEmits<{
+    (e: 'update:modelValue', value: string): void;
+  }>();
 
-const fileInput = ref<HTMLInputElement | null>(null)
-const isDragging = ref(false)
-const previewUrl = ref(props.modelValue)
+  const fileInput = ref<HTMLInputElement | null>(null);
+  const isDragging = ref(false);
+  const previewUrl = ref(props.modelValue);
 
-function triggerFileInput() {
-  fileInput.value?.click()
-}
+  const handleTriggerFileInput = (): void => {
+    fileInput.value?.click();
+  };
 
-function handleFileSelect(event: Event) {
-  const input = event.target as HTMLInputElement
-  if (input.files && input.files[0]) {
-    handleFile(input.files[0])
-  }
-}
-
-function handleDrop(event: DragEvent) {
-  isDragging.value = false
-  const files = event.dataTransfer?.files
-  if (files && files[0]) {
-    handleFile(files[0])
-  }
-}
-
-function handleFile(file: File) {
-  if (!file.type.startsWith('image/')) {
-    // TODO: Show error toast
-    return
-  }
-
-  const reader = new FileReader()
-  reader.onload = e => {
-    const result = e.target?.result
-    if (typeof result === 'string') {
-      previewUrl.value = result
-      emit('update:modelValue', result)
+  const handleFileSelect = (event: Event): void => {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      handleFile(input.files[0]);
     }
-  }
-  reader.readAsDataURL(file)
-}
+  };
 
-function removeImage() {
-  previewUrl.value = ''
-  emit('update:modelValue', '')
-}
+  const handleDrop = (event: DragEvent): void => {
+    isDragging.value = false;
+    const files = event.dataTransfer?.files;
+    if (files && files[0]) {
+      handleFile(files[0]);
+    }
+  };
+
+  const handleFile = (file: File): void => {
+    if (!file.type.startsWith('image/')) {
+      showError('Please select a valid image file');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e): void => {
+      const result = e.target?.result;
+      if (typeof result === 'string') {
+        previewUrl.value = result;
+        emit('update:modelValue', result);
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleRemoveImage = (): void => {
+    previewUrl.value = '';
+    emit('update:modelValue', '');
+  };
 </script>

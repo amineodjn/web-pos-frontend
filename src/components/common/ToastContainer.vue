@@ -1,90 +1,75 @@
 <template>
-  <div>
+  <div class="fixed inset-0 pointer-events-none z-50">
     <div
       v-for="position in positions"
       :key="position"
-      class="toast-container"
-      :class="getPositionClass(position)"
+      :class="handleGetPositionClass(position)"
+      class="fixed p-4"
     >
-      <div
-        v-for="toast in getToastsByPosition(position)"
-        :key="toast.id"
-        class="mb-2"
-      >
+      <TransitionGroup name="toast">
         <ToastUI
+          v-for="toast in handleGetToastsByPosition(position)"
+          :key="toast.id"
           :type="toast.type"
           :message="toast.message"
-          :position="position"
-          :duration="toast.duration"
-          @close="removeToast(toast.id)"
+          @close="removeToast(toast.id!)"
         />
-      </div>
+      </TransitionGroup>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { useToast } from '../../composables/useToast'
-import ToastUI from './ToastUI.vue'
+  import { useToast } from '@/composables/useToast';
+  import ToastUI from './ToastUI.vue';
 
-const { activeToasts: toasts, removeToast } = useToast()
-
-const positions = [
-  'top-left',
-  'top-right',
-  'bottom-left',
-  'bottom-right'
-] as const
-type Position = (typeof positions)[number]
-
-function getToastsByPosition(position: Position) {
-  return toasts.value.filter(
-    toast =>
-      toast.position === position ||
-      (!toast.position && position === 'bottom-right')
-  )
-}
-
-function getPositionClass(position: Position) {
-  switch (position) {
-    case 'top-left':
-      return 'top-left'
-    case 'top-right':
-      return 'top-right'
-    case 'bottom-left':
-      return 'bottom-left'
-    case 'bottom-right':
-    default:
-      return 'bottom-right'
+  interface Toast {
+    id?: string;
+    type: 'success' | 'error' | 'warning' | 'info';
+    message: string;
+    duration?: number;
+    position?: Position;
   }
-}
+
+  const positions = ['top-left', 'top-right', 'bottom-left', 'bottom-right'] as const;
+  type Position = (typeof positions)[number];
+
+  const { toasts, removeToast } = useToast();
+
+  const handleGetToastsByPosition = (position: Position): Toast[] => {
+    return toasts.value.filter(
+      toast => toast.position === position || (!toast.position && position === 'bottom-right')
+    );
+  };
+
+  const handleGetPositionClass = (position: Position): string => {
+    switch (position) {
+      case 'top-left':
+        return 'top-left';
+      case 'top-right':
+        return 'top-right';
+      case 'bottom-left':
+        return 'bottom-left';
+      case 'bottom-right':
+      default:
+        return 'bottom-right';
+    }
+  };
 </script>
 
 <style scoped>
-.toast-container {
-  position: fixed;
-  z-index: 50;
-  display: flex;
-  flex-direction: column;
-}
+  .toast-enter-active,
+  .toast-leave-active {
+    transition: all 0.3s ease;
+  }
 
-.top-left {
-  top: 1rem;
-  left: 1rem;
-}
+  .toast-enter-from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
 
-.top-right {
-  top: 1rem;
-  right: 1rem;
-}
-
-.bottom-left {
-  bottom: 1rem;
-  left: 1rem;
-}
-
-.bottom-right {
-  bottom: 1rem;
-  right: 1rem;
-}
+  .toast-leave-to {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
 </style>

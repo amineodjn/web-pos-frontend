@@ -1,45 +1,37 @@
 <template>
-  <div
-    class="w-full sticky rounded-b-lg top-0 z-10 bg-white dark:bg-dark-bg pt-4 pb-2"
-  >
+  <div class="w-full sticky rounded-b-lg top-0 z-10 bg-white dark:bg-dark-bg pt-4 pb-2">
     <CategoryItems
-      :selectedCategory="selectedCategory"
-      :categoryBadges="categoryBadges"
-      @category-selected="onCategorySelected"
+      :selected-category="selectedCategory"
+      :category-badges="categoryBadges"
+      @category-selected="handleCategorySelected"
     />
   </div>
 </template>
 
 <script setup lang="ts">
-import CategoryItems from './CategoryItems.vue'
+  import CategoryItems from './CategoryItems.vue';
 
-defineProps<{
-  selectedCategory: string
-  categoryBadges: string[]
-}>()
+  defineProps<{
+    selectedCategory: string;
+    categoryBadges: string[];
+  }>();
 
-const emit = defineEmits<{
-  (e: 'categorySelected', category: string): void
-}>()
+  const emit = defineEmits<{
+    (e: 'category-selected', category: string): void;
+  }>();
 
-function onCategorySelected(category: string) {
-  emit('categorySelected', category)
-}
+  const handleCategorySelected = (category: string): void => {
+    emit('category-selected', category);
+  };
 
-function scrollActiveBadgeIntoView() {
-  setTimeout(() => {
-    const activeBadge = document.querySelector('.active-badge')
+  const handleScrollActiveBadgeIntoView = (): void => {
+    const activeBadge = document.querySelector('.badge.active');
     if (activeBadge) {
-      activeBadge.scrollIntoView({
-        behavior: 'smooth',
-        block: 'nearest',
-        inline: 'center'
-      })
+      activeBadge.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
     }
-  }, 100)
-}
+  };
 
-defineExpose({
-  scrollActiveBadgeIntoView
-})
+  defineExpose({
+    handleScrollActiveBadgeIntoView,
+  });
 </script>

@@ -1,9 +1,9 @@
 <template>
   <div class="relative w-full mb-4">
     <button
-      @click="scrollCategories('left')"
       class="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white dark:bg-gray-800/80 dark:hover:bg-gray-700 shadow-md rounded-full w-8 h-8 flex items-center justify-center"
       :class="{ invisible: isScrolledLeft }"
+      @click="scrollCategories('left')"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -25,21 +25,21 @@
       <button
         v-for="category in ['All', ...categories.map(c => c.categoryName)]"
         :key="category"
-        @click="$emit('update:modelValue', category)"
         :class="[
           'px-4 py-2 rounded-md whitespace-nowrap flex-shrink-0',
           modelValue === category
             ? 'bg-dark-bg text-white border border-gray-600 dark:shadow-dark-hover'
-            : 'dark:bg-gray-800 hover:bg-dark-bg hover:text-white border border-gray-700'
+            : 'dark:bg-gray-800 hover:bg-dark-bg hover:text-white border border-gray-700',
         ]"
+        @click="$emit('update:modelValue', category)"
       >
         {{ category }}
       </button>
     </div>
     <button
-      @click="scrollCategories('right')"
       class="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white dark:bg-gray-800/80 dark:hover:bg-gray-700 shadow-md rounded-full w-8 h-8 flex items-center justify-center"
       :class="{ invisible: isScrolledRight }"
+      @click="scrollCategories('right')"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -58,78 +58,76 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, nextTick } from 'vue'
-import type { Category } from '../../types/MenuData'
+  import { ref, onMounted, onUnmounted, nextTick } from 'vue';
+  import type { Category } from '../../types/MenuData';
 
-defineProps<{
-  categories: Category[]
-  modelValue: string
-}>()
+  defineProps<{
+    categories: Category[];
+    modelValue: string;
+  }>();
 
-defineEmits<{
-  (e: 'update:modelValue', value: string): void
-}>()
+  defineEmits<{
+    (e: 'update:modelValue', value: string): void;
+  }>();
 
-const categoriesContainer = ref<HTMLElement | null>(null)
-const isScrolledLeft = ref(true)
-const isScrolledRight = ref(false)
+  const categoriesContainer = ref<HTMLElement | null>(null);
+  const isScrolledLeft = ref(true);
+  const isScrolledRight = ref(false);
 
-const checkScroll = () => {
-  if (!categoriesContainer.value) return
+  const checkScroll = (): void => {
+    if (!categoriesContainer.value) return;
 
-  const { scrollLeft, scrollWidth, clientWidth } = categoriesContainer.value
-  isScrolledLeft.value = scrollLeft <= 0
-  isScrolledRight.value = scrollLeft + clientWidth >= scrollWidth - 1
-}
+    const { scrollLeft, scrollWidth, clientWidth } = categoriesContainer.value;
+    isScrolledLeft.value = scrollLeft <= 0;
+    isScrolledRight.value = scrollLeft + clientWidth >= scrollWidth - 1;
+  };
 
-const scrollCategories = (direction: 'left' | 'right') => {
-  if (!categoriesContainer.value) return
+  const scrollCategories = (direction: 'left' | 'right'): void => {
+    if (!categoriesContainer.value) return;
 
-  const scrollAmount = 200
-  const currentScroll = categoriesContainer.value.scrollLeft
-  const newScroll =
-    direction === 'left'
-      ? currentScroll - scrollAmount
-      : currentScroll + scrollAmount
+    const scrollAmount = 200;
+    const currentScroll = categoriesContainer.value.scrollLeft;
+    const newScroll =
+      direction === 'left' ? currentScroll - scrollAmount : currentScroll + scrollAmount;
 
-  categoriesContainer.value.scrollTo({
-    left: newScroll,
-    behavior: 'smooth'
-  })
-}
+    categoriesContainer.value.scrollTo({
+      left: newScroll,
+      behavior: 'smooth',
+    });
+  };
 
-onMounted(() => {
-  if (categoriesContainer.value) {
-    categoriesContainer.value.addEventListener('scroll', checkScroll)
-    nextTick(() => {
-      checkScroll()
-    })
-  }
-})
+  onMounted(() => {
+    if (categoriesContainer.value) {
+      categoriesContainer.value.addEventListener('scroll', checkScroll);
+      nextTick(() => {
+        checkScroll();
+      });
+    }
+  });
 
-onUnmounted(() => {
-  if (categoriesContainer.value) {
-    categoriesContainer.value.removeEventListener('scroll', checkScroll)
-  }
-})
+  onUnmounted(() => {
+    if (categoriesContainer.value) {
+      categoriesContainer.value.removeEventListener('scroll', checkScroll);
+    }
+  });
 </script>
 
 <style scoped>
-.no-scrollbar::-webkit-scrollbar {
-  height: 4px;
-}
+  .no-scrollbar::-webkit-scrollbar {
+    height: 4px;
+  }
 
-.no-scrollbar::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 2px;
-}
+  .no-scrollbar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 2px;
+  }
 
-.no-scrollbar::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 2px;
-}
+  .no-scrollbar::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 2px;
+  }
 
-.no-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
+  .no-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
 </style>

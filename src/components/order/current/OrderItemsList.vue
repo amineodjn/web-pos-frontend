@@ -2,10 +2,7 @@
   <div
     class="md:max-h-[100px] md:min-h-[100px] xl:max-h-[330px] xl:min-h-[330px] mb-4 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600 scrollbar-track-transparent"
   >
-    <div
-      v-if="!items?.length"
-      class="text-center text-gray-500 dark:text-gray-400 mt-8"
-    >
+    <div v-if="!items?.length" class="text-center text-gray-500 dark:text-gray-400 mt-8">
       <svg
         class="w-16 h-16 text-gray-400 dark:text-gray-600 mx-auto mb-4"
         aria-hidden="true"
@@ -43,45 +40,45 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import { useTranslate } from '../../../composables/useTranslate'
-import OrderItemComponent from './OrderItem.vue'
-import type { OrderItem } from '../../../stores/orderStore'
+  import { computed } from 'vue';
+  import { useTranslate } from '../../../composables/useTranslate';
+  import OrderItemComponent from './OrderItem.vue';
+  import type { OrderItem } from '../../../stores/orderStore';
 
-const { translate: translateCurrentOrder } = useTranslate('orders.currentOrder')
+  const { translate: translateCurrentOrder } = useTranslate('orders.currentOrder');
 
-const props = defineProps<{
-  items: OrderItem[] | undefined
-}>()
+  const props = defineProps<{
+    items: OrderItem[] | undefined;
+  }>();
 
-defineEmits<{
-  (e: 'edit-comment', itemId: string): void
-  (e: 'remove', itemId: string): void
-}>()
+  defineEmits<{
+    (e: 'edit-comment', itemId: string): void;
+    (e: 'remove', itemId: string): void;
+  }>();
 
-const reversedItems = computed(() => {
-  return [...(props.items || [])].reverse()
-})
+  const reversedItems = computed(() => {
+    return [...(props.items || [])].reverse();
+  });
 </script>
 
 <style scoped>
-.scrollbar-thin::-webkit-scrollbar {
-  width: 6px;
-}
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+  }
 
-.scrollbar-thin::-webkit-scrollbar-track {
-  background: transparent;
-}
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
 
-.scrollbar-thin::-webkit-scrollbar-thumb {
-  border-radius: 4px;
-}
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+  }
 
-.scrollbar-thumb-gray-300::-webkit-scrollbar-thumb {
-  background-color: #d1d5db;
-}
+  .scrollbar-thumb-gray-300::-webkit-scrollbar-thumb {
+    background-color: #d1d5db;
+  }
 
-.dark .scrollbar-thumb-gray-600::-webkit-scrollbar-thumb {
-  background-color: #4b5563;
-}
+  .dark .scrollbar-thumb-gray-600::-webkit-scrollbar-thumb {
+    background-color: #4b5563;
+  }
 </style>

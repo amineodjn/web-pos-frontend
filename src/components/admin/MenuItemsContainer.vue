@@ -34,31 +34,31 @@
 </template>
 
 <script setup lang="ts">
-import ListHeader from './ListHeader.vue'
-import type { MenuItem } from '@/types/MenuData'
+  import ListHeader from './ListHeader.vue';
+  import type { MenuItem } from '@/types/MenuData';
 
-defineProps<{
-  headerConfig: {
-    title: string
-    items: MenuItem[]
-    itemsCountSingular: string
-    itemsCountPlural: string
-    searchLabel?: string
-    searchPlaceholder: string
-    addButtonLabel: string
-  }
-  stateConfig: {
-    isProcessing: boolean
-    initialSearchQuery?: string
-  }
-}>()
+  defineProps<{
+    headerConfig: {
+      title: string;
+      items: MenuItem[];
+      itemsCountSingular: string;
+      itemsCountPlural: string;
+      searchLabel?: string;
+      searchPlaceholder: string;
+      addButtonLabel: string;
+    };
+    stateConfig: {
+      isProcessing: boolean;
+      initialSearchQuery?: string;
+    };
+  }>();
 
-const emit = defineEmits<{
-  (e: 'add-item'): void
-  (e: 'search', query: string): void
-}>()
+  const emit = defineEmits<{
+    (e: 'add-item'): void;
+    (e: 'search', query: string): void;
+  }>();
 
-function handleSearch(query: string) {
-  emit('search', query)
-}
+  const handleSearch = (query: string): void => {
+    emit('search', query);
+  };
 </script>

@@ -4,7 +4,7 @@
     :class="[
       'fixed flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 rounded-lg shadow z-50',
       positionClass,
-      typeClass
+      typeClass,
     ]"
     role="alert"
   >
@@ -86,8 +86,8 @@
     <button
       type="button"
       class="ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700"
-      @click="close"
       aria-label="Close"
+      @click="handleClose"
     >
       <span class="sr-only">Close</span>
       <svg
@@ -110,94 +110,98 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, onMounted } from 'vue'
+  import { computed, ref, onMounted } from 'vue';
 
-const props = defineProps<{
-  type: 'success' | 'error' | 'warning' | 'info'
-  message: string
-  duration?: number
-  position?: string
-}>()
-
-const emit = defineEmits<{
-  (e: 'close'): void
-}>()
-
-const visible = ref(true)
-
-const typeClass = computed(() => {
-  switch (props.type) {
-    case 'success':
-      return 'bg-white dark:bg-gray-800'
-    case 'error':
-      return 'bg-white dark:bg-gray-800'
-    case 'warning':
-      return 'bg-white dark:bg-gray-800'
-    case 'info':
-    default:
-      return 'bg-white dark:bg-gray-800'
+  interface Props {
+    type: 'success' | 'error' | 'warning' | 'info';
+    message: string;
+    duration?: number;
+    position?: string;
   }
-})
 
-const iconBgClass = computed(() => {
-  switch (props.type) {
-    case 'success':
-      return 'text-green-500 bg-green-100 dark:bg-green-800 dark:text-green-200'
-    case 'error':
-      return 'text-red-500 bg-red-100 dark:bg-red-800 dark:text-red-200'
-    case 'warning':
-      return 'text-orange-500 bg-orange-100 dark:bg-orange-700 dark:text-orange-200'
-    case 'info':
-    default:
-      return 'text-blue-500 bg-blue-100 dark:bg-blue-800 dark:text-blue-200'
+  const props = defineProps<Props>();
+
+  interface Emits {
+    (e: 'close'): void;
   }
-})
 
-const textClass = computed(() => {
-  return 'text-gray-700 dark:text-gray-300'
-})
+  const emit = defineEmits<Emits>();
 
-const positionClass = computed(() => {
-  switch (props.position) {
-    case 'top-right':
-      return 'top-5 right-5'
-    case 'top-left':
-      return 'top-5 left-5'
-    case 'bottom-left':
-      return 'bottom-5 left-5'
-    case 'bottom-right':
-    default:
-      return 'bottom-5 right-5 z-50'
-  }
-})
+  const visible = ref(true);
 
-function close() {
-  visible.value = false
-  emit('close')
-}
+  const typeClass = computed((): string => {
+    switch (props.type) {
+      case 'success':
+        return 'bg-white dark:bg-gray-800';
+      case 'error':
+        return 'bg-white dark:bg-gray-800';
+      case 'warning':
+        return 'bg-white dark:bg-gray-800';
+      case 'info':
+      default:
+        return 'bg-white dark:bg-gray-800';
+    }
+  });
 
-onMounted(() => {
-  if (props.duration) {
-    setTimeout(() => {
-      close()
-    }, props.duration)
-  }
-})
+  const iconBgClass = computed((): string => {
+    switch (props.type) {
+      case 'success':
+        return 'text-green-500 bg-green-100 dark:bg-green-800 dark:text-green-200';
+      case 'error':
+        return 'text-red-500 bg-red-100 dark:bg-red-800 dark:text-red-200';
+      case 'warning':
+        return 'text-orange-500 bg-orange-100 dark:bg-orange-700 dark:text-orange-200';
+      case 'info':
+      default:
+        return 'text-blue-500 bg-blue-100 dark:bg-blue-800 dark:text-blue-200';
+    }
+  });
+
+  const textClass = computed((): string => {
+    return 'text-gray-700 dark:text-gray-300';
+  });
+
+  const positionClass = computed((): string => {
+    switch (props.position) {
+      case 'top-right':
+        return 'top-5 right-5';
+      case 'top-left':
+        return 'top-5 left-5';
+      case 'bottom-left':
+        return 'bottom-5 left-5';
+      case 'bottom-right':
+      default:
+        return 'bottom-5 right-5 z-50';
+    }
+  });
+
+  const handleClose = (): void => {
+    visible.value = false;
+    emit('close');
+  };
+
+  onMounted((): void => {
+    if (props.duration) {
+      setTimeout(() => {
+        handleClose();
+      }, props.duration);
+    }
+  });
 </script>
 
 <style scoped>
-@keyframes slideIn {
-  from {
-    transform: translateX(100%);
-    opacity: 0;
+  @keyframes slideIn {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
   }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
 
-div[role='alert'] {
-  animation: slideIn 0.3s ease-out forwards;
-}
+  div[role='alert'] {
+    animation: slideIn 0.3s ease-out forwards;
+  }
 </style>

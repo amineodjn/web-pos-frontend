@@ -24,26 +24,26 @@
 </template>
 
 <script setup lang="ts">
-import { useTranslate } from '../composables/useTranslate'
+  import { useTranslate } from '../composables/useTranslate';
 
-const { translate: translateDashboard } = useTranslate('dashboard')
+  const { translate: translateDashboard } = useTranslate('dashboard');
 
-defineProps({
-  title: {
-    type: String,
-    required: true
-  },
-  value: {
-    type: [String, Number],
-    required: true
-  },
-  timeLabel: {
-    type: String,
-    default: 'today'
-  },
-  iconBgColor: {
-    type: String,
-    default: 'bg-blue-100 dark:bg-blue-900'
-  }
-})
+  defineProps({
+    title: {
+      type: String,
+      required: true,
+    },
+    value: {
+      type: [String, Number],
+      required: true,
+    },
+    timeLabel: {
+      type: String,
+      default: 'today',
+    },
+    iconBgColor: {
+      type: String,
+      default: 'bg-blue-100 dark:bg-blue-900',
+    },
+  });
 </script>

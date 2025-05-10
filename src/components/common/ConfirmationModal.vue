@@ -47,16 +47,16 @@
 
       <div class="flex justify-end gap-3">
         <button
-          @click="cancel"
           :disabled="isProcessing"
           class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg disabled:opacity-50 transition-colors duration-300"
+          @click="handleCancel"
         >
           {{ cancelText || translate('buttons.cancel') }}
         </button>
         <button
-          @click="confirm"
           :disabled="isProcessing"
           class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg disabled:opacity-50 flex items-center gap-2 transition-all duration-300 shadow-md hover:shadow-lg"
+          @click="handleConfirm"
         >
           <span v-if="isProcessing">
             <SpinnerUI class="w-5 h-5" />
@@ -78,9 +78,7 @@
             />
           </svg>
           <span>{{
-            isProcessing
-              ? processingText
-              : confirmText || translate('buttons.confirm')
+            isProcessing ? processingText : confirmText || translate('buttons.confirm')
           }}</span>
         </button>
       </div>
@@ -89,52 +87,52 @@
 </template>
 
 <script setup lang="ts">
-import SpinnerUI from './SpinnerUI.vue'
-import { useTranslate } from '../../composables/useTranslate'
+  import SpinnerUI from './SpinnerUI.vue';
+  import { useTranslate } from '../../composables/useTranslate';
 
-const { translate } = useTranslate('confirmationModal')
+  const { translate } = useTranslate('confirmationModal');
 
-const props = defineProps({
-  modelValue: {
-    type: Boolean,
-    required: true
-  },
-  title: {
-    type: String,
-    default: 'Confirm Action'
-  },
-  message: {
-    type: String,
-    default: 'Are you sure you want to perform this action?'
-  },
-  confirmText: {
-    type: String,
-    default: ''
-  },
-  cancelText: {
-    type: String,
-    default: ''
-  },
-  processingText: {
-    type: String,
-    default: 'Processing...'
-  },
-  isProcessing: {
-    type: Boolean,
-    default: false
-  }
-})
+  const props = defineProps({
+    modelValue: {
+      type: Boolean,
+      required: true,
+    },
+    title: {
+      type: String,
+      default: 'Confirm Action',
+    },
+    message: {
+      type: String,
+      default: 'Are you sure you want to perform this action?',
+    },
+    confirmText: {
+      type: String,
+      default: '',
+    },
+    cancelText: {
+      type: String,
+      default: '',
+    },
+    processingText: {
+      type: String,
+      default: 'Processing...',
+    },
+    isProcessing: {
+      type: Boolean,
+      default: false,
+    },
+  });
 
-const emit = defineEmits(['update:modelValue', 'confirm', 'cancel'])
+  const emit = defineEmits(['update:modelValue', 'confirm', 'cancel']);
 
-function confirm() {
-  if (props.isProcessing) return
-  emit('confirm')
-}
+  const handleConfirm = (): void => {
+    if (props.isProcessing) return;
+    emit('confirm');
+  };
 
-function cancel() {
-  if (props.isProcessing) return
-  emit('update:modelValue', false)
-  emit('cancel')
-}
+  const handleCancel = (): void => {
+    if (props.isProcessing) return;
+    emit('update:modelValue', false);
+    emit('cancel');
+  };
 </script>

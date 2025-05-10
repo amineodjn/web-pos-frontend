@@ -1,52 +1,52 @@
-import type { MenuItemDetails } from './MenuData'
-import type { MenuItem } from './MenuData'
+import type { MenuItemDetails } from './MenuData';
+import type { MenuItem } from './MenuData';
 
 export interface MenuItemForm {
-  name: string
-  category_id: string
-  price: string
-  currency: string
-  description: string
-  imageUrl: string
-  available: boolean
-  details: MenuItemDetails
+  name: string;
+  category_id: string;
+  price: string;
+  currency: string;
+  description: string;
+  imageUrl: string;
+  available: boolean;
+  details: MenuItemDetails;
 }
 
 export interface ItemFormData {
-  category_id: string
-  name: string
-  description: string
-  price: number
-  imageUrl?: string
-  details?: Partial<MenuItemDetails>
-  available?: boolean
-  currency?: string
+  category_id: string;
+  name: string;
+  description: string;
+  price: number;
+  imageUrl?: string;
+  details?: Partial<MenuItemDetails>;
+  available?: boolean;
+  currency?: string;
 }
 
 export interface CategoryOption {
-  label: string
-  value: string
+  label: string;
+  value: string;
 }
 
 export interface HeaderConfig {
-  title: string
-  items: MenuItem[]
-  itemsCountSingular: string
-  itemsCountPlural: string
-  searchPlaceholder: string
-  addButtonLabel: string
+  title: string;
+  items: MenuItem[];
+  itemsCountSingular: string;
+  itemsCountPlural: string;
+  searchPlaceholder: string;
+  addButtonLabel: string;
 }
 
 export interface StateConfig {
-  isProcessing: boolean
-  initialSearchQuery: string
+  isProcessing: boolean;
+  initialSearchQuery: string;
 }
 
 export interface CategoryConfig {
-  title: string
-  addNewLabel: string
-  placeholder: string
-  savingLabel: string
-  addLabel: string
-  emptyMessage: string
+  title: string;
+  addNewLabel: string;
+  placeholder: string;
+  savingLabel: string;
+  addLabel: string;
+  emptyMessage: string;
 }

@@ -3,8 +3,8 @@
     <div class="flex gap-4 mb-2">
       <label class="flex items-center text-gray-900 dark:text-white">
         <input
-          type="radio"
           v-model="orderType"
+          type="radio"
           value="dine-in"
           class="mr-2 text-gray-900 dark:text-gray-900 focus:ring-gray-900 dark:focus:ring-gray-900"
         />
@@ -12,8 +12,8 @@
       </label>
       <label class="flex items-center text-gray-900 dark:text-white">
         <input
-          type="radio"
           v-model="orderType"
+          type="radio"
           value="takeaway"
           class="mr-2 text-gray-900 dark:text-gray-900 focus:ring-gray-900 dark:focus:ring-gray-900"
         />
@@ -32,48 +32,47 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { useOrderStore } from '../../../stores/orderStore'
-import SelectBoxUI from '../../common/SelectBoxUI.vue'
-import { useTranslate } from '../../../composables/useTranslate'
+  import { ref, computed } from 'vue';
+  import { useOrderStore } from '../../../stores/orderStore';
+  import SelectBoxUI from '../../common/SelectBoxUI.vue';
+  import { useTranslate } from '../../../composables/useTranslate';
+  import type { OrderType } from '../../../types/order';
 
-const { translate: translateOrderType } = useTranslate(
-  'orders.currentOrder.orderType'
-)
-const { translate: translateCurrentOrder } = useTranslate('orders.currentOrder')
+  const { translate: translateOrderType } = useTranslate('orders.currentOrder.orderType');
+  const { translate: translateCurrentOrder } = useTranslate('orders.currentOrder');
 
-const props = defineProps<{
-  numberOfTables: number
-  guestsPerTable: number[]
-}>()
+  const props = defineProps<{
+    numberOfTables: number;
+    guestsPerTable: number[];
+  }>();
 
-const emit = defineEmits<{
-  (e: 'update:orderType', value: 'dine-in' | 'takeaway'): void
-  (e: 'tableChange', value: number | null): void
-}>()
+  const emit = defineEmits<{
+    (e: 'update:order-type', value: OrderType): void;
+    (e: 'tableChange', value: number | null): void;
+  }>();
 
-const orderStore = useOrderStore()
-const selectedTable = ref('')
+  const orderStore = useOrderStore();
+  const selectedTable = ref('');
 
-const orderType = computed({
-  get: () => orderStore.currentOrder.orderType || 'takeaway',
-  set: value => emit('update:orderType', value)
-})
+  const orderType = computed({
+    get: () => orderStore.currentOrder.orderType || 'takeaway',
+    set: value => emit('update:order-type', value as OrderType),
+  });
 
-const tableOptions = computed(() => {
-  return Array.from({ length: props.numberOfTables }, (_, i) => ({
-    label: `Table #${i + 1} (${props.guestsPerTable[i]} seats)`,
-    value: i + 1
-  }))
-})
+  const tableOptions = computed(() => {
+    return Array.from({ length: props.numberOfTables }, (_, i) => ({
+      label: `Table #${i + 1} (${props.guestsPerTable[i]} seats)`,
+      value: i + 1,
+    }));
+  });
 
-const handleTableChange = () => {
-  if (selectedTable.value) {
-    orderStore.setTable(Number(selectedTable.value))
-    emit('tableChange', Number(selectedTable.value))
-  } else {
-    orderStore.clearOrder()
-    emit('tableChange', null)
-  }
-}
+  const handleTableChange = (): void => {
+    if (selectedTable.value) {
+      orderStore.handleSetTable(Number(selectedTable.value));
+      emit('tableChange', Number(selectedTable.value));
+    } else {
+      orderStore.handleClearOrder();
+      emit('tableChange', null);
+    }
+  };
 </script>

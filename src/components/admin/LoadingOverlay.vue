@@ -12,9 +12,9 @@
 </template>
 
 <script setup lang="ts">
-import SpinnerUI from '../common/SpinnerUI.vue'
+  import SpinnerUI from '../common/SpinnerUI.vue';
 
-defineProps<{
-  message?: string
-}>()
+  defineProps<{
+    message?: string;
+  }>();
 </script>

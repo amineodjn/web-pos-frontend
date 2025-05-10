@@ -3,14 +3,14 @@
     <OrderTypeSelector
       :number-of-tables="numberOfTables"
       :guests-per-table="guestsPerTable"
-      @update:order-type="orderStore.currentOrder.orderType = $event"
+      @update:order-type="orderStore.handleUpdateOrderType($event)"
       @table-change="handleTableChange"
     />
 
     <OrderItemsList
       :items="orderStore.currentOrder.items"
-      @edit-comment="id => handleEditComment(id)"
-      @remove="id => orderStore.removeItemFromOrder(id)"
+      @edit-comment="handleEditComment"
+      @remove="handleRemoveItem"
     />
 
     <CommentModal v-model="showCommentModal" :item-id="selectedItemId" />
@@ -21,13 +21,20 @@
       :total="orderStore.total"
       :tax-rate="taxRate"
       :can-place-order="!!canPlaceOrder"
+<<<<<<< Updated upstream
       @place-order="placeOrder"
       @clear-order="orderStore.clearOrder"
+=======
+      :is-processing="isProcessing"
+      @place-order="handlePlaceOrder"
+      @clear-order="orderStore.handleClearOrder"
+>>>>>>> Stashed changes
     />
   </div>
 </template>
 
 <script setup lang="ts">
+<<<<<<< Updated upstream
 import { ref, computed } from 'vue'
 import { useOrderStore, type Order } from '../../stores/orderStore'
 import OrderTypeSelector from './current/OrderTypeSelector.vue'
@@ -63,6 +70,70 @@ async function placeOrder() {
     await orderStore.placeOrder()
   } catch (error) {
     console.error('Failed to place order:', error)
+=======
+  import { ref, computed } from 'vue';
+  import { useOrderStore, type Order } from '../../stores/orderStore';
+  import OrderTypeSelector from './current/OrderTypeSelector.vue';
+  import OrderItemsList from './current/OrderItemsList.vue';
+  import OrderSummary from './current/OrderSummary.vue';
+  import CommentModal from './current/CommentModal.vue';
+
+  defineProps<{
+    numberOfTables: number;
+    guestsPerTable: number[];
+    taxRate: number;
+    isProcessing: boolean;
+  }>();
+
+  const orderStore = useOrderStore();
+  const showCommentModal = ref(false);
+  const selectedItemId = ref<string>('');
+
+  const canPlaceOrder = computed(() => {
+    if (orderStore.currentOrder.orderType === 'dine-in') {
+      return (
+        orderStore.currentOrder.tableNumber && (orderStore.currentOrder.items?.length || 0) > 0
+      );
+    }
+    return (orderStore.currentOrder.items?.length || 0) > 0;
+  });
+
+  const handlePlaceOrder = async (): Promise<void> => {
+    try {
+      await orderStore.handlePlaceOrder();
+    } catch (error) {
+      console.error('Failed to place order:', error);
+    }
+  };
+
+  const handleTableChange = (tableNumber: number | null): void => {
+    if (tableNumber) {
+      orderStore.handleSetTable(tableNumber);
+    } else {
+      orderStore.handleClearOrder();
+    }
+  };
+
+  const handleEditComment = (itemId: string): void => {
+    selectedItemId.value = itemId;
+    showCommentModal.value = true;
+  };
+
+  const handleRemoveItem = (itemId: string): void => {
+    orderStore.handleRemoveItemFromOrder(itemId);
+  };
+
+  defineEmits<{
+    (e: 'update:show', value: boolean): void;
+    (e: 'update:order', order: Order): void;
+    (e: 'cancel'): void;
+  }>();
+</script>
+
+<style scoped>
+  .bg-primary {
+    @apply bg-gray-900 dark:bg-gray-800;
+>>>>>>> Stashed changes
   }
 }
 

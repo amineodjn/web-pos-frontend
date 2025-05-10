@@ -1,4 +1,5 @@
 <template>
+<<<<<<< Updated upstream
   <div class="bg-white dark:bg-dark-bg rounded-lg shadow p-6">
     <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">
       {{ translateActiveOrders('title') }}
@@ -177,4 +178,173 @@ const orderActions = [
     condition: (order: Order) => order.status === 'in-progress'
   }
 ]
+=======
+  <div class="active-orders">
+    <OrdersTable
+      :orders="orderStore.activeOrders"
+      :actions="orderActions"
+      :loading="orderStore.isLoading"
+      @search="handleSearch"
+      @filter-change="handleFilterChange"
+      @sort-change="handleSortChange"
+      @page-change="handlePageChange"
+      @items-per-page-change="handleItemsPerPageChange"
+    />
+
+    <OrderDetailsModal
+      v-if="isModalOpen"
+      :order="selectedOrder"
+      :is-open="isModalOpen"
+      @close="handleCloseModal"
+    />
+
+    <ConfirmationModal
+      v-if="isDeleteModalOpen"
+      :is-open="isDeleteModalOpen"
+      :is-processing="false"
+      :title="translateModal('deleteOrder.title')"
+      :message="translateModal('deleteOrder.message')"
+      @confirm="handleDeleteConfirm"
+      @cancel="handleCloseDeleteModal"
+    />
+  </div>
+</template>
+
+<script setup lang="ts">
+  import { ref, onMounted } from 'vue';
+  import { useI18n } from 'vue-i18n';
+  import { useOrderStore } from '@/stores/orderStore';
+  import { useTranslate } from '@/composables/useTranslate';
+  import type { Order, OrderStatus } from '@/types/order';
+  import type { TableAction } from '@/types/table';
+  import OrdersTable from '@/components/order/OrdersTable.vue';
+  import OrderDetailsModal from '@/components/order/OrderDetailsModal.vue';
+  import ConfirmationModal from '@/components/ui/ConfirmationModal.vue';
+
+  const { t: translateActiveOrders } = useI18n({
+    inheritLocale: true,
+    messages: {
+      en: {
+        activeOrders: {
+          title: 'Active Orders',
+          actions: {
+            view: 'View',
+            complete: 'Complete',
+            cancel: 'Cancel',
+          },
+        },
+      },
+    },
+  });
+
+  const { translate: translateModal } = useTranslate('confirmationModal.buttons');
+
+  const orderStore = useOrderStore();
+  const selectedOrder = ref<Order | null>(null);
+  const isModalOpen = ref(false);
+  const isDeleteModalOpen = ref(false);
+  const searchQuery = ref('');
+  const currentFilter = ref('');
+  const currentSort = ref('');
+  const currentPage = ref(1);
+  const itemsPerPage = ref(10);
+
+  const handleRefreshOrders = async (): Promise<void> => {
+    try {
+      await orderStore.handleFetchOrders();
+    } catch (error) {
+      console.error('Error refreshing orders:', error);
+    }
+  };
+
+  const handleViewOrder = (order: Order): void => {
+    selectedOrder.value = order;
+    isModalOpen.value = true;
+  };
+
+  const handleCloseModal = (): void => {
+    isModalOpen.value = false;
+    selectedOrder.value = null;
+  };
+
+  const handleOpenDeleteModal = (order: Order): void => {
+    selectedOrder.value = order;
+    isDeleteModalOpen.value = true;
+  };
+
+  const handleCloseDeleteModal = (): void => {
+    isDeleteModalOpen.value = false;
+    selectedOrder.value = null;
+  };
+
+  const handleDeleteConfirm = async (): Promise<void> => {
+    if (!selectedOrder.value) return;
+
+    try {
+      await orderStore.handleDeleteOrder(selectedOrder.value.id);
+      handleCloseDeleteModal();
+      await handleRefreshOrders();
+    } catch (error) {
+      console.error('Error deleting order:', error);
+    }
+  };
+
+  const handleStatusChange = async (orderId: string, newStatus: OrderStatus): Promise<void> => {
+    try {
+      await orderStore.handleUpdateOrderStatus(orderId, newStatus);
+      await handleRefreshOrders();
+    } catch (error) {
+      console.error('Error updating order status:', error);
+    }
+  };
+
+  const handleSearch = (query: string): void => {
+    searchQuery.value = query;
+  };
+
+  const handleFilterChange = (filter: string): void => {
+    currentFilter.value = filter;
+  };
+
+  const handleSortChange = (sort: string): void => {
+    currentSort.value = sort;
+  };
+
+  const handlePageChange = (page: number): void => {
+    currentPage.value = page;
+  };
+
+  const handleItemsPerPageChange = (newItemsPerPage: number): void => {
+    itemsPerPage.value = newItemsPerPage;
+    currentPage.value = 1;
+  };
+
+  const orderActions: TableAction[] = [
+    {
+      key: 'view',
+      label: translateActiveOrders('actions.view'),
+      handler: (order: Order) => handleViewOrder(order),
+      class: 'text-blue-600 hover:text-blue-900 mr-2',
+      condition: undefined,
+    },
+    {
+      key: 'complete',
+      label: translateActiveOrders('actions.complete'),
+      handler: (order: Order) => handleStatusChange(order.id, 'completed'),
+      class: 'text-green-600 hover:text-green-900 mr-2',
+      condition: (order: Order) => order.status === 'pending',
+    },
+    {
+      key: 'cancel',
+      label: translateActiveOrders('actions.cancel'),
+      handler: (order: Order) => handleOpenDeleteModal(order),
+      class: 'text-red-600 hover:text-red-900',
+      condition: (order: Order) => order.status === 'pending',
+    },
+  ];
+
+  onMounted(async () => {
+    await handleRefreshOrders();
+  });
+>>>>>>> Stashed changes
 </script>

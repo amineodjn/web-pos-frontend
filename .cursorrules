@@ -1,0 +1,320 @@
+{
+  "projectName": "web_pos_frontend",
+  "version": "1.0.0",
+  "rules": {
+    "architecture": {
+      "components": {
+        "naming": {
+          "pattern": "PascalCase",
+          "example": "UserProfile.vue, ProductCard.vue",
+          "description": "All component files should use PascalCase naming convention"
+        },
+        "structure": {
+          "required": [
+            "template",
+            "script",
+            "style"
+          ],
+          "order": [
+            "template",
+            "script",
+            "style"
+          ],
+          "description": "Components should follow this structure order"
+        }
+      },
+      "views": {
+        "naming": {
+          "pattern": "PascalCase",
+          "suffix": "View",
+          "example": "DashboardView.vue, ProductsView.vue",
+          "description": "View components should end with 'View' suffix"
+        }
+      },
+      "composables": {
+        "naming": {
+          "pattern": "camelCase",
+          "prefix": "use",
+          "example": "useAuth.ts, useProducts.ts",
+          "description": "Composable functions should start with 'use' prefix"
+        }
+      },
+      "stores": {
+        "naming": {
+          "pattern": "camelCase",
+          "suffix": "Store",
+          "example": "authStore.ts, productStore.ts",
+          "description": "Store files should end with 'Store' suffix"
+        }
+      }
+    },
+    "coding": {
+      "typescript": {
+        "strict": true,
+        "noAny": true,
+        "description": "Use strict TypeScript typing, avoid 'any' type"
+      },
+      "vue": {
+        "composition": "preferred",
+        "scriptSetup": "preferred",
+        "description": "Use Composition API with <script setup> syntax"
+      },
+      "styling": {
+        "framework": "tailwind",
+        "customCSS": "avoid",
+        "description": "Use Tailwind CSS for styling, avoid custom CSS when possible"
+      }
+    },
+    "accessibility": {
+      "required": [
+        "aria-labels",
+        "keyboard-navigation",
+        "semantic-html",
+        "color-contrast"
+      ],
+      "description": "All components must be accessible"
+    },
+    "performance": {
+      "lazyLoading": {
+        "routes": "required",
+        "components": "recommended",
+        "description": "Implement lazy loading for routes and large components"
+      },
+      "optimization": {
+        "imageOptimization": "required",
+        "codeSplitting": "required",
+        "description": "Optimize images and implement code splitting"
+      }
+    },
+    "testing": {
+      "unit": {
+        "required": true,
+        "coverage": "minimum 80%",
+        "description": "Write unit tests for components and utilities"
+      },
+      "e2e": {
+        "required": true,
+        "criticalPaths": "required",
+        "description": "Implement E2E tests for critical user paths"
+      }
+    },
+    "documentation": {
+      "components": {
+        "required": true,
+        "format": "JSDoc",
+        "description": "Document all components with JSDoc comments"
+      },
+      "functions": {
+        "required": true,
+        "format": "JSDoc",
+        "description": "Document all functions with JSDoc comments"
+      }
+    },
+    "git": {
+      "branching": {
+        "main": "production",
+        "develop": "development",
+        "feature": "feature/*",
+        "hotfix": "hotfix/*",
+        "description": "Follow GitFlow branching strategy"
+      },
+      "commits": {
+        "format": "conventional",
+        "description": "Use conventional commit messages"
+      }
+    },
+    "security": {
+      "required": [
+        "inputValidation",
+        "xssPrevention",
+        "csrfProtection",
+        "secureHeaders"
+      ],
+      "description": "Implement security best practices"
+    },
+    "stateManagement": {
+      "pattern": "pinia",
+      "rules": [
+        "useStores",
+        "avoidGlobalState",
+        "typeSafeActions"
+      ],
+      "description": "Use Pinia for state management with type safety"
+    },
+    "errorHandling": {
+      "required": [
+        "errorBoundaries",
+        "globalErrorHandler",
+        "userFeedback"
+      ],
+      "description": "Implement proper error handling and user feedback"
+    },
+    "i18n": {
+      "required": true,
+      "format": "json",
+      "description": "Support internationalization using vue-i18n"
+    },
+    "responsive": {
+      "required": true,
+      "breakpoints": {
+        "sm": "640px",
+        "md": "768px",
+        "lg": "1024px",
+        "xl": "1280px",
+        "2xl": "1536px"
+      },
+      "description": "Ensure responsive design using Tailwind breakpoints"
+    },
+    "developmentPrinciples": {
+      "planning": {
+        "required": true,
+        "steps": [
+          "analyzeRequirements",
+          "writePseudocode",
+          "planArchitecture",
+          "confirmApproach",
+          "implementCode"
+        ],
+        "description": "Follow step-by-step planning process before implementation"
+      },
+      "codeQuality": {
+        "principles": [
+          "DRY",
+          "KISS",
+          "SOLID",
+          "CleanCode"
+        ],
+        "priorities": {
+          "readability": "highest",
+          "maintainability": "high",
+          "performance": "medium"
+        },
+        "description": "Prioritize code readability and maintainability over performance"
+      },
+      "completion": {
+        "requirements": [
+          "noTODOs",
+          "noPlaceholders",
+          "completeImplementation",
+          "thoroughTesting",
+          "properDocumentation"
+        ],
+        "description": "Ensure complete and thoroughly tested implementations"
+      }
+    },
+    "codingGuidelines": {
+      "functions": {
+        "naming": {
+          "eventHandlers": {
+            "prefix": "handle",
+            "examples": [
+              "handleClick",
+              "handleKeyDown",
+              "handleSubmit"
+            ]
+          },
+          "descriptive": true,
+          "camelCase": true
+        },
+        "declaration": {
+          "preferConst": true,
+          "arrowFunctions": true,
+          "example": "const toggle = () => {}"
+        },
+        "earlyReturns": {
+          "required": true,
+          "description": "Use early returns for better code readability"
+        }
+      },
+      "styling": {
+        "framework": {
+          "primary": "tailwind",
+          "avoid": [
+            "customCSS",
+            "styleTags"
+          ],
+          "description": "Use Tailwind classes exclusively for styling"
+        },
+        "classBinding": {
+          "preferClass": true,
+          "avoidTernary": true,
+          "example": "class: 'active' = isActive"
+        }
+      },
+      "accessibility": {
+        "elements": {
+          "required": [
+            "tabindex",
+            "aria-label",
+            "keyboardEvents",
+            "clickEvents"
+          ],
+          "example": {
+            "tag": "a",
+            "attributes": [
+              "tabindex='0'",
+              "aria-label='description'",
+              "@click='handleClick'",
+              "@keydown='handleKeyDown'"
+            ]
+          }
+        }
+      },
+      "typescript": {
+        "typeDefinitions": {
+          "required": true,
+          "avoidAny": true,
+          "description": "Define types for all variables and functions"
+        }
+      }
+    },
+    "supportedTechnologies": {
+      "frameworks": [
+        "Vue3",
+        "ReactJS",
+        "NextJS"
+      ],
+      "languages": [
+        "JavaScript",
+        "TypeScript",
+        "HTML",
+        "CSS"
+      ],
+      "styling": [
+        "TailwindCSS",
+        "Flowbite"
+      ]
+    },
+    "communication": {
+      "responses": {
+        "principles": [
+          "beConcise",
+          "beAccurate",
+          "beFactual",
+          "beThoughtful"
+        ],
+        "uncertainty": {
+          "admitUnknown": true,
+          "avoidGuessing": true,
+          "description": "Acknowledge when an answer is uncertain or unknown"
+        }
+      }
+    }
+  },
+  "dependencies": {
+    "required": [
+      "vue",
+      "typescript",
+      "tailwindcss",
+      "pinia",
+      "vue-router",
+      "vue-i18n"
+    ],
+    "recommended": [
+      "vitest",
+      "cypress",
+      "eslint",
+      "prettier"
+    ]
+  }
+}

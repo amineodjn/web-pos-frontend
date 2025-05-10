@@ -100,20 +100,42 @@
 </template>
 
 <script setup lang="ts">
+<<<<<<< Updated upstream
 import { computed } from 'vue'
 import { useOrderStore } from '../stores/orderStore'
 import { useMenuStore } from '../stores/menuStore'
 import OrdersTable from '../components/OrdersTable.vue'
 import DashboardCard from '../components/DashboardCard.vue'
 import { useTranslate } from '../composables/useTranslate'
+=======
+  import { computed, onMounted } from 'vue';
+  import { useOrderStore } from '../stores/orderStore';
+  import { useMenuStore } from '../stores/menuStore';
+  import OrdersTable from '../components/OrdersTable.vue';
+  import DashboardCard from '../components/DashboardCard.vue';
+  import { useTranslate } from '../composables/useTranslate';
+  import { useToast } from '../composables/useToast';
+>>>>>>> Stashed changes
 
 const { translate: translateDashboard } = useTranslate('dashboard')
 
 const orderStore = useOrderStore()
 const menuStore = useMenuStore()
 
+<<<<<<< Updated upstream
 const today = new Date()
 today.setHours(0, 0, 0, 0)
+=======
+  const { error: showError } = useToast();
+
+  onMounted(async () => {
+    try {
+      await orderStore.handleFetchOrders();
+    } catch (error) {
+      showError('Failed to fetch orders. Please try again.');
+    }
+  });
+>>>>>>> Stashed changes
 
 const todayOrdersCount = computed(() => {
   return orderStore.activeOrders.filter(order => {

@@ -1,82 +1,64 @@
-import { ref, computed } from 'vue'
+import { ref } from 'vue';
 
-interface ToastNotification {
-  id: number
-  type: 'success' | 'error' | 'warning' | 'info'
-  message: string
-  duration: number
-  position: string
+const positions = ['top-left', 'top-right', 'bottom-left', 'bottom-right'] as const;
+type Position = (typeof positions)[number];
+
+interface Toast {
+  id?: string;
+  type: 'success' | 'error' | 'warning' | 'info';
+  message: string;
+  duration?: number;
+  position?: Position;
 }
 
-const toasts = ref<ToastNotification[]>([])
-let nextId = 0
+export const useToast = (): {
+  toasts: { value: Toast[] };
+  showToast: (toast: Toast) => void;
+  removeToast: (id: string) => void;
+  success: (message: string, duration?: number) => void;
+  error: (message: string, duration?: number) => void;
+  warning: (message: string, duration?: number) => void;
+  info: (message: string, duration?: number) => void;
+} => {
+  const toasts = ref<Toast[]>([]);
 
-export function useToast() {
-  const activeToasts = computed(() => toasts.value)
-
-  function showToast(
-    type: 'success' | 'error' | 'warning' | 'info',
-    message: string,
-    duration = 3000,
-    position = 'bottom-right'
-  ) {
-    const id = nextId++
-    const toast: ToastNotification = {
-      id,
-      type,
-      message,
-      duration,
-      position
-    }
-    toasts.value.push(toast)
-
-    if (duration > 0) {
+  const handleShowToast = (toast: Toast): void => {
+    const id = Math.random().toString(36).substring(2, 9);
+    toasts.value.push({ ...toast, id });
+    if (toast.duration) {
       setTimeout(() => {
-        removeToast(id)
-      }, duration)
+        handleRemoveToast(id);
+      }, toast.duration);
     }
+  };
 
-    return id
-  }
+  const handleRemoveToast = (id: string): void => {
+    toasts.value = toasts.value.filter(toast => toast.id !== id);
+  };
 
-  function removeToast(id: number) {
-    const index = toasts.value.findIndex(toast => toast.id === id)
-    if (index !== -1) {
-      toasts.value.splice(index, 1)
-    }
-  }
+  const handleSuccess = (message: string, duration = 3000): void => {
+    handleShowToast({ type: 'success', message, duration });
+  };
 
-  function success(
-    message: string,
-    duration = 3000,
-    position = 'bottom-right'
-  ) {
-    return showToast('success', message, duration, position)
-  }
+  const handleError = (message: string, duration = 3000): void => {
+    handleShowToast({ type: 'error', message, duration });
+  };
 
-  function error(message: string, duration = 3000, position = 'bottom-right') {
-    return showToast('error', message, duration, position)
-  }
+  const handleWarning = (message: string, duration = 3000): void => {
+    handleShowToast({ type: 'warning', message, duration });
+  };
 
-  function warning(
-    message: string,
-    duration = 3000,
-    position = 'bottom-right'
-  ) {
-    return showToast('warning', message, duration, position)
-  }
-
-  function info(message: string, duration = 3000, position = 'bottom-right') {
-    return showToast('info', message, duration, position)
-  }
+  const handleInfo = (message: string, duration = 3000): void => {
+    handleShowToast({ type: 'info', message, duration });
+  };
 
   return {
-    activeToasts,
-    showToast,
-    removeToast,
-    success,
-    error,
-    warning,
-    info
-  }
-}
+    toasts,
+    showToast: handleShowToast,
+    removeToast: handleRemoveToast,
+    success: handleSuccess,
+    error: handleError,
+    warning: handleWarning,
+    info: handleInfo,
+  };
+};

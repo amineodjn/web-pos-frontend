@@ -10,11 +10,11 @@
     >
       <div class="flex justify-between items-center mb-4">
         <h3 class="text-lg font-medium text-gray-900 dark:text-white">
-          {{ translate('title', { orderId: order.id }) }}
+          {{ translate('title', { orderId: order?.id }) }}
         </h3>
         <button
-          @click="closeModal"
           class="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300"
+          @click="closeModal"
         >
           <svg
             class="w-5 h-5"
@@ -36,20 +36,20 @@
           <span class="text-sm text-gray-500 dark:text-gray-400">
             {{ translate('orderType') }}:
             <span class="font-medium text-gray-900 dark:text-white">
-              {{ translateOrderType(order.orderType) }}
+              {{ handleTranslateOrderType(order?.orderType) }}
             </span>
           </span>
           <span
             :class="[
               'text-xs font-medium px-2.5 py-0.5 rounded',
               {
-                'bg-yellow-100 text-yellow-800': order.status === 'in-progress',
-                'bg-green-100 text-green-800': order.status === 'completed',
-                'bg-red-100 text-red-800': order.status === 'cancelled'
-              }
+                'bg-yellow-100 text-yellow-800': order?.status === 'pending',
+                'bg-green-100 text-green-800': order?.status === 'completed',
+                'bg-red-100 text-red-800': order?.status === 'cancelled',
+              },
             ]"
           >
-            {{ translateStatus(order.status) }}
+            {{ handleTranslateStatus(order?.status) }}
           </span>
         </div>
 
@@ -59,19 +59,16 @@
           </h4>
           <div class="space-y-3">
             <div
-              v-for="item in order.items"
+              v-for="item in order?.items"
               :key="item.id"
               class="flex justify-between items-center"
             >
               <div class="flex items-center space-x-3">
                 <span class="text-sm text-gray-900 dark:text-white">
-                  {{ item.name }}
-                </span>
-                <span class="text-xs text-gray-500 dark:text-gray-400">
-                  x{{ item.quantity }}
+                  {{ item.quantity }}x {{ item.name }}
                 </span>
               </div>
-              <span class="text-sm font-medium text-gray-900 dark:text-white">
+              <span class="text-sm text-gray-900 dark:text-white">
                 PLN{{ (item.price * item.quantity).toFixed(2) }}
               </span>
             </div>
@@ -84,7 +81,7 @@
               {{ translate('total') }}
             </span>
             <span class="text-lg font-bold text-gray-900 dark:text-white">
-              PLN{{ order.total.toFixed(2) }}
+              PLN{{ order?.total.toFixed(2) }}
             </span>
           </div>
         </div>
@@ -104,25 +101,33 @@
 </template>
 
 <script setup lang="ts">
-import { useTranslate } from '../../composables/useTranslate'
-import type { Order } from '../../stores/orderStore'
+  import { useTranslate } from '@/composables/useTranslate';
+  import type { Order, OrderStatus, OrderType } from '@/types/order';
 
-defineProps<{
-  isOpen: boolean
-  order: Order
-}>()
+  defineProps<{
+    order: Order | null;
+    isOpen: boolean;
+  }>();
 
-const emit = defineEmits<{
-  (e: 'close'): void
-}>()
+  const emit = defineEmits<{
+    (e: 'close'): void;
+  }>();
 
-const { translate } = useTranslate('orders.orderDetails')
-const { translate: translateOrderType } = useTranslate(
-  'orders.currentOrder.orderType'
-)
-const { translate: translateStatus } = useTranslate('status')
+  const { translate } = useTranslate('orders.orderDetails');
+  const { translate: translateOrderTypeText } = useTranslate('orders.currentOrder.orderType');
+  const { translate: translateStatusText } = useTranslate('status');
 
-const closeModal = () => {
-  emit('close')
-}
+  const closeModal = (): void => {
+    emit('close');
+  };
+
+  const handleTranslateOrderType = (type: OrderType | undefined): string => {
+    if (!type) return '';
+    return translateOrderTypeText(type);
+  };
+
+  const handleTranslateStatus = (status: OrderStatus | undefined): string => {
+    if (!status) return '';
+    return translateStatusText(status);
+  };
 </script>

@@ -1,58 +1,59 @@
-import { defineStore } from 'pinia'
-import { ref, computed, onMounted } from 'vue'
-import type { MenuItem, MenuData, Category } from '../types/MenuData'
-import { menuApi } from '../services/menuApi'
-import { categoryApi } from '../services/categoryApi'
-import { itemApi } from '../services/itemApi'
-import config from '../config/api.config'
+import { defineStore } from 'pinia';
+import { ref, computed, onMounted } from 'vue';
+import type { MenuItem, Category } from '../types/MenuData';
+import config from '../config/api.config';
+import { fetchApi } from '@/utils/fetchApi';
+
+interface MenuResponse {
+  categories: Category[];
+}
 
 export const useMenuStore = defineStore('menu', () => {
-  const categories = ref<Category[]>([])
-  const items = ref<Record<string, MenuItem[]>>({})
-  const isLoading = ref<boolean>(false)
-  const error = ref<string | null>(null)
+  const categories = ref<Category[]>([]);
+  const items = ref<Record<string, MenuItem[]>>({});
+  const isLoading = ref<boolean>(false);
+  const error = ref<string | null>(null);
 
   const allItems = computed((): MenuItem[] => {
-    let result: MenuItem[] = []
+    let result: MenuItem[] = [];
     for (const categoryId in items.value) {
-      result = [...result, ...items.value[categoryId]]
+      result = [...result, ...items.value[categoryId]];
     }
-    return result
-  })
+    return result;
+  });
 
-  async function fetchMenuData() {
-    isLoading.value = true
-    error.value = null
+  const handleFetchMenuData = async (): Promise<void> => {
+    isLoading.value = true;
+    error.value = null;
 
     try {
-      const data: MenuData = await menuApi.getMenu()
-      categories.value = data.menu
-      items.value = {}
-      for (const cat of data.menu) {
-        items.value[cat.categoryId] = cat.categoryItems.map(
-          (item: MenuItem) => ({
-            ...item,
-            available: Boolean(item.is_available ?? item.available ?? true)
-          })
-        ) as MenuItem[]
+      const response = (await fetchApi('/menu', {
+        params: {
+          organization_id: config.defaultParams.organization_id,
+        },
+      })) as MenuResponse;
+      categories.value = response.categories;
+      items.value = {};
+      for (const cat of response.categories) {
+        items.value[cat.categoryId] = cat.categoryItems.map((item: MenuItem) => ({
+          ...item,
+          available: Boolean(item.is_available ?? item.available ?? true),
+        })) as MenuItem[];
       }
     } catch (err) {
-      console.error('Error fetching menu data:', err)
-      error.value = err instanceof Error ? err.message : 'Unknown error'
-      categories.value = []
-      items.value = {}
+      console.error('Error fetching menu data:', err);
+      error.value = err instanceof Error ? err.message : 'Failed to fetch menu data';
+      categories.value = [];
+      items.value = {};
     } finally {
-      isLoading.value = false
+      isLoading.value = false;
     }
-  }
+  };
 
-  async function addMenuItem(
+  const handleAddMenuItem = async (
     categoryId: string,
-    item: Omit<
-      MenuItem,
-      'id' | 'itemNumber' | 'category_id' | 'organization_id'
-    >
-  ) {
+    item: Omit<MenuItem, 'id' | 'itemNumber' | 'category_id' | 'organization_id'>
+  ): Promise<void> => {
     try {
       const requestBody = {
         category_id: categoryId,
@@ -72,28 +73,28 @@ export const useMenuStore = defineStore('menu', () => {
         sauces: Array.isArray(item.details?.sauces)
           ? item.details.sauces.join(', ')
           : 'No sauces specified',
-        sizes: Array.isArray(item.details?.sizes)
-          ? item.details.sizes.join(', ')
-          : 'Regular',
-        tags: Array.isArray(item.details?.tags)
-          ? item.details.tags.join(', ')
-          : 'New',
-        currency: item.currency || 'PLN'
-      }
+        sizes: Array.isArray(item.details?.sizes) ? item.details.sizes.join(', ') : 'Regular',
+        tags: Array.isArray(item.details?.tags) ? item.details.tags.join(', ') : 'New',
+        currency: item.currency || 'PLN',
+      };
 
-      const data = await itemApi.addItem(requestBody)
-      categories.value = data.menu
-      items.value = {}
-      for (const cat of data.menu) {
-        items.value[cat.categoryId] = cat.categoryItems
+      const response = (await fetchApi('/menu/items', {
+        method: 'POST',
+        body: JSON.stringify(requestBody),
+      })) as MenuResponse;
+      categories.value = response.categories;
+      items.value = {};
+      for (const cat of response.categories) {
+        items.value[cat.categoryId] = cat.categoryItems;
       }
     } catch (err) {
-      console.error('Error adding menu item:', err)
-      throw err
+      console.error('Error adding menu item:', err);
+      error.value = err instanceof Error ? err.message : 'Failed to add menu item';
+      throw err;
     }
-  }
+  };
 
-  async function updateMenuItem(categoryId: string, updatedItem: MenuItem) {
+  const handleUpdateMenuItem = async (categoryId: string, updatedItem: MenuItem): Promise<void> => {
     try {
       const requestBody = {
         category_id: categoryId,
@@ -120,103 +121,104 @@ export const useMenuStore = defineStore('menu', () => {
         tags: Array.isArray(updatedItem.details?.tags)
           ? updatedItem.details.tags.join(', ')
           : 'New',
-        currency: updatedItem.currency || 'PLN'
-      }
+        currency: updatedItem.currency || 'PLN',
+      };
 
-      const data = await itemApi.updateItem(requestBody)
+      const response = (await fetchApi(`/menu/items/${updatedItem.id}`, {
+        method: 'PUT',
+        body: JSON.stringify(requestBody),
+      })) as MenuResponse;
 
       if (items.value[categoryId]) {
-        const itemIndex = items.value[categoryId].findIndex(
-          item => item.id === updatedItem.id
-        )
+        const itemIndex = items.value[categoryId].findIndex(item => item.id === updatedItem.id);
         if (itemIndex !== -1) {
           items.value[categoryId][itemIndex] = {
             ...updatedItem,
-            available: updatedItem.available
-          }
+            available: updatedItem.available,
+          };
         }
       }
 
-      categories.value = data.menu
-      items.value = {}
-      for (const cat of data.menu) {
-        items.value[cat.categoryId] = cat.categoryItems.map(
-          (item: MenuItem) => ({
-            ...item,
-            available: Boolean(item.is_available ?? item.available ?? true)
-          })
-        ) as MenuItem[]
+      categories.value = response.categories;
+      items.value = {};
+      for (const cat of response.categories) {
+        items.value[cat.categoryId] = cat.categoryItems.map((item: MenuItem) => ({
+          ...item,
+          available: Boolean(item.is_available ?? item.available ?? true),
+        })) as MenuItem[];
       }
     } catch (err) {
-      console.error('Error updating menu item:', err)
-      throw err
+      console.error('Error updating menu item:', err);
+      error.value = err instanceof Error ? err.message : 'Failed to update menu item';
+      throw err;
     }
-  }
+  };
 
-  async function deleteMenuItem(categoryId: string, id: string) {
+  const handleDeleteMenuItem = async (categoryId: string, itemId: string): Promise<void> => {
     try {
-      const data = await itemApi.deleteItem({
-        category_id: categoryId,
-        item_id: id,
-        organization_id: config.defaultParams.organization_id
-      })
-      categories.value = data.menu
-      items.value = {}
-      for (const cat of data.menu) {
-        items.value[cat.categoryId] = cat.categoryItems
-      }
+      await fetchApi(`/menu/items/${itemId}`, {
+        method: 'DELETE',
+      });
+      categories.value = categories.value.filter(cat => cat.categoryId !== categoryId);
+      delete items.value[categoryId];
     } catch (err) {
-      console.error('Error deleting menu item:', err)
-      throw err
+      console.error('Error deleting menu item:', err);
+      error.value = err instanceof Error ? err.message : 'Failed to delete menu item';
+      throw err;
     }
-  }
+  };
 
-  async function addCategory(categoryName: string) {
+  const handleAddCategory = async (categoryName: string): Promise<void> => {
     if (!categories.value.some(cat => cat.categoryName === categoryName)) {
       try {
-        const data = await categoryApi.addCategory(categoryName)
-        const newCategory = data.menu.find(
-          cat => cat.categoryName === categoryName
-        )
+        const response = (await fetchApi('/menu/categories', {
+          method: 'POST',
+          body: JSON.stringify({ categoryName }),
+        })) as MenuResponse;
+        const newCategory = response.categories.find(
+          (cat: Category) => cat.categoryName === categoryName
+        );
         if (newCategory) {
-          categories.value.push(newCategory)
-          items.value[newCategory.categoryId] = []
+          categories.value.push(newCategory);
+          items.value[newCategory.categoryId] = [];
         }
       } catch (err) {
-        console.error('Error adding category:', err)
-        throw err
+        console.error('Error adding category:', err);
+        error.value = err instanceof Error ? err.message : 'Failed to add category';
+        throw err;
       }
     }
-  }
+  };
 
-  async function deleteCategory(categoryId: string) {
+  const handleDeleteCategory = async (categoryId: string): Promise<void> => {
     try {
-      await categoryApi.deleteCategory(categoryId)
-      categories.value = categories.value.filter(
-        cat => cat.categoryId !== categoryId
-      )
-      delete items.value[categoryId]
+      await fetchApi(`/menu/categories/${categoryId}`, {
+        method: 'DELETE',
+      });
+      categories.value = categories.value.filter(cat => cat.categoryId !== categoryId);
+      delete items.value[categoryId];
     } catch (err) {
-      console.error('Error deleting category:', err)
-      throw err
+      console.error('Error deleting category:', err);
+      error.value = err instanceof Error ? err.message : 'Failed to delete category';
+      throw err;
     }
-  }
+  };
 
   onMounted(() => {
-    fetchMenuData()
-  })
+    handleFetchMenuData();
+  });
 
   return {
-    categories,
+    categories: computed(() => categories.value),
     items,
     allItems,
-    isLoading,
-    error,
-    fetchMenuData,
-    addMenuItem,
-    updateMenuItem,
-    deleteMenuItem,
-    addCategory,
-    deleteCategory
-  }
-})
+    isLoading: computed(() => isLoading.value),
+    error: computed(() => error.value),
+    handleFetchMenuData,
+    handleAddMenuItem,
+    handleUpdateMenuItem,
+    handleDeleteMenuItem,
+    handleAddCategory,
+    handleDeleteCategory,
+  };
+});

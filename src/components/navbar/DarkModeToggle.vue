@@ -11,9 +11,7 @@
       viewBox="0 0 20 20"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <path
-        d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"
-      ></path>
+      <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
     </svg>
     <svg
       id="theme-toggle-light-icon"
@@ -30,78 +28,76 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
-import { initFlowbite } from 'flowbite'
+  import { onMounted } from 'vue';
+  import { initFlowbite } from 'flowbite';
 
-const isDarkMode = () => {
-  return (
-    localStorage.getItem('color-theme') === 'dark' ||
-    (!('color-theme' in localStorage) &&
-      window.matchMedia('(prefers-color-scheme: dark)').matches)
-  )
-}
+  const handleIsDarkMode = (): boolean => {
+    return (
+      localStorage.getItem('color-theme') === 'dark' ||
+      (!('color-theme' in localStorage) &&
+        window.matchMedia('(prefers-color-scheme: dark)').matches)
+    );
+  };
 
-const updateTheme = () => {
-  if (isDarkMode()) {
-    document.documentElement.classList.add('dark')
-  } else {
-    document.documentElement.classList.remove('dark')
-  }
-}
-
-const updateIcons = (
-  themeToggleDarkIcon: HTMLElement | null,
-  themeToggleLightIcon: HTMLElement | null
-) => {
-  if (isDarkMode()) {
-    themeToggleLightIcon?.classList.remove('hidden')
-    themeToggleDarkIcon?.classList.add('hidden')
-  } else {
-    themeToggleDarkIcon?.classList.remove('hidden')
-    themeToggleLightIcon?.classList.add('hidden')
-  }
-}
-
-const toggleTheme = (
-  themeToggleDarkIcon: HTMLElement | null,
-  themeToggleLightIcon: HTMLElement | null
-) => {
-  themeToggleDarkIcon?.classList.toggle('hidden')
-  themeToggleLightIcon?.classList.toggle('hidden')
-
-  if (localStorage.getItem('color-theme')) {
-    if (localStorage.getItem('color-theme') === 'light') {
-      document.documentElement.classList.add('dark')
-      localStorage.setItem('color-theme', 'dark')
+  const handleUpdateTheme = (): void => {
+    if (handleIsDarkMode()) {
+      document.documentElement.classList.add('dark');
     } else {
-      document.documentElement.classList.remove('dark')
-      localStorage.setItem('color-theme', 'light')
+      document.documentElement.classList.remove('dark');
     }
-  } else {
-    if (document.documentElement.classList.contains('dark')) {
-      document.documentElement.classList.remove('dark')
-      localStorage.setItem('color-theme', 'light')
+  };
+
+  const handleUpdateIcons = (
+    themeToggleDarkIcon: HTMLElement | null,
+    themeToggleLightIcon: HTMLElement | null
+  ): void => {
+    if (handleIsDarkMode()) {
+      themeToggleLightIcon?.classList.remove('hidden');
+      themeToggleDarkIcon?.classList.add('hidden');
     } else {
-      document.documentElement.classList.add('dark')
-      localStorage.setItem('color-theme', 'dark')
+      themeToggleDarkIcon?.classList.remove('hidden');
+      themeToggleLightIcon?.classList.add('hidden');
     }
-  }
-}
+  };
 
-onMounted(() => {
-  initFlowbite()
-  updateTheme()
+  const handleToggleTheme = (
+    themeToggleDarkIcon: HTMLElement | null,
+    themeToggleLightIcon: HTMLElement | null
+  ): void => {
+    themeToggleDarkIcon?.classList.toggle('hidden');
+    themeToggleLightIcon?.classList.toggle('hidden');
 
-  const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon')
-  const themeToggleLightIcon = document.getElementById(
-    'theme-toggle-light-icon'
-  )
-  const themeToggleBtn = document.getElementById('theme-toggle')
+    if (localStorage.getItem('color-theme')) {
+      if (localStorage.getItem('color-theme') === 'light') {
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('color-theme', 'dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('color-theme', 'light');
+      }
+    } else {
+      if (document.documentElement.classList.contains('dark')) {
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('color-theme', 'light');
+      } else {
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('color-theme', 'dark');
+      }
+    }
+  };
 
-  updateIcons(themeToggleDarkIcon, themeToggleLightIcon)
+  onMounted((): void => {
+    initFlowbite();
+    handleUpdateTheme();
 
-  themeToggleBtn?.addEventListener('click', () =>
-    toggleTheme(themeToggleDarkIcon, themeToggleLightIcon)
-  )
-})
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const themeToggleBtn = document.getElementById('theme-toggle');
+
+    handleUpdateIcons(themeToggleDarkIcon, themeToggleLightIcon);
+
+    themeToggleBtn?.addEventListener('click', () =>
+      handleToggleTheme(themeToggleDarkIcon, themeToggleLightIcon)
+    );
+  });
 </script>

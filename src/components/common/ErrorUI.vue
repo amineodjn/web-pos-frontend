@@ -158,8 +158,8 @@
 
     <button
       v-if="showRetry"
-      @click="$emit('retry')"
       class="mt-6 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors"
+      @click="$emit('retry')"
     >
       {{ retryText }}
     </button>
@@ -167,38 +167,38 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+  import { computed } from 'vue';
 
-const props = defineProps({
-  errorType: {
-    type: String,
-    default: 'default'
-  },
-  title: {
-    type: String,
-    default: ''
-  },
-  message: {
-    type: String,
-    default: ''
-  },
-  retryText: {
-    type: String,
-    default: 'Try Again'
-  },
-  showRetry: {
-    type: Boolean,
-    default: true
-  }
-})
+  const props = defineProps({
+    errorType: {
+      type: String,
+      default: 'default',
+    },
+    title: {
+      type: String,
+      default: '',
+    },
+    message: {
+      type: String,
+      default: '',
+    },
+    retryText: {
+      type: String,
+      default: 'Try Again',
+    },
+    showRetry: {
+      type: Boolean,
+      default: true,
+    },
+  });
 
-const displayTitle = computed(() => {
-  return props.title || `Error`
-})
+  const displayTitle = computed(() => {
+    return props.title || `Error`;
+  });
 
-const displayMessage = computed(() => {
-  return props.message || `An unexpected error occurred.`
-})
+  const displayMessage = computed(() => {
+    return props.message || `An unexpected error occurred.`;
+  });
 
-defineEmits(['retry'])
+  defineEmits(['retry']);
 </script>

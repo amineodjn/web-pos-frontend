@@ -21,10 +21,10 @@
               {{ itemToEdit ? t('title.edit') : t('title.add') }}
             </h3>
             <button
-              @click="cancel"
               type="button"
               class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
               data-modal-hide="menuItemModal"
+              @click="handleCancel"
             >
               <svg
                 class="w-3 h-3"
@@ -61,13 +61,12 @@
                 <label
                   for="item-name"
                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >{{ t('fields.name') }}
-                  <span class="text-red-500">*</span></label
+                  >{{ t('fields.name') }} <span class="text-red-500">*</span></label
                 >
                 <input
+                  id="item-name"
                   v-model="form.name"
                   type="text"
-                  id="item-name"
                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-dark-bg dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                   required
                 />
@@ -77,8 +76,8 @@
                   v-model="form.category_id"
                   :options="categoryOptions"
                   :placeholder="t('placeholders.category')"
-                  placeholderValue=""
-                  placeholderDisabled
+                  placeholder-value=""
+                  placeholder-disabled
                   required
                 >
                   <template #label>
@@ -91,13 +90,12 @@
                 <label
                   for="item-price"
                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >{{ t('fields.price') }}
-                  <span class="text-red-500">*</span></label
+                  >{{ t('fields.price') }} <span class="text-red-500">*</span></label
                 >
                 <input
+                  id="item-price"
                   v-model="form.price"
                   type="text"
-                  id="item-price"
                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-dark-bg dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                   placeholder="e.g. 19.99"
                   required
@@ -107,13 +105,12 @@
                 <label
                   for="item-currency"
                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >{{ t('fields.currency') }}
-                  <span class="text-red-500">*</span></label
+                  >{{ t('fields.currency') }} <span class="text-red-500">*</span></label
                 >
                 <input
+                  id="item-currency"
                   v-model="form.currency"
                   type="text"
-                  id="item-currency"
                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-dark-bg dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                   required
                 />
@@ -122,12 +119,11 @@
                 <label
                   for="item-description"
                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >{{ t('fields.description') }}
-                  <span class="text-red-500">*</span></label
+                  >{{ t('fields.description') }} <span class="text-red-500">*</span></label
                 >
                 <textarea
-                  v-model="form.description"
                   id="item-description"
+                  v-model="form.description"
                   rows="3"
                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-dark-bg dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                   required
@@ -137,16 +133,15 @@
                 <label
                   for="item-image"
                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >{{ t('fields.imageUrl') }}
-                  <span class="text-red-500">*</span></label
+                  >{{ t('fields.imageUrl') }} <span class="text-red-500">*</span></label
                 >
                 <ImageUploader v-model="form.imageUrl" />
               </div>
               <div>
                 <div class="flex items-center">
                   <input
-                    v-model="form.available"
                     id="item-available"
+                    v-model="form.available"
                     type="checkbox"
                     class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:focus:ring-red-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                   />
@@ -219,18 +214,16 @@
                             >{{ t('fields.ingredients') }}</label
                           >
                           <input
+                            id="item-ingredients"
                             v-model="ingredientsText"
                             type="text"
-                            id="item-ingredients"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-dark-bg dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                             :placeholder="t('placeholders.ingredients')"
                           />
-                          <p
-                            class="mt-1 text-xs text-gray-500 dark:text-gray-400"
-                          >
+                          <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
                             {{
                               t('helpText.commaSeparated', {
-                                items: t('fields.ingredients').toLowerCase()
+                                items: t('fields.ingredients').toLowerCase(),
                               })
                             }}
                           </p>
@@ -242,18 +235,16 @@
                             >{{ t('fields.meats') }}</label
                           >
                           <input
+                            id="item-meats"
                             v-model="meatsText"
                             type="text"
-                            id="item-meats"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-dark-bg dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                             :placeholder="t('placeholders.meats')"
                           />
-                          <p
-                            class="mt-1 text-xs text-gray-500 dark:text-gray-400"
-                          >
+                          <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
                             {{
                               t('helpText.commaSeparated', {
-                                items: t('fields.meats').toLowerCase()
+                                items: t('fields.meats').toLowerCase(),
                               })
                             }}
                           </p>
@@ -265,18 +256,16 @@
                             >{{ t('fields.sauces') }}</label
                           >
                           <input
+                            id="item-sauces"
                             v-model="saucesText"
                             type="text"
-                            id="item-sauces"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-dark-bg dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                             :placeholder="t('placeholders.sauces')"
                           />
-                          <p
-                            class="mt-1 text-xs text-gray-500 dark:text-gray-400"
-                          >
+                          <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
                             {{
                               t('helpText.commaSeparated', {
-                                items: t('fields.sauces').toLowerCase()
+                                items: t('fields.sauces').toLowerCase(),
                               })
                             }}
                           </p>
@@ -288,18 +277,16 @@
                             >{{ t('fields.sizes') }}</label
                           >
                           <input
+                            id="item-sizes"
                             v-model="sizesText"
                             type="text"
-                            id="item-sizes"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-dark-bg dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                             :placeholder="t('placeholders.sizes')"
                           />
-                          <p
-                            class="mt-1 text-xs text-gray-500 dark:text-gray-400"
-                          >
+                          <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
                             {{
                               t('helpText.commaSeparated', {
-                                items: t('fields.sizes').toLowerCase()
+                                items: t('fields.sizes').toLowerCase(),
                               })
                             }}
                           </p>
@@ -311,18 +298,16 @@
                             >{{ t('fields.tags') }}</label
                           >
                           <input
+                            id="item-tags"
                             v-model="tagsText"
                             type="text"
-                            id="item-tags"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-dark-bg dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                             :placeholder="t('placeholders.tags')"
                           />
-                          <p
-                            class="mt-1 text-xs text-gray-500 dark:text-gray-400"
-                          >
+                          <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
                             {{
                               t('helpText.commaSeparated', {
-                                items: t('fields.tags').toLowerCase()
+                                items: t('fields.tags').toLowerCase(),
                               })
                             }}
                           </p>
@@ -362,19 +347,19 @@
             class="flex items-center justify-end p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600 gap-3"
           >
             <button
-              @click="cancel"
               data-modal-hide="menuItemModal"
               type="button"
               :disabled="isProcessing"
               class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
+              @click="handleCancel"
             >
               {{ t('buttons.cancel') }}
             </button>
             <button
-              @click="save"
               type="button"
               class="text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
               :disabled="!isFormValid || isProcessing"
+              @click="handleSave"
             >
               <span v-if="isProcessing">
                 <SpinnerUI class="w-4 h-4" />
@@ -396,9 +381,7 @@
                   />
                 </svg>
               </span>
-              <span>{{
-                isProcessing ? t('buttons.saving') : t('buttons.save')
-              }}</span>
+              <span>{{ isProcessing ? t('buttons.saving') : t('buttons.save') }}</span>
             </button>
           </div>
         </div>
@@ -407,82 +390,87 @@
   </div>
 </template>
 <script setup lang="ts">
-import { watch } from 'vue'
-import type { MenuItem } from '../../types/MenuData'
-import type { MenuItemForm } from '../../types/menu'
-import SpinnerUI from '../common/SpinnerUI.vue'
-import SelectBoxUI from '../common/SelectBoxUI.vue'
-import { useTranslate } from '../../composables/useTranslate'
-import ImageUploader from '../common/ImageUploader.vue'
-import { useMenuItemForm } from '../../composables/useMenuItemForm'
-import { useModal } from '../../composables/useModal'
+  import { watch } from 'vue';
+  import type { MenuItem } from '../../types/MenuData';
+  import type { MenuItemForm } from '../../types/menu';
+  import SpinnerUI from '../common/SpinnerUI.vue';
+  import SelectBoxUI from '../common/SelectBoxUI.vue';
+  import { useTranslate } from '../../composables/useTranslate';
+  import ImageUploader from '../common/ImageUploader.vue';
+  import { useMenuItemForm } from '../../composables/useMenuItemForm';
+  import { useModal } from '../../composables/useModal';
 
-const { translate: t } = useTranslate('menuItemModal')
+  const { translate: t } = useTranslate('menuItemModal');
 
-const props = defineProps<{
-  modelValue: boolean
-  itemToEdit: MenuItem | null
-  categoryOptions: { label: string; value: string }[]
-  isProcessing: boolean
-  formError: string
-}>()
+  const props = withDefaults(
+    defineProps<{
+      modelValue: boolean;
+      itemToEdit?: MenuItem | null;
+      categoryOptions: { label: string; value: string }[];
+      isProcessing: boolean;
+      formError: string;
+    }>(),
+    {
+      itemToEdit: null,
+    }
+  );
 
-const emit = defineEmits<{
-  (e: 'update:modelValue', value: boolean): void
-  (e: 'save', item: Omit<MenuItemForm, 'price'> & { price: number }): void
-  (e: 'cancel'): void
-}>()
+  const emit = defineEmits<{
+    (e: 'update:modelValue', value: boolean): void;
+    (e: 'save', item: Omit<MenuItemForm, 'price'> & { price: number }): void;
+    (e: 'cancel'): void;
+  }>();
 
-const {
-  form,
-  ingredientsText,
-  meatsText,
-  saucesText,
-  sizesText,
-  tagsText,
-  isFormValid,
-  resetForm,
-  initializeForm,
-  prepareFormData
-} = useMenuItemForm(props.isProcessing)
+  const {
+    form,
+    ingredientsText,
+    meatsText,
+    saucesText,
+    sizesText,
+    tagsText,
+    isFormValid,
+    resetForm,
+    initializeForm,
+    prepareFormData,
+  } = useMenuItemForm(props.isProcessing);
 
-const { show, hide } = useModal('menuItemModal')
+  const { show, hide } = useModal('menuItemModal');
 
-watch(
-  () => props.modelValue,
-  newVal => {
-    if (newVal) {
-      if (props.itemToEdit) {
-        initializeForm(props.itemToEdit)
+  watch(
+    () => props.modelValue,
+    newVal => {
+      if (newVal) {
+        if (props.itemToEdit) {
+          initializeForm(props.itemToEdit);
+        } else {
+          resetForm();
+        }
+        show();
       } else {
-        resetForm()
+        hide();
       }
-      show()
-    } else {
-      hide()
     }
-  }
-)
+  );
 
-watch(
-  () => props.itemToEdit,
-  newVal => {
-    if (newVal) {
-      initializeForm(newVal)
+  watch(
+    () => props.itemToEdit,
+    newVal => {
+      if (newVal) {
+        initializeForm(newVal);
+      }
     }
-  }
-)
+  );
 
-function save() {
-  const formData = prepareFormData()
-  if (formData) {
-    emit('save', formData)
-    cancel()
-  }
-}
+  const handleSave = (): void => {
+    const formData = prepareFormData();
+    if (formData) {
+      emit('save', formData);
+      handleCancel();
+    }
+  };
 
-function cancel() {
-  emit('update:modelValue', false)
-  emit('cancel')
-}
+  const handleCancel = (): void => {
+    emit('update:modelValue', false);
+    emit('cancel');
+  };
 </script>

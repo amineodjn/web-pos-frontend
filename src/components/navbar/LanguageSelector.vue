@@ -2,8 +2,8 @@
   <div class="relative">
     <button
       type="button"
-      @click="isOpen = !isOpen"
       class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5"
+      @click="handleToggleDropdown"
     >
       <svg
         class="w-5 h-5"
@@ -27,16 +27,16 @@
     >
       <div class="py-1">
         <button
-          @click="selectLanguage('en')"
           class="flex items-center w-full px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600"
           :class="{ 'bg-gray-100 dark:bg-gray-600': currentLocale === 'en' }"
+          @click="handleLanguageSelect('en')"
         >
           <span class="ml-1">ENG</span>
         </button>
         <button
-          @click="selectLanguage('pl')"
           class="flex items-center w-full px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600"
           :class="{ 'bg-gray-100 dark:bg-gray-600': currentLocale === 'pl' }"
+          @click="handleLanguageSelect('pl')"
         >
           <span class="ml-1">PL</span>
         </button>
@@ -46,35 +46,39 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted, onUnmounted } from 'vue'
-import { useI18n } from 'vue-i18n'
+  import { ref, watch, onMounted, onUnmounted } from 'vue';
+  import { useI18n } from 'vue-i18n';
 
-const { locale } = useI18n()
-const currentLocale = ref(locale.value)
-const isOpen = ref(false)
+  const { locale } = useI18n();
+  const currentLocale = ref(locale.value);
+  const isOpen = ref(false);
 
-const selectLanguage = (lang: string) => {
-  currentLocale.value = lang
-  locale.value = lang
-  isOpen.value = false
-}
+  const handleLanguageSelect = (lang: string): void => {
+    currentLocale.value = lang;
+    locale.value = lang;
+    isOpen.value = false;
+  };
 
-const handleClickOutside = (event: MouseEvent) => {
-  const target = event.target as HTMLElement
-  if (!target.closest('.relative')) {
-    isOpen.value = false
-  }
-}
+  const handleToggleDropdown = (): void => {
+    isOpen.value = !isOpen.value;
+  };
 
-onMounted(() => {
-  document.addEventListener('click', handleClickOutside)
-})
+  const handleClickOutside = (event: MouseEvent): void => {
+    const target = event.target as HTMLElement;
+    if (!target.closest('.relative')) {
+      isOpen.value = false;
+    }
+  };
 
-onUnmounted(() => {
-  document.removeEventListener('click', handleClickOutside)
-})
+  onMounted(() => {
+    document.addEventListener('click', handleClickOutside);
+  });
 
-watch(locale, newLocale => {
-  currentLocale.value = newLocale
-})
+  onUnmounted(() => {
+    document.removeEventListener('click', handleClickOutside);
+  });
+
+  watch(locale, newLocale => {
+    currentLocale.value = newLocale;
+  });
 </script>

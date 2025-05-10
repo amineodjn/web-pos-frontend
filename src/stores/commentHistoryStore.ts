@@ -1,36 +1,31 @@
-import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { defineStore } from 'pinia';
+import { ref, computed } from 'vue';
+
+interface Comment {
+  id: string;
+  text: string;
+  timestamp: string;
+}
 
 export const useCommentHistoryStore = defineStore('commentHistory', () => {
-  const commentHistory = ref<string[]>([])
+  const comments = ref<Comment[]>([]);
 
-  function addComment(comment: string) {
-    if (!comment.trim()) return
+  const handleAddComment = (comment: Comment): void => {
+    comments.value.push(comment);
+  };
 
-    const index = commentHistory.value.indexOf(comment)
-    if (index !== -1) {
-      commentHistory.value.splice(index, 1)
-    }
+  const handleGetComments = (): Comment[] => {
+    return comments.value;
+  };
 
-    commentHistory.value.unshift(comment)
-
-    if (commentHistory.value.length > 10) {
-      commentHistory.value.pop()
-    }
-  }
-
-  function getComments() {
-    return commentHistory.value
-  }
-
-  function clearHistory() {
-    commentHistory.value = []
-  }
+  const handleClearHistory = (): void => {
+    comments.value = [];
+  };
 
   return {
-    commentHistory,
-    addComment,
-    getComments,
-    clearHistory
-  }
-})
+    comments: computed(() => comments.value),
+    handleAddComment,
+    handleGetComments,
+    handleClearHistory,
+  };
+});

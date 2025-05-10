@@ -23,9 +23,9 @@
       {{ description }}
     </p>
     <button
-      @click="$emit('add-item')"
       :disabled="isProcessing"
       class="mt-6 bg-red-600 hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-700 text-white px-4 py-2 rounded-lg disabled:opacity-50 flex items-center gap-2 mx-auto transition-all duration-300 shadow-md hover:shadow-lg"
+      @click="$emit('add-item')"
     >
       <svg
         class="w-5 h-5"
@@ -48,14 +48,14 @@
 </template>
 
 <script setup lang="ts">
-defineProps<{
-  title: string
-  description: string
-  buttonLabel: string
-  isProcessing: boolean
-}>()
+  defineProps<{
+    title: string;
+    description: string;
+    buttonLabel: string;
+    isProcessing: boolean;
+  }>();
 
-defineEmits<{
-  (e: 'add-item'): void
-}>()
+  defineEmits<{
+    (e: 'add-item'): void;
+  }>();
 </script>

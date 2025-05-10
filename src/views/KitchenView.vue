@@ -6,8 +6,8 @@
           <!-- Left side content can be added here if needed -->
         </div>
         <button
-          @click="refreshOrders"
           class="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+          @click="refreshOrders"
         >
           <svg
             class="w-6 h-6"
@@ -111,8 +111,8 @@
           <div class="flex justify-end space-x-2">
             <button
               v-if="order.status === 'in-progress'"
-              @click="updateOrderStatus(order.id, 'completed')"
               class="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700 transition-colors"
+              @click="updateOrderStatus(order.id, 'completed')"
             >
               {{ translateKitchView('complete') }}
             </button>
@@ -134,6 +134,7 @@ const { translate: translateStatus } = useTranslate('status')
 const orderStore = useOrderStore()
 const activeOrders = ref<Order[]>([])
 
+<<<<<<< Updated upstream
 const formatTime = (timestamp: Date) => {
   return timestamp.toLocaleTimeString()
 }
@@ -154,6 +155,24 @@ const updateOrderStatus = (orderId: string, status: Order['status']) => {
     refreshOrders()
   }
 }
+=======
+  const formatTime = (timestamp: string): string => {
+    return new Date(timestamp).toLocaleTimeString();
+  };
+
+  const refreshOrders = (): void => {
+    activeOrders.value = orderStore.activeOrders.filter(order => order.status === 'in-progress');
+  };
+
+  const updateOrderStatus = (orderId: string, status: Order['status']): void => {
+    orderStore.handleUpdateOrderStatus(orderId, status);
+    if (status === 'completed') {
+      activeOrders.value = activeOrders.value.filter(order => order.id !== orderId);
+    } else {
+      refreshOrders();
+    }
+  };
+>>>>>>> Stashed changes
 
 onMounted(() => {
   refreshOrders()

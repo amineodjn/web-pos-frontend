@@ -2,7 +2,7 @@
   <div
     v-if="modelValue"
     class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-    @click="close"
+    @click="handleClose"
   >
     <div
       class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-md w-full mx-4"
@@ -20,8 +20,8 @@
           </h4>
           <div v-if="commentHistory.length > 3" class="flex gap-2">
             <button
-              @click="scrollHistory('up')"
               class="p-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors duration-200"
+              @click="scrollHistory('up')"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -37,8 +37,8 @@
               </svg>
             </button>
             <button
-              @click="scrollHistory('down')"
               class="p-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors duration-200"
+              @click="scrollHistory('down')"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -55,12 +55,12 @@
             </button>
           </div>
         </div>
-        <div class="space-y-2 max-h-32 overflow-y-auto" ref="historyContainer">
+        <div ref="historyContainer" class="space-y-2 max-h-32 overflow-y-auto">
           <button
             v-for="(historyComment, index) in visibleComments"
             :key="index"
-            @click="selectHistoryComment(historyComment)"
             class="w-full text-left px-3 py-2 text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors duration-200"
+            @click="selectHistoryComment(historyComment)"
           >
             {{ historyComment }}
           </button>
@@ -75,14 +75,14 @@
       ></textarea>
       <div class="flex justify-end gap-2">
         <button
-          @click="close"
           class="px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md"
+          @click="handleClose"
         >
           {{ translateCurrentOrder('cancel') }}
         </button>
         <button
-          @click="save"
           class="px-4 py-2 bg-gray-900 text-white dark:bg-gray-700 dark:text-white rounded-md hover:bg-gray-800 dark:hover:bg-gray-600"
+          @click="handleSave"
         >
           {{ translateCurrentOrder('save') }}
         </button>
@@ -92,76 +92,74 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
-import { useTranslate } from '../../../composables/useTranslate'
-import { useOrderStore } from '../../../stores/orderStore'
-import { useCommentHistoryStore } from '../../../stores/commentHistoryStore'
+  import { ref, watch } from 'vue';
+  import { useTranslate } from '../../../composables/useTranslate';
+  import { useOrderStore } from '@/stores/orderStore';
+  import { useCommentHistoryStore } from '@/stores/commentHistoryStore';
 
-const { translate: translateCurrentOrder } = useTranslate('orders.currentOrder')
-const orderStore = useOrderStore()
-const commentHistoryStore = useCommentHistoryStore()
+  const { translate: translateCurrentOrder } = useTranslate('orders.currentOrder');
+  const orderStore = useOrderStore();
+  const commentHistoryStore = useCommentHistoryStore();
 
-const props = defineProps<{
-  modelValue: boolean
-  itemId: string
-}>()
+  interface Props {
+    modelValue: boolean;
+    itemId: string;
+  }
 
-const emit = defineEmits<{
-  (e: 'update:modelValue', value: boolean): void
-}>()
+  interface Emits {
+    (e: 'update:modelValue', value: boolean): void;
+  }
 
-const comment = ref('')
-const commentHistory = ref<string[]>([])
-const currentIndex = ref(0)
-const visibleComments = ref<string[]>([])
+  const props = defineProps<Props>();
+  const emit = defineEmits<Emits>();
 
-watch(
-  () => props.modelValue,
-  newValue => {
-    if (newValue) {
-      const item = orderStore.currentOrder.items?.find(
-        i => i.id === props.itemId
-      )
-      comment.value = item?.comment || ''
-      commentHistory.value = commentHistoryStore.getComments()
-      updateVisibleComments()
-    } else {
-      comment.value = ''
+  const comment = ref<string>('');
+  const commentHistory = ref<string[]>([]);
+  const currentIndex = ref<number>(0);
+  const visibleComments = ref<string[]>([]);
+
+  watch(
+    () => props.modelValue,
+    newValue => {
+      if (newValue) {
+        const item = orderStore.currentOrder.items?.find(i => i.id === props.itemId);
+        comment.value = item?.comment || '';
+        commentHistory.value = commentHistoryStore.getComments();
+        updateVisibleComments();
+      } else {
+        comment.value = '';
+      }
     }
-  }
-)
+  );
 
-const updateVisibleComments = () => {
-  const start = currentIndex.value
-  const end = Math.min(start + 3, commentHistory.value.length)
-  visibleComments.value = commentHistory.value.slice(start, end)
-}
+  const updateVisibleComments = (): void => {
+    const start = currentIndex.value;
+    const end = Math.min(start + 3, commentHistory.value.length);
+    visibleComments.value = commentHistory.value.slice(start, end);
+  };
 
-const scrollHistory = (direction: 'up' | 'down') => {
-  if (direction === 'up') {
-    currentIndex.value = Math.max(0, currentIndex.value - 1)
-  } else {
-    currentIndex.value = Math.min(
-      commentHistory.value.length - 3,
-      currentIndex.value + 1
-    )
-  }
-  updateVisibleComments()
-}
+  const scrollHistory = (direction: 'up' | 'down'): void => {
+    if (direction === 'up') {
+      currentIndex.value = Math.max(0, currentIndex.value - 1);
+    } else {
+      currentIndex.value = Math.min(commentHistory.value.length - 3, currentIndex.value + 1);
+    }
+    updateVisibleComments();
+  };
 
-const close = () => {
-  emit('update:modelValue', false)
-}
+  const handleClose = (): void => {
+    emit('update:modelValue', false);
+  };
 
-const save = () => {
-  orderStore.updateItemComment(props.itemId, comment.value)
-  if (comment.value.trim()) {
-    commentHistoryStore.addComment(comment.value)
-  }
-  close()
-}
+  const handleSave = (): void => {
+    if (comment.value.trim()) {
+      orderStore.handleUpdateItemComment(props.itemId, comment.value);
+      commentHistoryStore.addComment(comment.value);
+    }
+    handleClose();
+  };
 
-const selectHistoryComment = (historyComment: string) => {
-  comment.value = historyComment
-}
+  const selectHistoryComment = (historyComment: string): void => {
+    comment.value = historyComment;
+  };
 </script>

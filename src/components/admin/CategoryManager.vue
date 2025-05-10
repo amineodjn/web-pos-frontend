@@ -3,9 +3,7 @@
     <h2 class="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
       {{ config.title }}
     </h2>
-    <div
-      class="mb-6 p-4 bg-gray-100 dark:bg-dark-bg border dark:border-gray-600 rounded"
-    >
+    <div class="mb-6 p-4 bg-gray-100 dark:bg-dark-bg border dark:border-gray-600 rounded">
       <h3 class="font-medium mb-2 text-gray-900 dark:text-white">
         {{ config.addNewLabel }}
       </h3>
@@ -16,9 +14,9 @@
           :placeholder="config.placeholder"
         />
         <button
-          @click="addCategory"
           :disabled="!categoryName || isProcessing"
           class="bg-gray-900 dark:bg-gray-800 dark:focus:ring-offset-gray-900 dark:hover:bg-gray-700 disabled:opacity-50 duration-300 flex focus:ring-2 focus:ring-offset-2 focus:ring-red-500 gap-2 hover:bg-gray-800 hover:shadow-lg items-center mt-0.5 px-4 py-2 rounded-lg shadow-md text-white transition-all"
+          @click="handleAddCategory"
         >
           <svg
             class="w-5 h-5"
@@ -48,9 +46,9 @@
       >
         <span>{{ category.categoryName }}</span>
         <button
-          @click="$emit('delete', category)"
           :disabled="isProcessing"
           class="bg-red-500 hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-700 text-white p-2 rounded-full disabled:opacity-50 flex items-center transition-transform hover:scale-110"
+          @click="$emit('delete', category)"
         >
           <svg
             class="w-5 h-5 text-white"
@@ -80,37 +78,33 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import type { Category } from '../../types/MenuData'
+  import { ref } from 'vue';
+  import type { Category } from '../../types/MenuData';
 
-const props = defineProps<{
-  categories: Category[]
-  isProcessing: boolean
-  config: {
-    title: string
-    addNewLabel: string
-    placeholder: string
-    savingLabel: string
-    addLabel: string
-    emptyMessage: string
-  }
-}>()
+  const props = defineProps<{
+    categories: Category[];
+    isProcessing: boolean;
+    config: {
+      title: string;
+      addNewLabel: string;
+      placeholder: string;
+      savingLabel: string;
+      addLabel: string;
+      emptyMessage: string;
+    };
+  }>();
 
-const emit = defineEmits<{
-  (e: 'add', value: string): void
-  (e: 'delete', value: Category): void
-}>()
+  const emit = defineEmits<{
+    (e: 'add', value: string): void;
+    (e: 'delete', value: Category): void;
+  }>();
 
-const categoryName = ref('')
+  const categoryName = ref('');
 
-function addCategory() {
-  if (categoryName.value.trim().toLocaleLowerCase() && !props.isProcessing) {
-    emit(
-      'add',
-      categoryName.value.trim().charAt(0).toUpperCase() +
-        categoryName.value.slice(1)
-    )
-    categoryName.value = ''
-  }
-}
+  const handleAddCategory = (): void => {
+    if (categoryName.value.trim().toLocaleLowerCase() && !props.isProcessing) {
+      emit('add', categoryName.value.trim().charAt(0).toUpperCase() + categoryName.value.slice(1));
+      categoryName.value = '';
+    }
+  };
 </script>

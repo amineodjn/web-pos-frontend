@@ -1,42 +1,45 @@
-export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE'
+import config from '../config/api.config';
 
-export interface FetchOptions<T = unknown> {
-  method?: HttpMethod
-  body?: T
-  headers?: Record<string, string>
+interface FetchOptions extends RequestInit {
+  params?: Record<string, string | number | boolean>;
 }
 
-export async function fetchApi<T = unknown, R = unknown>(
-  url: string,
-  options: FetchOptions<T> = {}
-): Promise<R> {
-  const { method = 'GET', body, headers = {} } = options
-
-  const defaultHeaders = {
-    'Content-Type': 'application/json',
-    ...headers
-  }
+export const fetchApi = async <T>(endpoint: string, options: FetchOptions = {}): Promise<T> => {
+  const { params, ...fetchOptions } = options;
+  const queryString = params
+    ? '?' + new URLSearchParams(params as Record<string, string>).toString()
+    : '';
+  const url = `${config.baseUrl}${endpoint}${queryString}`;
 
   try {
     const response = await fetch(url, {
-      method,
-      headers: defaultHeaders,
-      body: body ? JSON.stringify(body) : undefined
-    })
-
-    const responseData = await response.json()
+      ...fetchOptions,
+      headers: {
+        'Content-Type': 'application/json',
+        ...fetchOptions.headers,
+      },
+    });
 
     if (!response.ok) {
-      throw new Error(
-        responseData.detail ||
-          responseData.message ||
-          JSON.stringify(responseData)
-      )
+      const contentType = response.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+      } else {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
     }
 
-    return responseData
+    const contentType = response.headers.get('content-type');
+    if (!contentType || !contentType.includes('application/json')) {
+      throw new Error('Invalid response format: Expected JSON');
+    }
+
+    return response.json();
   } catch (error) {
-    console.log(error)
-    throw error
+    if (error instanceof Error) {
+      throw new Error(`API request failed: ${error.message}`);
+    }
+    throw error;
   }
-}
+};

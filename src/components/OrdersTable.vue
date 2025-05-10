@@ -82,6 +82,7 @@
           </td>
           <td v-if="showActions" class="px-6 py-4">
             <div class="flex space-x-2">
+<<<<<<< Updated upstream
               <button
                 v-if="order.status === 'pending'"
                 @click="$emit('update-status', order.id, 'in-progress')"
@@ -105,6 +106,17 @@
               >
                 {{ translateOrdersTable('actions.cancel') }}
               </button>
+=======
+              <template v-for="action in actions" :key="action.key">
+                <button
+                  v-if="!action.condition || action.condition(order)"
+                  :class="action.class"
+                  @click="action.handler(order)"
+                >
+                  {{ action.label }}
+                </button>
+              </template>
+>>>>>>> Stashed changes
             </div>
           </td>
         </tr>

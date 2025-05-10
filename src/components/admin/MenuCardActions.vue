@@ -2,13 +2,11 @@
   <div
     class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 rounded-lg cursor-pointer"
   >
-    <div
-      class="bg-gray-800 bg-opacity-75 backdrop-blur-sm p-3 rounded-lg flex gap-3"
-    >
+    <div class="bg-gray-800 bg-opacity-75 backdrop-blur-sm p-3 rounded-lg flex gap-3">
       <button
-        @click="$emit('edit')"
         :disabled="isProcessing"
         class="bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-white p-2 rounded-full disabled:opacity-50 flex items-center transition-transform hover:scale-110"
+        @click="$emit('edit')"
       >
         <svg
           class="w-5 h-5 text-white"
@@ -27,9 +25,9 @@
         </svg>
       </button>
       <button
-        @click="$emit('delete')"
         :disabled="isProcessing"
         class="bg-red-500 hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-700 text-white p-2 rounded-full disabled:opacity-50 flex items-center transition-transform hover:scale-110"
+        @click="$emit('delete')"
       >
         <svg
           class="w-5 h-5 text-white"
@@ -57,13 +55,13 @@
 </template>
 
 <script setup lang="ts">
-defineProps<{
-  isProcessing: boolean
-  category: string
-}>()
+  defineProps<{
+    isProcessing: boolean;
+    category: string;
+  }>();
 
-defineEmits<{
-  (e: 'edit'): void
-  (e: 'delete'): void
-}>()
+  defineEmits<{
+    (e: 'edit'): void;
+    (e: 'delete'): void;
+  }>();
 </script>

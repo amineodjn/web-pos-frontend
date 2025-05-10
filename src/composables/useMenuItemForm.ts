@@ -1,134 +1,186 @@
-import { ref, reactive, computed, watch } from 'vue'
-import type { MenuItem } from '../types/MenuData'
-import { useMenuStore } from '../stores/menuStore'
-import { DEFAULT_FORM } from '../constants/menu'
+import { ref, computed, watch, type Ref, type ComputedRef } from 'vue';
+import type { MenuItem, Category } from '../types/MenuData';
+import { useMenuStore } from '../stores/menuStore';
+import type { ItemFormData } from '@/types/menu';
 
-type ExtendedMenuItem = MenuItem & {
-  category?: string
+interface FormDetails {
+  ingredients: string[];
+  meats: string[];
+  sauces: string[];
+  sizes: string[];
+  tags: string[];
 }
 
-export function useMenuItemForm(isProcessing: boolean) {
-  const form = reactive({ ...DEFAULT_FORM })
-  const ingredientsText = ref('')
-  const meatsText = ref('')
-  const saucesText = ref('')
-  const sizesText = ref('Regular')
-  const tagsText = ref('')
+interface FormData {
+  name: string;
+  description: string;
+  price: number;
+  category_id: string;
+  imageUrl: string;
+  available: boolean;
+  currency: string;
+  details: FormDetails;
+}
+
+export const useMenuItemForm = (): {
+  form: Ref<FormData>;
+  ingredientsText: Ref<string>;
+  meatsText: Ref<string>;
+  saucesText: Ref<string>;
+  sizesText: Ref<string>;
+  tagsText: Ref<string>;
+  isFormValid: ComputedRef<boolean>;
+  handleResetForm: () => void;
+  handleInitializeForm: (item: ItemFormData) => void;
+  handleGetCategoryFromItem: (item: MenuItem | ItemFormData) => string;
+  handleValidatePrice: (price: number) => boolean;
+  handlePrepareFormData: () => ItemFormData | undefined;
+} => {
+  const menuStore = useMenuStore();
+  const form = ref<FormData>({
+    name: '',
+    description: '',
+    price: 0,
+    category_id: '',
+    imageUrl: '',
+    available: true,
+    currency: 'PLN',
+    details: {
+      ingredients: [],
+      meats: [],
+      sauces: [],
+      sizes: [],
+      tags: [],
+    },
+  });
+
+  const ingredientsText = ref('');
+  const meatsText = ref('');
+  const saucesText = ref('');
+  const sizesText = ref('Regular');
+  const tagsText = ref('');
 
   const isFormValid = computed(() => {
-    const price = parseFloat(form.price || '0')
+    const price = parseFloat(form.value.price?.toString() || '0');
     return Boolean(
-      form.name?.trim() &&
-        form.category_id &&
+      form.value.name?.trim() &&
+        form.value.category_id &&
         !isNaN(price) &&
         price > 0 &&
-        form.currency?.trim() &&
-        form.description?.trim()
-    )
-  })
+        form.value.currency?.trim() &&
+        form.value.description?.trim()
+    );
+  });
 
-  function parseCommaSeparatedText(text: string): string[] {
+  const handleParseCommaSeparatedText = (text: string): string[] => {
     return text
-      ? text
-          .split(',')
-          .map(item => item.trim())
-          .filter(Boolean)
-      : []
-  }
+      .split(',')
+      .map(item => item.trim())
+      .filter(Boolean);
+  };
 
-  function resetForm() {
-    Object.assign(form, DEFAULT_FORM)
-    ingredientsText.value = ''
-    meatsText.value = ''
-    saucesText.value = ''
-    sizesText.value = 'Regular'
-    tagsText.value = ''
-  }
+  const handleResetForm = (): void => {
+    form.value = {
+      name: '',
+      description: '',
+      price: 0,
+      category_id: '',
+      imageUrl: '',
+      available: true,
+      currency: 'PLN',
+      details: {
+        ingredients: [],
+        meats: [],
+        sauces: [],
+        sizes: [],
+        tags: [],
+      },
+    };
+    ingredientsText.value = '';
+    meatsText.value = '';
+    saucesText.value = '';
+    sizesText.value = 'Regular';
+    tagsText.value = '';
+  };
 
-  function initializeForm(item: MenuItem) {
-    const category = getCategoryFromItem(item)
-    const existingImageUrl = item.imageUrl || ''
+  const handleInitializeForm = (item: ItemFormData): void => {
+    const category = handleGetCategoryFromItem(item);
+    const existingImageUrl = item.imageUrl || '';
 
-    Object.assign(form, DEFAULT_FORM, {
-      ...item,
+    form.value = {
+      name: item.name || '',
+      description: item.description || '',
+      price: item.price || 0,
       category_id: category,
       imageUrl: existingImageUrl,
+      available: item.available ?? true,
+      currency: item.currency || 'PLN',
       details: {
         ingredients: item.details?.ingredients || [],
         meats: item.details?.meats || [],
         sauces: item.details?.sauces || [],
         sizes: item.details?.sizes || [],
-        tags: item.details?.tags || []
-      }
-    })
+        tags: item.details?.tags || [],
+      },
+    };
 
-    ingredientsText.value = item.details?.ingredients?.join(', ') || ''
-    meatsText.value = item.details?.meats?.join(', ') || ''
-    saucesText.value = item.details?.sauces?.join(', ') || ''
-    sizesText.value = item.details?.sizes?.join(', ') || 'Regular'
-    tagsText.value = item.details?.tags?.join(', ') || ''
-  }
+    ingredientsText.value = item.details?.ingredients?.join(', ') || '';
+    meatsText.value = item.details?.meats?.join(', ') || '';
+    saucesText.value = item.details?.sauces?.join(', ') || '';
+    sizesText.value = item.details?.sizes?.join(', ') || 'Regular';
+    tagsText.value = item.details?.tags?.join(', ') || '';
+  };
 
-  function getCategoryFromItem(item: MenuItem): string {
-    const extendedItem = item as ExtendedMenuItem
-    if (extendedItem.category) {
-      return extendedItem.category
+  const handleGetCategoryFromItem = (item: MenuItem | ItemFormData): string => {
+    if ('id' in item) {
+      const category = menuStore.categories.find((cat: Category) =>
+        cat.categoryItems.some((i: MenuItem) => i.id === item.id)
+      );
+      return category?.categoryName || '';
     }
+    return '';
+  };
 
-    const menuStore = useMenuStore()
-    for (const category in menuStore.items) {
-      if (menuStore.items[category].some(i => i.id === item.id)) {
-        return category
-      }
-    }
-    return ''
-  }
+  const handleValidatePrice = (price: number): boolean => {
+    return price >= 0;
+  };
 
-  function validatePrice(value: string | number): string {
-    if (typeof value === 'number') {
-      return value.toFixed(1)
-    }
-    const cleaned = String(value).replace(/[^\d.]/g, '')
-    const floatValue = parseFloat(cleaned)
-    return !isNaN(floatValue) ? floatValue.toFixed(2) : ''
-  }
+  const handlePrepareFormData = (): ItemFormData | undefined => {
+    if (!isFormValid.value) return undefined;
 
-  function prepareFormData() {
-    if (!isFormValid.value || isProcessing) return null
-
-    const { price, ...rest } = form
-    const validatedPrice = validatePrice(price)
+    const { price, ...rest } = form.value;
+    const validatedPrice = handleValidatePrice(price);
 
     if (!validatedPrice) {
-      return null
+      return undefined;
     }
 
     return {
       ...rest,
-      price: Number(validatedPrice)
-    }
-  }
+      price: Number(validatedPrice),
+    };
+  };
 
   // Watch all text fields
   watch(ingredientsText, newVal => {
-    form.details.ingredients = parseCommaSeparatedText(newVal)
-  })
+    form.value.details.ingredients = handleParseCommaSeparatedText(newVal);
+  });
 
   watch(meatsText, newVal => {
-    form.details.meats = parseCommaSeparatedText(newVal)
-  })
+    form.value.details.meats = handleParseCommaSeparatedText(newVal);
+  });
 
   watch(saucesText, newVal => {
-    form.details.sauces = parseCommaSeparatedText(newVal)
-  })
+    form.value.details.sauces = handleParseCommaSeparatedText(newVal);
+  });
 
   watch(sizesText, newVal => {
-    form.details.sizes = parseCommaSeparatedText(newVal)
-  })
+    form.value.details.sizes = handleParseCommaSeparatedText(newVal);
+  });
 
   watch(tagsText, newVal => {
-    form.details.tags = parseCommaSeparatedText(newVal)
-  })
+    form.value.details.tags = handleParseCommaSeparatedText(newVal);
+  });
 
   return {
     form,
@@ -138,8 +190,10 @@ export function useMenuItemForm(isProcessing: boolean) {
     sizesText,
     tagsText,
     isFormValid,
-    resetForm,
-    initializeForm,
-    prepareFormData
-  }
-}
+    handleResetForm,
+    handleInitializeForm,
+    handleGetCategoryFromItem,
+    handleValidatePrice,
+    handlePrepareFormData,
+  };
+};

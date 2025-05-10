@@ -5,16 +5,16 @@
         v-model="searchQuery"
         :label="searchLabel"
         :placeholder="searchPlaceholder"
+        class="w-full"
         @search="emit('search', searchQuery)"
         @clear="emit('search', '')"
-        class="w-full"
       />
     </div>
     <div class="flex items-center gap-4">
       <button
-        @click="emit('add-item')"
         :disabled="isProcessing"
         class="bg-gray-900 mt-0.5 hover:bg-gray-800 dark:bg-gray-800 dark:hover:bg-gray-700 text-white px-4 py-2 rounded-lg disabled:opacity-50 flex items-center gap-2 transition-all duration-300 shadow-md hover:shadow-lg focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
+        @click="emit('add-item')"
       >
         <svg
           class="w-5 h-5"
@@ -41,25 +41,25 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
-import SearchInputUI from '../common/SearchInputUI.vue'
+  import { ref, watch } from 'vue';
+  import SearchInputUI from '../common/SearchInputUI.vue';
 
-const props = defineProps<{
-  searchLabel?: string
-  searchPlaceholder: string
-  addButtonLabel: string
-  isProcessing: boolean
-  initialSearchQuery?: string
-}>()
+  const props = defineProps<{
+    searchLabel?: string;
+    searchPlaceholder: string;
+    addButtonLabel: string;
+    isProcessing: boolean;
+    initialSearchQuery?: string;
+  }>();
 
-const emit = defineEmits<{
-  (e: 'add-item'): void
-  (e: 'search', query: string): void
-}>()
+  const emit = defineEmits<{
+    (e: 'add-item'): void;
+    (e: 'search', query: string): void;
+  }>();
 
-const searchQuery = ref(props.initialSearchQuery || '')
+  const searchQuery = ref(props.initialSearchQuery || '');
 
-watch(searchQuery, newValue => {
-  emit('search', newValue)
-})
+  watch(searchQuery, newValue => {
+    emit('search', newValue);
+  });
 </script>
