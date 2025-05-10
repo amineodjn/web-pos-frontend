@@ -1,6 +1,9 @@
 <template>
   <div class="overflow-x-auto">
-    <div v-if="orders.length === 0" class="text-center py-12">
+    <div v-if="isLoading">
+      <TableSkeleton />
+    </div>
+    <div v-else-if="orders.length === 0" class="text-center py-12">
       <svg
         class="w-16 h-16 text-gray-400 dark:text-gray-600 mx-auto"
         aria-hidden="true"
@@ -25,31 +28,11 @@
         {{ translateOrdersTable('empty.description') }}
       </p>
     </div>
-    <table
-      v-else
-      class="w-full text-sm text-left text-gray-500 dark:text-gray-400"
-    >
-      <thead
-        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
-      >
+    <table v-else class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+      <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
         <tr>
-          <th scope="col" class="px-6 py-3">
-            {{ translateOrdersTable('orderId') }}
-          </th>
-          <th scope="col" class="px-6 py-3">
-            {{ translateOrdersTable('type') }}
-          </th>
-          <th scope="col" class="px-6 py-3">
-            {{ translateOrdersTable('items') }}
-          </th>
-          <th scope="col" class="px-6 py-3">
-            {{ translateOrdersTable('total') }}
-          </th>
-          <th scope="col" class="px-6 py-3">
-            {{ translateOrdersTable('status') }}
-          </th>
-          <th v-if="showActions" scope="col" class="px-6 py-3">
-            {{ translateOrdersTable('actions') }}
+          <th v-for="header in headers" :key="header.key" scope="col" class="px-6 py-3">
+            {{ header.label }}
           </th>
         </tr>
       </thead>
@@ -61,50 +44,114 @@
         >
           <td class="px-6 py-4">{{ order.id }}</td>
           <td class="px-6 py-4">
-            {{ translateOrdersTable(`types.${order.orderType}`) }}
+            <span
+              :class="[
+                'text-xs font-medium px-2.5 py-0.5 rounded',
+                {
+                  'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300':
+                    order.orderType === 'dine-in',
+                  'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300':
+                    order.orderType === 'takeaway',
+                },
+              ]"
+            >
+              {{ translateOrderType(order.orderType) }}
+            </span>
           </td>
-          <td class="px-6 py-4">{{ order.items.length }}</td>
+          <td class="px-6 py-4">
+            {{
+              order.orderType === 'dine-in'
+                ? translateTable('dineIn', { number: order.tableNumber ?? 0 })
+                : translateTable('takeaway')
+            }}
+          </td>
+          <td class="px-6 py-4">{{ order.items?.length || 0 }}</td>
           <td class="px-6 py-4">PLN{{ order.total.toFixed(2) }}</td>
           <td class="px-6 py-4">
             <span
-              :class="{
-                'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300':
-                  order.status === 'completed',
-                'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300':
-                  order.status === 'in-progress',
-                'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300':
-                  order.status === 'cancelled'
-              }"
-              class="text-xs font-medium px-2.5 py-0.5 rounded"
+              :class="[
+                'text-xs font-medium px-2.5 py-0.5 rounded',
+                {
+                  'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300':
+                    order.status === 'pending',
+                  'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300':
+                    order.status === 'completed',
+                  'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300':
+                    order.status === 'cancelled',
+                },
+              ]"
             >
               {{ translateStatus(order.status) }}
             </span>
           </td>
           <td v-if="showActions" class="px-6 py-4">
-            <div class="flex space-x-2">
-              <button
-                v-if="order.status === 'pending'"
-                @click="$emit('update-status', order.id, 'in-progress')"
-                class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300"
-              >
-                {{ translateOrdersTable('actions.start') }}
-              </button>
-              <button
-                v-if="order.status === 'in-progress'"
-                @click="$emit('update-status', order.id, 'completed')"
-                class="text-green-600 hover:text-green-900 dark:text-green-400 dark:hover:text-green-300"
-              >
-                {{ translateOrdersTable('actions.complete') }}
-              </button>
-              <button
-                v-if="
-                  order.status !== 'completed' && order.status !== 'cancelled'
-                "
-                @click="$emit('update-status', order.id, 'cancelled')"
-                class="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300"
-              >
-                {{ translateOrdersTable('actions.cancel') }}
-              </button>
+            <div class="flex space-x-3">
+              <template v-for="action in actions" :key="action.key">
+                <button
+                  v-if="!action.condition || action.condition(order)"
+                  @click="action.handler(order)"
+                  class="p-1.5 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200"
+                  :aria-label="action.label"
+                >
+                  <svg
+                    v-if="action.key === 'view'"
+                    class="w-6 h-6 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke="currentColor"
+                      stroke-width="2"
+                      d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z"
+                    />
+                    <path
+                      stroke="currentColor"
+                      stroke-width="2"
+                      d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                    />
+                  </svg>
+                  <svg
+                    v-else-if="action.key === 'complete'"
+                    class="w-6 h-6 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15 4h3a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3m0 3h6m-6 7 2 2 4-4m-5-9v4h4V3h-4Z"
+                    />
+                  </svg>
+                  <svg
+                    v-else-if="action.key === 'cancel'"
+                    class="w-6 h-6 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"
+                    />
+                  </svg>
+                </button>
+              </template>
             </div>
           </td>
         </tr>
@@ -114,18 +161,50 @@
 </template>
 
 <script setup lang="ts">
-import { useTranslate } from '../composables/useTranslate'
-import type { Order } from '../stores/orderStore'
+  import { computed } from 'vue';
+  import { useTranslate } from '../composables/useTranslate';
+  import type { Order } from '../stores/orderStore';
+  import TableSkeleton from './ui/TableSkeleton.vue';
 
-const { translate: translateOrdersTable } = useTranslate('orders.table')
-const { translate: translateStatus } = useTranslate('status')
+  const { translate: translateOrderType } = useTranslate('orders.currentOrder.orderType');
+  const { translate: translateTable } = useTranslate('orders.activeOrders.table');
+  const { translate: translateStatus } = useTranslate('status');
+  const { translate: translateOrdersTable } = useTranslate('orders.table');
 
-defineProps<{
-  orders: Order[]
-  showActions?: boolean
-}>()
+  interface TableHeader {
+    key: string;
+    label: string;
+  }
 
-defineEmits<{
-  (e: 'update-status', orderId: string, status: Order['status']): void
-}>()
+  interface TableAction {
+    key: string;
+    label: string;
+    handler: (order: Order) => void;
+    class: string;
+    condition?: (order: Order) => boolean;
+  }
+
+  const props = defineProps<{
+    orders: Order[];
+    showActions?: boolean;
+    headers?: TableHeader[];
+    actions?: TableAction[];
+    isLoading?: boolean;
+  }>();
+
+  const defaultHeaders: TableHeader[] = [
+    { key: 'id', label: 'Order ID' },
+    { key: 'type', label: 'Type' },
+    { key: 'table', label: 'Table' },
+    { key: 'items', label: 'Items' },
+    { key: 'total', label: 'Total' },
+    { key: 'status', label: 'Status' },
+  ];
+
+  const headers = computed(() => {
+    if (props.headers) return props.headers;
+    return props.showActions
+      ? [...defaultHeaders, { key: 'actions', label: 'Actions' }]
+      : defaultHeaders;
+  });
 </script>

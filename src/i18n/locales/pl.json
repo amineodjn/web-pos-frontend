@@ -163,6 +163,7 @@
       "tax": "Podatek",
       "total": "Razem",
       "placeOrder": "Złóż zamówienie",
+      "processing": "Przetwarzanie...",
       "clearOrder": "Wyczyść zamówienie",
       "add": "Dodaj",
       "addComment": "Dodaj komentarz",
@@ -185,7 +186,9 @@
       "actions": {
         "view": "Podgląd",
         "complete": "Zakończ",
-        "cancel": "Anuluj"
+        "cancel": "Anuluj",
+        "deleteTitle": "Usuń zamówienie",
+        "deleteMessage": "Czy na pewno chcesz usunąć to zamówienie? Tej operacji nie można cofnąć."
       },
       "table": {
         "dineIn": "Stolik {number}",
@@ -244,7 +247,6 @@
   },
   "status": {
     "pending": "Oczekujące",
-    "in-progress": "W trakcie",
     "completed": "Zakończone",
     "cancelled": "Anulowane"
   },
@@ -274,5 +276,9 @@
       "confirm": "Potwierdź",
       "cancel": "Anuluj"
     }
+  },
+  "common": {
+    "delete": "Usuń",
+    "cancel": "Anuluj"
   }
 }

@@ -1,57 +1,57 @@
-import { defineStore } from 'pinia'
-import { ref, computed, onMounted } from 'vue'
-import type { MenuItem, MenuData, Category } from '../types/MenuData'
-import { menuApi } from '../services/menuApi'
-import { categoryApi } from '../services/categoryApi'
-import { itemApi } from '../services/itemApi'
-import config from '../config/api.config'
+import { defineStore } from 'pinia';
+import { ref, computed, onMounted } from 'vue';
+import type { MenuItem, MenuData, Category } from '../types/MenuData';
+import { menuApi } from '../services/menuApi';
+import { categoryApi } from '../services/categoryApi';
+import { itemApi } from '../services/itemApi';
+import config from '../config/api.config';
 
 export const useMenuStore = defineStore('menu', () => {
-  const categories = ref<Category[]>([])
-  const items = ref<Record<string, MenuItem[]>>({})
-  const isLoading = ref<boolean>(false)
-  const error = ref<string | null>(null)
+  const categories = ref<Category[]>([]);
+  const items = ref<Record<string, MenuItem[]>>({});
+  const isLoading = ref<boolean>(false);
+  const error = ref<string | null>(null);
 
   const allItems = computed((): MenuItem[] => {
-    let result: MenuItem[] = []
+    let result: MenuItem[] = [];
     for (const categoryId in items.value) {
-      result = [...result, ...items.value[categoryId]]
+      result = [...result, ...items.value[categoryId]];
     }
-    return result
-  })
+    return result;
+  });
 
   async function fetchMenuData() {
-    isLoading.value = true
-    error.value = null
+    isLoading.value = true;
+    error.value = null;
 
     try {
-      const data: MenuData = await menuApi.getMenu()
-      categories.value = data.menu
-      items.value = {}
-      for (const cat of data.menu) {
-        items.value[cat.categoryId] = cat.categoryItems.map(
-          (item: MenuItem) => ({
-            ...item,
-            available: Boolean(item.is_available ?? item.available ?? true)
-          })
-        ) as MenuItem[]
-      }
+      const data: MenuData = await menuApi.getMenu();
+      const normalizedMenu = data.menu.map(cat => {
+        const normalizedItems = cat.categoryItems.map((item: MenuItem) => ({
+          ...item,
+          available: Boolean(item.is_available ?? item.available ?? true),
+          imageUrl: item.imageUrl || item.image_url || '',
+        })) as MenuItem[];
+        items.value[cat.categoryId] = normalizedItems;
+        return {
+          ...cat,
+          categoryItems: normalizedItems,
+        };
+      });
+      categories.value = normalizedMenu;
     } catch (err) {
-      console.error('Error fetching menu data:', err)
-      error.value = err instanceof Error ? err.message : 'Unknown error'
-      categories.value = []
-      items.value = {}
+      console.error('Error fetching menu data:', err);
+      error.value = err instanceof Error ? err.message : 'Unknown error';
+      categories.value = [];
+      items.value = {};
     } finally {
-      isLoading.value = false
+      isLoading.value = false;
     }
   }
 
   async function addMenuItem(
     categoryId: string,
-    item: Omit<
-      MenuItem,
-      'id' | 'itemNumber' | 'category_id' | 'organization_id'
-    >
+    item: Omit<MenuItem, 'id' | 'itemNumber' | 'category_id' | 'organization_id'>
   ) {
     try {
       const requestBody = {
@@ -72,24 +72,20 @@ export const useMenuStore = defineStore('menu', () => {
         sauces: Array.isArray(item.details?.sauces)
           ? item.details.sauces.join(', ')
           : 'No sauces specified',
-        sizes: Array.isArray(item.details?.sizes)
-          ? item.details.sizes.join(', ')
-          : 'Regular',
-        tags: Array.isArray(item.details?.tags)
-          ? item.details.tags.join(', ')
-          : 'New',
-        currency: item.currency || 'PLN'
-      }
+        sizes: Array.isArray(item.details?.sizes) ? item.details.sizes.join(', ') : 'Regular',
+        tags: Array.isArray(item.details?.tags) ? item.details.tags.join(', ') : 'New',
+        currency: item.currency || 'PLN',
+      };
 
-      const data = await itemApi.addItem(requestBody)
-      categories.value = data.menu
-      items.value = {}
+      const data = await itemApi.addItem(requestBody);
+      categories.value = data.menu;
+      items.value = {};
       for (const cat of data.menu) {
-        items.value[cat.categoryId] = cat.categoryItems
+        items.value[cat.categoryId] = cat.categoryItems;
       }
     } catch (err) {
-      console.error('Error adding menu item:', err)
-      throw err
+      console.error('Error adding menu item:', err);
+      throw err;
     }
   }
 
@@ -120,36 +116,33 @@ export const useMenuStore = defineStore('menu', () => {
         tags: Array.isArray(updatedItem.details?.tags)
           ? updatedItem.details.tags.join(', ')
           : 'New',
-        currency: updatedItem.currency || 'PLN'
-      }
+        currency: updatedItem.currency || 'PLN',
+      };
 
-      const data = await itemApi.updateItem(requestBody)
+      const data = await itemApi.updateItem(requestBody);
 
       if (items.value[categoryId]) {
-        const itemIndex = items.value[categoryId].findIndex(
-          item => item.id === updatedItem.id
-        )
+        const itemIndex = items.value[categoryId].findIndex(item => item.id === updatedItem.id);
         if (itemIndex !== -1) {
           items.value[categoryId][itemIndex] = {
             ...updatedItem,
-            available: updatedItem.available
-          }
+            available: updatedItem.available,
+          };
         }
       }
 
-      categories.value = data.menu
-      items.value = {}
+      categories.value = data.menu;
+      items.value = {};
       for (const cat of data.menu) {
-        items.value[cat.categoryId] = cat.categoryItems.map(
-          (item: MenuItem) => ({
-            ...item,
-            available: Boolean(item.is_available ?? item.available ?? true)
-          })
-        ) as MenuItem[]
+        items.value[cat.categoryId] = cat.categoryItems.map((item: MenuItem) => ({
+          ...item,
+          available: Boolean(item.is_available ?? item.available ?? true),
+          imageUrl: item.imageUrl || item.image_url || '',
+        })) as MenuItem[];
       }
     } catch (err) {
-      console.error('Error updating menu item:', err)
-      throw err
+      console.error('Error updating menu item:', err);
+      throw err;
     }
   }
 
@@ -158,53 +151,49 @@ export const useMenuStore = defineStore('menu', () => {
       const data = await itemApi.deleteItem({
         category_id: categoryId,
         item_id: id,
-        organization_id: config.defaultParams.organization_id
-      })
-      categories.value = data.menu
-      items.value = {}
+        organization_id: config.defaultParams.organization_id,
+      });
+      categories.value = data.menu;
+      items.value = {};
       for (const cat of data.menu) {
-        items.value[cat.categoryId] = cat.categoryItems
+        items.value[cat.categoryId] = cat.categoryItems;
       }
     } catch (err) {
-      console.error('Error deleting menu item:', err)
-      throw err
+      console.error('Error deleting menu item:', err);
+      throw err;
     }
   }
 
   async function addCategory(categoryName: string) {
     if (!categories.value.some(cat => cat.categoryName === categoryName)) {
       try {
-        const data = await categoryApi.addCategory(categoryName)
-        const newCategory = data.menu.find(
-          cat => cat.categoryName === categoryName
-        )
+        const data = await categoryApi.addCategory(categoryName);
+        const newCategory = data.menu.find(cat => cat.categoryName === categoryName);
         if (newCategory) {
-          categories.value.push(newCategory)
-          items.value[newCategory.categoryId] = []
+          categories.value.push(newCategory);
+          items.value[newCategory.categoryId] = [];
         }
       } catch (err) {
-        console.error('Error adding category:', err)
-        throw err
+        console.error('Error adding category:', err);
+        throw err;
       }
     }
   }
 
   async function deleteCategory(categoryId: string) {
     try {
-      await categoryApi.deleteCategory(categoryId)
-      categories.value = categories.value.filter(
-        cat => cat.categoryId !== categoryId
-      )
-      delete items.value[categoryId]
+      await categoryApi.deleteCategory(categoryId);
+      categories.value = categories.value.filter(cat => cat.categoryId !== categoryId);
+      delete items.value[categoryId];
     } catch (err) {
-      console.error('Error deleting category:', err)
-      throw err
+      console.error('Error deleting category:', err);
+      throw err;
     }
   }
 
   onMounted(() => {
-    fetchMenuData()
-  })
+    fetchMenuData();
+  });
 
   return {
     categories,
@@ -217,6 +206,6 @@ export const useMenuStore = defineStore('menu', () => {
     updateMenuItem,
     deleteMenuItem,
     addCategory,
-    deleteCategory
-  }
-})
+    deleteCategory,
+  };
+});
