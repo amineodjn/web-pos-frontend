@@ -14,9 +14,7 @@
       />
     </div>
     <div class="p-4">
-      <h5
-        class="name text-lg font-semibold tracking-tight text-gray-900 dark:text-white"
-      >
+      <h5 class="name text-lg font-semibold tracking-tight text-gray-900 dark:text-white">
         {{ name }}
       </h5>
       <p class="text-gray-700 dark:text-gray-300 mt-2">{{ description }}</p>
@@ -45,46 +43,46 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import type { MenuItemDetails } from '../../types/MenuData'
-import imagePlaceholder from '../common/imagePlaceholder.vue'
+  import { ref, computed } from 'vue';
+  import type { MenuItemDetails } from '../../types/MenuData';
+  import imagePlaceholder from '../common/imagePlaceholder.vue';
 
-const props = defineProps<{
-  imageUrl: string
-  name: string
-  description: string
-  details: MenuItemDetails
-  price: number
-  currency?: string
-  buttonText?: string
-}>()
+  const props = defineProps<{
+    imageUrl?: string;
+    name: string;
+    description: string;
+    details: MenuItemDetails;
+    price: number;
+    currency?: string;
+    buttonText?: string;
+  }>();
 
-const imageLoaded = ref<boolean>(false)
-const displayCurrency = computed(() => props.currency || 'PLN')
+  const imageLoaded = ref<boolean>(false);
+  const displayCurrency = computed(() => props.currency || 'PLN');
 </script>
 
 <style scoped>
-.menu-card {
-  transition: box-shadow 0.3s ease;
-}
+  .menu-card {
+    transition: box-shadow 0.3s ease;
+  }
 
-.image-container {
-  aspect-ratio: 16 / 10;
-}
+  .image-container {
+    aspect-ratio: 16 / 10;
+  }
 
-.image-container img {
-  transition: transform 0.3s ease;
-}
+  .image-container img {
+    transition: transform 0.3s ease;
+  }
 
-.menu-card:hover .image-container img {
-  transform: scale(1.05);
-}
+  .menu-card:hover .image-container img {
+    transform: scale(1.05);
+  }
 
-.name {
-  transition: color 0.3s ease;
-}
+  .name {
+    transition: color 0.3s ease;
+  }
 
-.menu-card:hover .name {
-  color: rgba(220, 38, 38, 1);
-}
+  .menu-card:hover .name {
+    color: rgba(220, 38, 38, 1);
+  }
 </style>

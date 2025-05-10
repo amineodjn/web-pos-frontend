@@ -43,10 +43,10 @@
             :class="[
               'text-xs font-medium px-2.5 py-0.5 rounded',
               {
-                'bg-yellow-100 text-yellow-800': order.status === 'in-progress',
+                'bg-yellow-100 text-yellow-800': order.status === 'pending',
                 'bg-green-100 text-green-800': order.status === 'completed',
-                'bg-red-100 text-red-800': order.status === 'cancelled'
-              }
+                'bg-red-100 text-red-800': order.status === 'cancelled',
+              },
             ]"
           >
             {{ translateStatus(order.status) }}
@@ -67,9 +67,7 @@
                 <span class="text-sm text-gray-900 dark:text-white">
                   {{ item.name }}
                 </span>
-                <span class="text-xs text-gray-500 dark:text-gray-400">
-                  x{{ item.quantity }}
-                </span>
+                <span class="text-xs text-gray-500 dark:text-gray-400"> x{{ item.quantity }} </span>
               </div>
               <span class="text-sm font-medium text-gray-900 dark:text-white">
                 PLN{{ (item.price * item.quantity).toFixed(2) }}
@@ -104,25 +102,23 @@
 </template>
 
 <script setup lang="ts">
-import { useTranslate } from '../../composables/useTranslate'
-import type { Order } from '../../stores/orderStore'
+  import { useTranslate } from '../../composables/useTranslate';
+  import type { Order } from '../../stores/orderStore';
 
-defineProps<{
-  isOpen: boolean
-  order: Order
-}>()
+  defineProps<{
+    isOpen: boolean;
+    order: Order;
+  }>();
 
-const emit = defineEmits<{
-  (e: 'close'): void
-}>()
+  const emit = defineEmits<{
+    (e: 'close'): void;
+  }>();
 
-const { translate } = useTranslate('orders.orderDetails')
-const { translate: translateOrderType } = useTranslate(
-  'orders.currentOrder.orderType'
-)
-const { translate: translateStatus } = useTranslate('status')
+  const { translate } = useTranslate('orders.orderDetails');
+  const { translate: translateOrderType } = useTranslate('orders.currentOrder.orderType');
+  const { translate: translateStatus } = useTranslate('status');
 
-const closeModal = () => {
-  emit('close')
-}
+  const closeModal = () => {
+    emit('close');
+  };
 </script>
