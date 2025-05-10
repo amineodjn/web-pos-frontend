@@ -182,7 +182,9 @@
       "actions": {
         "view": "View",
         "complete": "Complete",
-        "cancel": "Cancel"
+        "cancel": "Cancel",
+        "deleteTitle": "Delete Order",
+        "deleteMessage": "Are you sure you want to delete this order? This action cannot be undone."
       },
       "table": {
         "dineIn": "Table {number}",
@@ -209,6 +211,7 @@
       "tax": "Tax",
       "total": "Total",
       "placeOrder": "Place Order",
+      "processing": "Processing...",
       "clearOrder": "Clear Order",
       "add": "Add",
       "addComment": "Add Comment",
@@ -230,6 +233,9 @@
       "title": "Kitchen Display",
       "comments": "Comments",
       "complete": "Complete",
+      "start": "Start",
+      "cancel": "Cancel",
+      "takeaway": "Takeaway",
       "empty": {
         "title": "No active orders",
         "description": "There are currently no orders in progress. New orders will appear here."
@@ -274,5 +280,9 @@
       "confirm": "Confirm",
       "cancel": "Cancel"
     }
+  },
+  "common": {
+    "delete": "Delete",
+    "cancel": "Cancel"
   }
 }

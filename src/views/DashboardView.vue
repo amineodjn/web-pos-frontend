@@ -93,55 +93,66 @@
         <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">
           {{ translateDashboard('recentOrders') }}
         </h2>
-        <OrdersTable :orders="recentOrders" />
+        <OrdersTable
+          :orders="recentOrders"
+          :show-actions="false"
+          :empty-state-title="translateDashboard('recentOrders.empty.title')"
+          :empty-state-description="translateDashboard('recentOrders.empty.description')"
+          :is-loading="orderStore.isLoading"
+        />
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import { useOrderStore } from '../stores/orderStore'
-import { useMenuStore } from '../stores/menuStore'
-import OrdersTable from '../components/OrdersTable.vue'
-import DashboardCard from '../components/DashboardCard.vue'
-import { useTranslate } from '../composables/useTranslate'
+  import { computed, onMounted } from 'vue';
+  import { useOrderStore } from '../stores/orderStore';
+  import { useMenuStore } from '../stores/menuStore';
+  import OrdersTable from '../components/OrdersTable.vue';
+  import DashboardCard from '../components/DashboardCard.vue';
+  import { useTranslate } from '../composables/useTranslate';
 
-const { translate: translateDashboard } = useTranslate('dashboard')
+  const { translate: translateDashboard } = useTranslate('dashboard');
 
-const orderStore = useOrderStore()
-const menuStore = useMenuStore()
+  const orderStore = useOrderStore();
+  const menuStore = useMenuStore();
 
-const today = new Date()
-today.setHours(0, 0, 0, 0)
+  onMounted(async () => {
+    try {
+      await orderStore.fetchOrders();
+    } catch (error) {
+      console.error('Failed to fetch orders:', error);
+    }
+  });
 
-const todayOrdersCount = computed(() => {
-  return orderStore.activeOrders.filter(order => {
-    const orderDate = new Date(order.createdAt)
-    return orderDate >= today
-  }).length
-})
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
 
-const todayRevenue = computed(() => {
-  return orderStore.activeOrders
-    .filter(order => {
-      const orderDate = new Date(order.createdAt)
-      return orderDate >= today
-    })
-    .reduce((total, order) => total + order.total, 0)
-    .toFixed(2)
-})
+  const todayOrdersCount = computed(() => {
+    return orderStore.activeOrders.filter(order => {
+      const orderDate = new Date(order.createdAt);
+      return orderDate >= today;
+    }).length;
+  });
 
-const totalMenuItems = computed(() => {
-  return menuStore.allItems.length
-})
+  const todayRevenue = computed(() => {
+    return orderStore.activeOrders
+      .filter(order => {
+        const orderDate = new Date(order.createdAt);
+        return orderDate >= today;
+      })
+      .reduce((total, order) => total + order.total, 0)
+      .toFixed(2);
+  });
 
-const recentOrders = computed(() => {
-  return [...orderStore.activeOrders]
-    .sort(
-      (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    )
-    .slice(0, 5)
-})
+  const totalMenuItems = computed(() => {
+    return menuStore.allItems.length;
+  });
+
+  const recentOrders = computed(() => {
+    return [...orderStore.activeOrders]
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+      .slice(0, 5);
+  });
 </script>

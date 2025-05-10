@@ -14,20 +14,17 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import { useOrderStore } from '../stores/orderStore'
-import OrdersTable from '../components/OrdersTable.vue'
+  import { computed } from 'vue';
+  import { useOrderStore } from '../stores/orderStore';
+  import OrdersTable from '../components/OrdersTable.vue';
 
-const orderStore = useOrderStore()
+  const orderStore = useOrderStore();
 
-const activeOrders = computed(() => {
-  return orderStore.activeOrders
-})
+  const activeOrders = computed(() => {
+    return orderStore.activeOrders;
+  });
 
-function handleStatusUpdate(
-  orderId: string,
-  status: 'pending' | 'in-progress' | 'completed' | 'cancelled'
-) {
-  orderStore.updateOrderStatus(orderId, status)
-}
+  function handleStatusUpdate(orderId: string, status: 'pending' | 'completed' | 'cancelled') {
+    orderStore.updateOrderStatus(orderId, status);
+  }
 </script>
