@@ -1,14 +1,26 @@
 <template>
   <div
-    @click="addToOrder"
-    class="menu-card w-full bg-white border border-gray-200 rounded-lg hover:shadow-[0_8px_16px_rgba(0,0,0,0.3)] dark:bg-dark-bg dark:border-gray-700 dark:hover:shadow-dark-hover flex flex-col h-full cursor-pointer"
+    @click="handleClick"
+    class="menu-card w-full bg-white border border-gray-200 rounded-lg hover:shadow-[0_8px_16px_rgba(0,0,0,0.3)] dark:bg-dark-bg dark:border-gray-700 dark:hover:shadow-dark-hover flex flex-col h-full relative"
+    :class="{
+      'cursor-pointer': item.available,
+      'cursor-not-allowed opacity-60': !item.available,
+      'hover:shadow-none': !item.available
+    }"
   >
     <div class="p-4 flex-grow">
       <h5
         class="name text-lg font-semibold tracking-tight text-gray-900 dark:text-white"
+        :class="{ 'text-gray-400 dark:text-gray-500': !item.available }"
       >
         {{ name }}
       </h5>
+    </div>
+    <div
+      v-if="!item.available"
+      class="absolute top-2 right-2 bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300"
+    >
+      {{ $t('menuItem.unavailable') }}
     </div>
   </div>
 </template>
@@ -16,7 +28,9 @@
 <script setup lang="ts">
 import type { MenuItem, MenuItemDetails } from '../../types/MenuData'
 import { useOrderStore } from '../../stores/orderStore'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const orderStore = useOrderStore()
 
 const props = defineProps<{
@@ -25,14 +39,16 @@ const props = defineProps<{
   item: MenuItem
 }>()
 
-function addToOrder() {
-  orderStore.addItemToOrder(props.item)
+function handleClick() {
+  if (props.item.available) {
+    orderStore.addItemToOrder(props.item)
+  }
 }
 </script>
 
 <style scoped>
 .menu-card {
-  transition: box-shadow 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .name {
@@ -40,6 +56,10 @@ function addToOrder() {
 }
 
 .menu-card:hover .name {
+  color: rgba(220, 38, 38, 1);
+}
+
+.menu-card:not(.cursor-not-allowed):hover .name {
   color: rgba(220, 38, 38, 1);
 }
 

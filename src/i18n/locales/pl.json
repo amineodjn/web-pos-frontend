@@ -280,5 +280,8 @@
   "common": {
     "delete": "Usuń",
     "cancel": "Anuluj"
+  },
+  "menuItem": {
+    "unavailable": "Niedostępny"
   }
 }
