@@ -284,5 +284,8 @@
   "common": {
     "delete": "Delete",
     "cancel": "Cancel"
+  },
+  "menuItem": {
+    "unavailable": "Unavailable"
   }
 }

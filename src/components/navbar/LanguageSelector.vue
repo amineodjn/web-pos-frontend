@@ -31,7 +31,7 @@
           class="flex items-center w-full px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600"
           :class="{ 'bg-gray-100 dark:bg-gray-600': currentLocale === 'en' }"
         >
-          <span class="ml-1">ENG</span>
+          <span class="ml-1">EN</span>
         </button>
         <button
           @click="selectLanguage('pl')"

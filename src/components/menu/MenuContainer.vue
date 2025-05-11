@@ -66,7 +66,9 @@ const lastScrollTime = ref(Date.now())
 
 const categories = computed(() => menuStore.categories)
 const categoryBadges = computed(() =>
-  categories.value.map(cat => cat.categoryName)
+  categories.value
+    .filter(cat => cat.categoryItems?.some(item => item.available))
+    .map(cat => cat.categoryName)
 )
 
 const scrollToCategory = (category: string) => {
