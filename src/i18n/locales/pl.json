@@ -239,7 +239,8 @@
       },
       "status": {
         "pending": "Oczekujące",
-        "in-progress": "W trakcie",
+        "preparing": "Przygotowywane",
+        "ready": "Gotowe",
         "completed": "Zakończone",
         "cancelled": "Anulowane"
       }
@@ -247,6 +248,8 @@
   },
   "status": {
     "pending": "Oczekujące",
+    "preparing": "Przygotowywane",
+    "ready": "Gotowe",
     "completed": "Zakończone",
     "cancelled": "Anulowane"
   },

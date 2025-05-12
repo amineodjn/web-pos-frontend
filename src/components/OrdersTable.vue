@@ -28,10 +28,20 @@
         {{ translateOrdersTable('empty.description') }}
       </p>
     </div>
-    <table v-else class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-      <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+    <table
+      v-else
+      class="w-full text-sm text-left text-gray-500 dark:text-gray-400"
+    >
+      <thead
+        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+      >
         <tr>
-          <th v-for="header in headers" :key="header.key" scope="col" class="px-6 py-3">
+          <th
+            v-for="header in headers"
+            :key="header.key"
+            scope="col"
+            class="px-6 py-3"
+          >
             {{ header.label }}
           </th>
         </tr>
@@ -51,8 +61,8 @@
                   'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300':
                     order.orderType === 'dine-in',
                   'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300':
-                    order.orderType === 'takeaway',
-                },
+                    order.orderType === 'takeaway'
+                }
               ]"
             >
               {{ translateOrderType(order.orderType) }}
@@ -68,21 +78,7 @@
           <td class="px-6 py-4">{{ order.items?.length || 0 }}</td>
           <td class="px-6 py-4">PLN{{ order.total.toFixed(2) }}</td>
           <td class="px-6 py-4">
-            <span
-              :class="[
-                'text-xs font-medium px-2.5 py-0.5 rounded',
-                {
-                  'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300':
-                    order.status === 'pending',
-                  'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300':
-                    order.status === 'completed',
-                  'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300':
-                    order.status === 'cancelled',
-                },
-              ]"
-            >
-              {{ translateStatus(order.status) }}
-            </span>
+            <StatusBadge :status="order.status" />
           </td>
           <td v-if="showActions" class="px-6 py-4">
             <div class="flex space-x-3">
@@ -161,50 +157,53 @@
 </template>
 
 <script setup lang="ts">
-  import { computed } from 'vue';
-  import { useTranslate } from '../composables/useTranslate';
-  import type { Order } from '../stores/orderStore';
-  import TableSkeleton from './ui/TableSkeleton.vue';
+import { computed } from 'vue'
+import { useTranslate } from '../composables/useTranslate'
+import type { Order } from '../types/order'
+import TableSkeleton from './ui/TableSkeleton.vue'
+import StatusBadge from './ui/StatusBadge.vue'
 
-  const { translate: translateOrderType } = useTranslate('orders.currentOrder.orderType');
-  const { translate: translateTable } = useTranslate('orders.activeOrders.table');
-  const { translate: translateStatus } = useTranslate('status');
-  const { translate: translateOrdersTable } = useTranslate('orders.table');
+const { translate: translateOrderType } = useTranslate(
+  'orders.currentOrder.orderType'
+)
+const { translate: translateTable } = useTranslate('orders.activeOrders.table')
+const { translate: translateStatus } = useTranslate('status')
+const { translate: translateOrdersTable } = useTranslate('orders.table')
 
-  interface TableHeader {
-    key: string;
-    label: string;
-  }
+interface TableHeader {
+  key: string
+  label: string
+}
 
-  interface TableAction {
-    key: string;
-    label: string;
-    handler: (order: Order) => void;
-    class: string;
-    condition?: (order: Order) => boolean;
-  }
+interface TableAction {
+  key: string
+  label: string
+  handler: (order: Order) => void
+  class: string
+  condition?: (order: Order) => boolean
+}
 
-  const props = defineProps<{
-    orders: Order[];
-    showActions?: boolean;
-    headers?: TableHeader[];
-    actions?: TableAction[];
-    isLoading?: boolean;
-  }>();
+const props = defineProps<{
+  orders: Order[]
+  showActions?: boolean
+  headers?: TableHeader[]
+  actions?: TableAction[]
+  isLoading?: boolean
+}>()
 
-  const defaultHeaders: TableHeader[] = [
-    { key: 'id', label: 'Order ID' },
-    { key: 'type', label: 'Type' },
-    { key: 'table', label: 'Table' },
-    { key: 'items', label: 'Items' },
-    { key: 'total', label: 'Total' },
-    { key: 'status', label: 'Status' },
-  ];
+const defaultHeaders: TableHeader[] = [
+  { key: 'id', label: 'Order ID' },
+  { key: 'type', label: 'Type' },
+  { key: 'table', label: 'Table' },
+  { key: 'items', label: 'Items' },
+  { key: 'total', label: 'Total' },
+  { key: 'status', label: 'Status' }
+]
 
-  const headers = computed(() => {
-    if (props.headers) return props.headers;
-    return props.showActions
-      ? [...defaultHeaders, { key: 'actions', label: 'Actions' }]
-      : defaultHeaders;
-  });
+const headers = computed(() => {
+  if (props.headers) return props.headers
+  return props.showActions
+    ? [...defaultHeaders, { key: 'actions', label: 'Actions' }]
+    : defaultHeaders
+})
 </script>

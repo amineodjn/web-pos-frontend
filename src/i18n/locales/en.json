@@ -242,7 +242,8 @@
       },
       "status": {
         "pending": "Pending",
-        "in-progress": "In Progress",
+        "preparing": "Preparing",
+        "ready": "Ready",
         "completed": "Completed",
         "cancelled": "Cancelled"
       }
@@ -250,7 +251,8 @@
   },
   "status": {
     "pending": "Pending",
-    "in-progress": "In Progress",
+    "preparing": "Preparing",
+    "ready": "Ready",
     "completed": "Completed",
     "cancelled": "Cancelled"
   },
