@@ -68,19 +68,26 @@
       <div
         class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700"
       >
-        <div class="flex items-center gap-2 p-2">
+        <router-link to="/profile" class="block">
           <div
-            class="h-8 w-8 rounded-full bg-red-600 flex items-center justify-center text-white font-semibold aspect-square"
+            class="flex items-center gap-2 p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg cursor-pointer"
+            :title="modelValue ? 'View profile' : ''"
           >
-            D
-          </div>
-          <div v-if="!modelValue" class="flex flex-col">
-            <span class="text-sm font-medium dark:text-white">John Doe</span>
-            <span class="text-xs text-gray-500 dark:text-gray-400"
-              >admin@example.com</span
+            <div
+              class="h-8 w-8 rounded-full bg-red-600 flex items-center justify-center text-white font-semibold aspect-square"
             >
+              {{ getUserInitial }}
+            </div>
+            <div v-if="!modelValue" class="flex flex-col">
+              <span class="text-sm font-medium dark:text-white">{{
+                user?.given_name || user?.email || 'User'
+              }}</span>
+              <span class="text-xs text-gray-500 dark:text-gray-400">{{
+                user?.email
+              }}</span>
+            </div>
           </div>
-        </div>
+        </router-link>
         <div class="flex items-center justify-around p-2">
           <div v-if="!modelValue" class="flex items-center">
             <LanguageSelector />
@@ -116,11 +123,12 @@
 </template>
 
 <script setup lang="ts">
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useTranslate } from '../../composables/useTranslate'
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 import DarkModeToggle from '../navbar/DarkModeToggle.vue'
 import LanguageSelector from '../navbar/LanguageSelector.vue'
+import { useAuth } from '@/composables/useAuth'
 
 const props = defineProps<{
   modelValue: boolean
@@ -131,7 +139,10 @@ const emit = defineEmits<{
 }>()
 
 const route = useRoute()
+const router = useRouter()
+const { user, isAuthenticated, loadUser, logout } = useAuth()
 const { translate: translateSideBar } = useTranslate('adminView.sidebar')
+
 const icons = {
   dashboard: `<svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
                   <path d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z"/>
@@ -152,8 +163,13 @@ const isActive = (path: string) => {
   return route.path === path
 }
 
-const handleLogout = () => {
-  console.log('Logout clicked')
+const handleLogout = async () => {
+  try {
+    await logout()
+    router.push('/')
+  } catch (err) {
+    console.error('Logout error:', err)
+  }
 }
 
 const menuItems = computed(() => [
@@ -182,6 +198,21 @@ const menuItems = computed(() => [
 const toggleSidebar = () => {
   emit('update:modelValue', !props.modelValue)
 }
+
+const getUserInitial = computed(() => {
+  if (user.value?.given_name) {
+    return user.value.given_name[0].toUpperCase()
+  } else if (user.value?.email) {
+    return user.value.email[0].toUpperCase()
+  }
+  return 'U'
+})
+
+onMounted(async () => {
+  if (!isAuthenticated.value) {
+    await loadUser()
+  }
+})
 
 defineOptions({
   name: 'AdminSidebar'
