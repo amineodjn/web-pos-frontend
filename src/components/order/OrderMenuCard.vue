@@ -28,9 +28,7 @@
 <script setup lang="ts">
 import type { MenuItem, MenuItemDetails } from '../../types/MenuData'
 import { useOrderStore } from '../../stores/orderStore'
-import { useI18n } from 'vue-i18n'
 
-const { t } = useI18n()
 const orderStore = useOrderStore()
 
 const props = defineProps<{

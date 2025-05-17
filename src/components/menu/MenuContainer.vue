@@ -43,7 +43,6 @@
 
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from 'vue'
-import type { MenuData } from '../../types/MenuData'
 import { useMenuStore } from '../../stores/menuStore'
 import LoadingOverlay from '../common/LoadingOverlay.vue'
 import ErrorUI from '../common/ErrorUI.vue'
