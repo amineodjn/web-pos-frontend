@@ -39,18 +39,7 @@
               {{ translateOrderType(order.orderType) }}
             </span>
           </span>
-          <span
-            :class="[
-              'text-xs font-medium px-2.5 py-0.5 rounded',
-              {
-                'bg-yellow-100 text-yellow-800': order.status === 'pending',
-                'bg-green-100 text-green-800': order.status === 'completed',
-                'bg-red-100 text-red-800': order.status === 'cancelled'
-              }
-            ]"
-          >
-            {{ translateStatus(order.status) }}
-          </span>
+          <StatusBadge :status="order.status" />
         </div>
 
         <div class="border-t border-gray-200 dark:border-gray-700 pt-4">
@@ -106,6 +95,7 @@
 <script setup lang="ts">
 import { useTranslate } from '../../composables/useTranslate'
 import type { Order } from '../../types/order'
+import StatusBadge from '../ui/StatusBadge.vue'
 
 defineProps<{
   isOpen: boolean

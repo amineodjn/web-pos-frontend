@@ -97,7 +97,9 @@
           :orders="recentOrders"
           :show-actions="false"
           :empty-state-title="translateDashboard('recentOrders.empty.title')"
-          :empty-state-description="translateDashboard('recentOrders.empty.description')"
+          :empty-state-description="
+            translateDashboard('recentOrders.empty.description')
+          "
           :is-loading="orderStore.isLoading"
         />
       </div>
@@ -106,53 +108,56 @@
 </template>
 
 <script setup lang="ts">
-  import { computed, onMounted } from 'vue';
-  import { useOrderStore } from '../stores/orderStore';
-  import { useMenuStore } from '../stores/menuStore';
-  import OrdersTable from '../components/OrdersTable.vue';
-  import DashboardCard from '../components/DashboardCard.vue';
-  import { useTranslate } from '../composables/useTranslate';
+import { computed, onMounted } from 'vue'
+import { useOrderStore } from '../stores/orderStore'
+import { useMenuStore } from '../stores/menuStore'
+import OrdersTable from '../components/OrdersTable.vue'
+import DashboardCard from '../components/DashboardCard.vue'
+import { useTranslate } from '../composables/useTranslate'
 
-  const { translate: translateDashboard } = useTranslate('dashboard');
+const { translate: translateDashboard } = useTranslate('dashboard')
 
-  const orderStore = useOrderStore();
-  const menuStore = useMenuStore();
+const orderStore = useOrderStore()
+const menuStore = useMenuStore()
 
-  onMounted(async () => {
-    try {
-      await orderStore.fetchOrders();
-    } catch (error) {
-      console.error('Failed to fetch orders:', error);
-    }
-  });
+onMounted(async () => {
+  try {
+    await orderStore.fetchOrders()
+  } catch (error) {
+    console.error('Failed to fetch orders:', error)
+  }
+})
 
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+const today = new Date()
+today.setHours(0, 0, 0, 0)
 
-  const todayOrdersCount = computed(() => {
-    return orderStore.activeOrders.filter(order => {
-      const orderDate = new Date(order.createdAt);
-      return orderDate >= today;
-    }).length;
-  });
+const todayOrdersCount = computed(() => {
+  return orderStore.activeOrders.filter(order => {
+    const orderDate = new Date(order.createdAt)
+    return orderDate >= today
+  }).length
+})
 
-  const todayRevenue = computed(() => {
-    return orderStore.activeOrders
-      .filter(order => {
-        const orderDate = new Date(order.createdAt);
-        return orderDate >= today;
-      })
-      .reduce((total, order) => total + order.total, 0)
-      .toFixed(2);
-  });
+const todayRevenue = computed(() => {
+  return orderStore.activeOrders
+    .filter(order => {
+      const orderDate = new Date(order.createdAt)
+      return orderDate >= today
+    })
+    .reduce((total, order) => total + order.total, 0)
+    .toFixed(2)
+})
 
-  const totalMenuItems = computed(() => {
-    return menuStore.allItems.length;
-  });
+const totalMenuItems = computed(() => {
+  return menuStore.allItems.length
+})
 
-  const recentOrders = computed(() => {
-    return [...orderStore.activeOrders]
-      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-      .slice(0, 5);
-  });
+const recentOrders = computed(() => {
+  return [...orderStore.activeOrders]
+    .sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    )
+    .slice(0, 5)
+})
 </script>
