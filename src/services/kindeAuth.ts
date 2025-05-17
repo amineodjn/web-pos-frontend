@@ -14,9 +14,12 @@ const kindeClient = async () => {
       domain: import.meta.env.VITE_KINDE_DOMAIN,
       redirect_uri: import.meta.env.VITE_KINDE_REDIRECT_URL,
       logout_uri: import.meta.env.VITE_KINDE_LOGOUT_URL,
-      on_redirect_callback: (user: User, appState: any) => {
+      on_redirect_callback: (
+        user: User,
+        appState?: Record<string, unknown>
+      ) => {
         if (appState?.redirectTo) {
-          window.location.href = appState.redirectTo
+          window.location.href = appState.redirectTo as string
         }
       }
     })

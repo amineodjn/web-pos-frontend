@@ -7,7 +7,7 @@ export interface User {
   family_name?: string | null
   email?: string | null
   picture?: string | null
-  [key: string]: any
+  [key: string]: string | null | undefined
 }
 
 /**
@@ -20,7 +20,7 @@ export type ClaimTokenKey = 'access_token' | 'id_token'
  */
 export interface Organization {
   orgCode: string
-  [key: string]: any
+  [key: string]: string | number | boolean | null | undefined
 }
 
 /**
@@ -28,7 +28,7 @@ export interface Organization {
  */
 export interface PermissionResponse {
   permissions: string[]
-  [key: string]: any
+  [key: string]: string[] | string | number | boolean | null | undefined
 }
 
 /**
@@ -37,7 +37,7 @@ export interface PermissionResponse {
 export interface LoginOptions {
   app_state?: {
     redirectTo?: string
-    [key: string]: any
+    [key: string]: string | number | boolean | null | undefined
   }
-  [key: string]: any
+  [key: string]: unknown
 }

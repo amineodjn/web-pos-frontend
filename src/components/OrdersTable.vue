@@ -167,7 +167,6 @@ const { translate: translateOrderType } = useTranslate(
   'orders.currentOrder.orderType'
 )
 const { translate: translateTable } = useTranslate('orders.activeOrders.table')
-const { translate: translateStatus } = useTranslate('status')
 const { translate: translateOrdersTable } = useTranslate('orders.table')
 
 interface TableHeader {

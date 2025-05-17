@@ -36,6 +36,8 @@
   </div>
 </template>
 
-<script setup lang="ts">
-  // No props or logic needed for now
+<script lang="ts">
+export default {
+  name: 'TableSkeleton'
+}
 </script>

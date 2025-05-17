@@ -110,7 +110,6 @@ const { translate } = useTranslate('orders.orderDetails')
 const { translate: translateOrderType } = useTranslate(
   'orders.currentOrder.orderType'
 )
-const { translate: translateStatus } = useTranslate('status')
 
 const closeModal = () => {
   emit('close')
