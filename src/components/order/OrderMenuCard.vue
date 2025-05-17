@@ -16,11 +16,8 @@
         {{ name }}
       </h5>
     </div>
-    <div
-      v-if="!item.available"
-      class="absolute top-2 right-2 bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300"
-    >
-      {{ $t('menuItem.unavailable') }}
+    <div v-if="!item.available" class="absolute top-2 right-2">
+      <StatusBadge status="unavailable" />
     </div>
   </div>
 </template>
@@ -28,6 +25,7 @@
 <script setup lang="ts">
 import type { MenuItem, MenuItemDetails } from '../../types/MenuData'
 import { useOrderStore } from '../../stores/orderStore'
+import StatusBadge from '../ui/StatusBadge.vue'
 
 const orderStore = useOrderStore()
 
