@@ -73,7 +73,8 @@ export const register = async (options = {}) => {
  */
 export const logout = async () => {
   const kinde = await getKindeClient()
-  return kinde.logout()
+  await kinde.logout()
+  window.location.href = window.location.origin
 }
 
 /**
