@@ -9,11 +9,11 @@ import type {
 
 const kindeClient = async () => {
   try {
-    return await createKindeClient({
+    const config = {
       client_id: import.meta.env.VITE_KINDE_CLIENT_ID,
       domain: import.meta.env.VITE_KINDE_DOMAIN,
-      redirect_uri: import.meta.env.VITE_KINDE_REDIRECT_URL,
-      logout_uri: import.meta.env.VITE_KINDE_LOGOUT_URL,
+      redirect_uri: import.meta.env.VITE_KINDE_REDIRECT_URL || '/callback',
+      logout_uri: import.meta.env.VITE_KINDE_LOGOUT_URL || '/',
       on_redirect_callback: (
         user: User,
         appState?: Record<string, unknown>
@@ -22,7 +22,9 @@ const kindeClient = async () => {
           window.location.href = appState.redirectTo as string
         }
       }
-    })
+    }
+
+    return await createKindeClient(config)
   } catch (error) {
     console.error('Failed to initialize Kinde client', error)
     throw error
@@ -38,6 +40,9 @@ let kindeClientInstance: Awaited<ReturnType<typeof createKindeClient>> | null =
 export const getKindeClient = async () => {
   if (!kindeClientInstance) {
     kindeClientInstance = await kindeClient()
+  }
+  if (!kindeClientInstance) {
+    throw new Error('Failed to initialize Kinde client')
   }
   return kindeClientInstance
 }
