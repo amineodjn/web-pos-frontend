@@ -13,6 +13,12 @@ const router = createRouter({
       component: HomeView
     },
     {
+      path: '/callback',
+      name: 'callback',
+      component: loadView('CallbackView'),
+      meta: { requiresAuth: false }
+    },
+    {
       path: '/about',
       name: 'about',
       component: loadView('AboutView')
