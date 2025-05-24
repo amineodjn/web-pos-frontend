@@ -80,59 +80,43 @@ const MAX_AUTH_RETRIES = 3
 let authRetryCount = 0
 
 router.beforeEach(async (to, from, next) => {
-  // Reset retry count when navigating to a new route
-  if (from.path !== to.path) {
-    authRetryCount = 0
-  }
-
-  // Handle callback route
+  // Handle callback route - always allow it through
   if (to.path === '/callback') {
-    const { authenticated } = await checkAuthentication()
-    if (authenticated) {
-      next({ path: '/admin/orders', replace: true })
-      return
-    }
     next()
     return
   }
 
+  // Handle explicit login route
+  if (to.path === '/login') {
+    // Store the intended redirect in session storage
+    const redirectTo = (to.query.redirect_to as string) || '/admin/orders'
+    sessionStorage.setItem('auth_redirect_to', redirectTo)
+
+    await login({
+      app_state: { redirectTo }
+    })
+    return
+  }
+
+  // Check if route requires authentication
   if (to.matched.some(record => record.meta.requiresAuth)) {
     const { authenticated } = await checkAuthentication()
 
     if (authenticated) {
       next()
     } else {
-      // Prevent infinite loop by checking retry count
-      if (authRetryCount >= MAX_AUTH_RETRIES) {
-        console.error('Maximum authentication retries reached')
-        next({ path: '/', replace: true })
-        return
-      }
+      // Store the intended destination
+      sessionStorage.setItem('auth_redirect_to', to.fullPath)
 
-      authRetryCount++
-      login({
+      // Redirect to login
+      await login({
         app_state: { redirectTo: to.fullPath }
       })
     }
     return
   }
 
-  if (to.path === '/login') {
-    login()
-    return
-  }
-
-  if (to.path === '/') {
-    const { authenticated } = await checkAuthentication()
-
-    if (authenticated) {
-      next('/admin/orders')
-    } else {
-      next()
-    }
-    return
-  }
-
+  // All other routes
   next()
 })
 
