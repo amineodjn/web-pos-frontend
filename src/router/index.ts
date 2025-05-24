@@ -76,6 +76,9 @@ const checkAuthentication = async () => {
   }
 }
 
+const MAX_AUTH_RETRIES = 3
+let authRetryCount = 0
+
 router.beforeEach(async (to, from, next) => {
   // Handle callback route - always allow it through
   if (to.path === '/callback') {
