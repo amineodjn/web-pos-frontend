@@ -13,12 +13,6 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/callback',
-      name: 'callback',
-      component: loadView('CallbackView'),
-      meta: { requiresAuth: false }
-    },
-    {
       path: '/about',
       name: 'about',
       component: loadView('AboutView')
@@ -76,64 +70,25 @@ const checkAuthentication = async () => {
   }
 }
 
-const MAX_AUTH_RETRIES = 3
-let authRetryCount = 0
-
-router.beforeEach(async (to, from, next) => {
-  // Reset retry count when navigating to a new route
-  if (from.path !== to.path) {
-    authRetryCount = 0
+router.beforeEach(async to => {
+  // Handle explicit login route
+  if (to.path === '/login') {
+    await login({
+      app_state: { redirectTo: '/admin/orders' }
+    })
+    return false
   }
 
-  // Handle callback route
-  if (to.path === '/callback') {
-    const { authenticated } = await checkAuthentication()
-    if (authenticated) {
-      next({ path: '/admin/orders', replace: true })
-      return
-    }
-    next()
-    return
-  }
-
+  // Handle protected routes
   if (to.matched.some(record => record.meta.requiresAuth)) {
     const { authenticated } = await checkAuthentication()
-
-    if (authenticated) {
-      next()
-    } else {
-      // Prevent infinite loop by checking retry count
-      if (authRetryCount >= MAX_AUTH_RETRIES) {
-        console.error('Maximum authentication retries reached')
-        next({ path: '/', replace: true })
-        return
-      }
-
-      authRetryCount++
-      login({
-        app_state: { redirectTo: to.fullPath }
-      })
+    if (!authenticated) {
+      await login()
+      return false
     }
-    return
   }
 
-  if (to.path === '/login') {
-    login()
-    return
-  }
-
-  if (to.path === '/') {
-    const { authenticated } = await checkAuthentication()
-
-    if (authenticated) {
-      next('/admin/orders')
-    } else {
-      next()
-    }
-    return
-  }
-
-  next()
+  return true
 })
 
 export default router
