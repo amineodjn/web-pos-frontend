@@ -71,6 +71,9 @@ const checkAuthentication = async () => {
 }
 
 router.beforeEach(async to => {
+  if (to.query.code && to.query.state) {
+    return true
+  }
   // Handle explicit login route
   if (to.path === '/login') {
     await login({
