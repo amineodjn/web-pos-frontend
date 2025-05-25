@@ -13,12 +13,6 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/callback',
-      name: 'callback',
-      component: loadView('CallbackView'),
-      meta: { requiresAuth: false }
-    },
-    {
       path: '/about',
       name: 'about',
       component: loadView('AboutView')
@@ -76,48 +70,25 @@ const checkAuthentication = async () => {
   }
 }
 
-const MAX_AUTH_RETRIES = 3
-let authRetryCount = 0
-
-router.beforeEach(async (to, from, next) => {
-  // Handle callback route - always allow it through
-  if (to.path === '/callback') {
-    next()
-    return
-  }
-
+router.beforeEach(async to => {
   // Handle explicit login route
   if (to.path === '/login') {
-    // Store the intended redirect in session storage
-    const redirectTo = (to.query.redirect_to as string) || '/admin/orders'
-    sessionStorage.setItem('auth_redirect_to', redirectTo)
-
     await login({
-      app_state: { redirectTo }
+      app_state: { redirectTo: '/admin/orders' }
     })
-    return
+    return false
   }
 
-  // Check if route requires authentication
+  // Handle protected routes
   if (to.matched.some(record => record.meta.requiresAuth)) {
     const { authenticated } = await checkAuthentication()
-
-    if (authenticated) {
-      next()
-    } else {
-      // Store the intended destination
-      sessionStorage.setItem('auth_redirect_to', to.fullPath)
-
-      // Redirect to login
-      await login({
-        app_state: { redirectTo: to.fullPath }
-      })
+    if (!authenticated) {
+      await login()
+      return false
     }
-    return
   }
 
-  // All other routes
-  next()
+  return true
 })
 
 export default router

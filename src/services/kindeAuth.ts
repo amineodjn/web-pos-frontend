@@ -12,14 +12,15 @@ const kindeClient = async () => {
     const config = {
       client_id: import.meta.env.VITE_KINDE_CLIENT_ID,
       domain: import.meta.env.VITE_KINDE_DOMAIN,
-      redirect_uri: import.meta.env.VITE_KINDE_REDIRECT_URL || '/callback',
-      logout_uri: import.meta.env.VITE_KINDE_LOGOUT_URL || '/',
+      redirect_uri: import.meta.env.VITE_KINDE_REDIRECT_URL,
+      logout_uri: import.meta.env.VITE_KINDE_LOGOUT_URL,
+      is_dangerously_use_local_storage: true,
       on_redirect_callback: (
         user: User,
         appState?: Record<string, unknown>
       ) => {
         if (appState?.redirectTo) {
-          window.location.href = appState.redirectTo as string
+          window.location = appState?.redirectTo as Location
         }
       }
     }
@@ -53,7 +54,7 @@ export const getKindeClient = async () => {
  */
 export const login = async (options: LoginOptions = {}) => {
   const kinde = await getKindeClient()
-  const redirectTo = options.app_state?.redirectTo || '/admin/orders'
+  const redirectTo = options.app_state?.redirectTo
 
   return kinde.login({
     ...options,
