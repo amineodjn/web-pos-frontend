@@ -1,7 +1,7 @@
 import createKindeClient from '@kinde-oss/kinde-auth-pkce-js'
-import type { KindeUser } from '@kinde-oss/kinde-auth-pkce-js'
+import type { KindeUser, AuthOptions } from '@kinde-oss/kinde-auth-pkce-js'
 
-interface AppState {
+interface AppState extends Record<string, unknown> {
   redirectTo?: string
 }
 
@@ -12,7 +12,6 @@ interface User {
   family_name?: string
 }
 
-// Initialize Kinde client
 const kinde = await createKindeClient({
   client_id: import.meta.env.VITE_KINDE_CLIENT_ID,
   domain: import.meta.env.VITE_KINDE_DOMAIN,
@@ -30,52 +29,45 @@ const kinde = await createKindeClient({
 
 // Auth service methods
 export const authService = {
-  // Login
-  login: async () => {
-    await kinde.login()
+  login: async (appState?: AppState) => {
+    const options: AuthOptions = {
+      app_state: appState
+    }
+    await kinde.login(options)
   },
 
-  // Register
   register: async () => {
     await kinde.register()
   },
 
-  // Logout
   logout: async () => {
     await kinde.logout()
   },
 
-  // Get user profile
   getUser: async () => {
     return await kinde.getUser()
   },
 
-  // Get access token
   getToken: async () => {
     return await kinde.getToken()
   },
 
-  // Check if user is authenticated
   isAuthenticated: async () => {
     return await kinde.isAuthenticated()
   },
 
-  // Get user organizations
   getUserOrganizations: async () => {
     return await kinde.getUserOrganizations()
   },
 
-  // Get current organization
   getOrganization: async () => {
     return await kinde.getOrganization()
   },
 
-  // Get user permissions
   getPermissions: async () => {
     return await kinde.getPermissions()
   },
 
-  // Check specific permission
   getPermission: async (permission: string) => {
     return await kinde.getPermission(permission)
   }
