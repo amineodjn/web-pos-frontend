@@ -14,6 +14,7 @@
     "init:tailwind": "npx tailwindcss init -p"
   },
   "dependencies": {
+    "@kinde-oss/kinde-auth-pkce-js": "^4.3.0",
     "flowbite": "^1.6.5",
     "pinia": "^2.3.1",
     "vue": "^3.5.13",
