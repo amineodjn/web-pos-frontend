@@ -7,9 +7,9 @@
       <div class="w-full p-4 bg-gray-100 dark:bg-gray-800">
         <div class="max-w-4xl mx-auto flex items-center justify-between">
           <div class="flex items-center space-x-4">
-            <template v-if="user">
+            <template v-if="isAuthenticated">
               <span class="text-gray-700 dark:text-gray-300">
-                Welcome, {{ user.given_name || user.email }}
+                Welcome, {{ user?.given_name || user?.email }}
               </span>
             </template>
             <template v-else>
@@ -19,7 +19,7 @@
             </template>
           </div>
           <div class="flex space-x-2">
-            <template v-if="user">
+            <template v-if="isAuthenticated">
               <button
                 @click="handleLogout"
                 class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
@@ -56,67 +56,47 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import type { KindeUser } from '@kinde-oss/kinde-auth-pkce-js'
+import { onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import HomeHeader from '../components/menu/HomeHeader.vue'
 import MenuContainer from '../components/menu/MenuContainer.vue'
-import authService from '../services/auth'
+import { useAuth } from '../composables/useAuth'
 
-const user = ref<KindeUser | null>(null)
-const error = ref<string | null>(null)
-
-const checkAuth = async () => {
-  try {
-    const isAuthenticated = await authService.isAuthenticated()
-    if (isAuthenticated) {
-      user.value = await authService.getUser()
-    } else {
-      user.value = null
-    }
-    error.value = null
-  } catch (err) {
-    console.error('Auth check failed:', err)
-    error.value = 'Failed to check authentication status'
-    user.value = null
-  }
-}
+const route = useRoute()
+const router = useRouter()
+const { user, isAuthenticated, error, login, register, logout, checkAuth } =
+  useAuth()
 
 const handleLogin = async () => {
   try {
-    error.value = null
-    console.log('Starting login process...')
-    console.log('Kinde Domain:', import.meta.env.VITE_KINDE_DOMAIN)
-    console.log('Client ID:', import.meta.env.VITE_KINDE_CLIENT_ID)
-    await authService.login()
+    await login()
   } catch (err) {
     console.error('Login failed:', err)
-    error.value = 'Login failed. Please try again.'
   }
 }
 
 const handleRegister = async () => {
   try {
-    error.value = null
-    await authService.register()
+    await register()
   } catch (err) {
     console.error('Registration failed:', err)
-    error.value = 'Registration failed. Please try again.'
   }
 }
 
 const handleLogout = async () => {
   try {
-    error.value = null
-    await authService.logout()
-    user.value = null
+    await logout()
+    router.push('/')
   } catch (err) {
     console.error('Logout failed:', err)
-    error.value = 'Logout failed. Please try again.'
   }
 }
 
 onMounted(async () => {
   await checkAuth()
+  if (isAuthenticated.value && route.query.redirect) {
+    router.push(route.query.redirect as string)
+  }
 })
 </script>
 

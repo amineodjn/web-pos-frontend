@@ -36,7 +36,6 @@ export async function fetchApi<T = unknown, R = unknown>(
 
     return responseData
   } catch (error) {
-    console.log(error)
     throw error
   }
 }
