@@ -72,15 +72,13 @@
           <div
             class="h-8 w-8 rounded-full bg-red-600 flex items-center justify-center text-white font-semibold aspect-square"
           >
-            {{ getUserInitials }}
+            D
           </div>
           <div v-if="!modelValue" class="flex flex-col">
-            <span class="text-sm font-medium dark:text-white">{{
-              getUserName
-            }}</span>
-            <span class="text-xs text-gray-500 dark:text-gray-400">{{
-              getUserEmail
-            }}</span>
+            <span class="text-sm font-medium dark:text-white">John Doe</span>
+            <span class="text-xs text-gray-500 dark:text-gray-400"
+              >admin@example.com</span
+            >
           </div>
         </div>
         <div class="flex items-center justify-around p-2">
@@ -92,7 +90,6 @@
             v-if="!modelValue"
             @click="handleLogout"
             class="p-2 text-gray-500 rounded-lg hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700"
-            aria-label="Logout"
           >
             <svg
               class="w-5 h-5"
@@ -113,9 +110,6 @@
             </svg>
           </button>
         </div>
-        <div v-if="error" class="p-2 text-sm text-red-500 dark:text-red-400">
-          {{ error }}
-        </div>
       </div>
     </div>
   </aside>
@@ -124,11 +118,10 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
 import { useTranslate } from '../../composables/useTranslate'
-import { computed, ref, onMounted } from 'vue'
+import { computed } from 'vue'
 import DarkModeToggle from '../navbar/DarkModeToggle.vue'
 import LanguageSelector from '../navbar/LanguageSelector.vue'
 import authService from '../../services/auth'
-import type { KindeUser } from '@kinde-oss/kinde-auth-pkce-js'
 
 const props = defineProps<{
   modelValue: boolean
@@ -140,53 +133,6 @@ const emit = defineEmits<{
 
 const route = useRoute()
 const { translate: translateSideBar } = useTranslate('adminView.sidebar')
-const user = ref<KindeUser | null>(null)
-const error = ref<string | null>(null)
-
-const getUserInitials = computed(() => {
-  if (!user.value) return '?'
-  const { given_name, family_name } = user.value
-  if (given_name && family_name) {
-    return `${given_name[0]}${family_name[0]}`
-  }
-  return user.value.email?.[0].toUpperCase() || '?'
-})
-
-const getUserName = computed(() => {
-  if (!user.value) return 'Guest'
-  return user.value.given_name || user.value.email?.split('@')[0] || 'Guest'
-})
-
-const getUserEmail = computed(() => {
-  return user.value?.email || 'Not logged in'
-})
-
-const fetchUserInfo = async () => {
-  try {
-    user.value = await authService.getUser()
-    error.value = null
-  } catch (err) {
-    console.error('Failed to get user:', err)
-    error.value = 'Failed to get user information'
-    user.value = null
-  }
-}
-
-const handleLogout = async () => {
-  try {
-    error.value = null
-    await authService.logout()
-    user.value = null
-  } catch (err) {
-    console.error('Logout failed:', err)
-    error.value = 'Logout failed. Please try again.'
-  }
-}
-
-onMounted(async () => {
-  await fetchUserInfo()
-})
-
 const icons = {
   dashboard: `<svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
                   <path d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z"/>
@@ -205,6 +151,14 @@ const icons = {
 
 const isActive = (path: string) => {
   return route.path === path
+}
+
+const handleLogout = async () => {
+  try {
+    await authService.logout()
+  } catch (error) {
+    console.error('Logout failed:', error)
+  }
 }
 
 const menuItems = computed(() => [

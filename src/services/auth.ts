@@ -1,16 +1,5 @@
 import createKindeClient from '@kinde-oss/kinde-auth-pkce-js'
-import type { KindeUser, AuthOptions } from '@kinde-oss/kinde-auth-pkce-js'
-
-interface AppState extends Record<string, unknown> {
-  redirectTo?: string
-}
-
-interface User {
-  id: string
-  email: string
-  given_name?: string
-  family_name?: string
-}
+import type { KindeUser } from '@kinde-oss/kinde-auth-pkce-js'
 
 const kinde = await createKindeClient({
   client_id: import.meta.env.VITE_KINDE_CLIENT_ID,
@@ -22,18 +11,21 @@ const kinde = await createKindeClient({
     appState?: Record<string, unknown>
   ) => {
     if (appState?.redirectTo) {
-      window.location.href = appState.redirectTo as string
+      window.location.href = (window.location.origin +
+        appState.redirectTo) as string
     }
   }
 })
 
 // Auth service methods
 export const authService = {
-  login: async (appState?: AppState) => {
-    const options: AuthOptions = {
-      app_state: appState
-    }
-    await kinde.login(options)
+  // Login
+  login: async () => {
+    await kinde.login({
+      app_state: {
+        redirectTo: '/admin/orders'
+      }
+    })
   },
 
   register: async () => {
