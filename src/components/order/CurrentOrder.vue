@@ -98,7 +98,11 @@ const sendToPrinter = async () => {
 
 async function handlePlaceOrder() {
   try {
-    await sendToPrinter()
+    try {
+      await sendToPrinter()
+    } catch (printerError) {
+      console.error('Failed to send to printer:', printerError)
+    }
 
     await orderStore.placeOrder()
   } catch (error) {
