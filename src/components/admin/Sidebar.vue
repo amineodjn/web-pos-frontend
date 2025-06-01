@@ -72,13 +72,15 @@
           <div
             class="h-8 w-8 rounded-full bg-red-600 flex items-center justify-center text-white font-semibold aspect-square"
           >
-            D
+            {{ user?.given_name?.[0] || user?.email?.[0] || 'U' }}
           </div>
           <div v-if="!modelValue" class="flex flex-col">
-            <span class="text-sm font-medium dark:text-white">John Doe</span>
-            <span class="text-xs text-gray-500 dark:text-gray-400"
-              >admin@example.com</span
-            >
+            <span class="text-sm font-medium dark:text-white">{{
+              user?.given_name || 'User'
+            }}</span>
+            <span class="text-xs text-gray-500 dark:text-gray-400">{{
+              user?.email
+            }}</span>
           </div>
         </div>
         <div class="flex items-center justify-around p-2">
@@ -122,6 +124,7 @@ import { computed } from 'vue'
 import DarkModeToggle from '../navbar/DarkModeToggle.vue'
 import LanguageSelector from '../navbar/LanguageSelector.vue'
 import authService from '../../services/auth'
+import { useAuth } from '../../composables/useAuth'
 
 const props = defineProps<{
   modelValue: boolean
@@ -133,6 +136,7 @@ const emit = defineEmits<{
 
 const route = useRoute()
 const { translate: translateSideBar } = useTranslate('adminView.sidebar')
+const { user } = useAuth()
 const icons = {
   dashboard: `<svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
                   <path d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z"/>

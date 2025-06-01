@@ -1,5 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useAuth } from '../composables/useAuth'
 import HomeView from '../views/HomeView.vue'
+import AdminLayout from '../layouts/AdminLayout.vue'
+
+const loadView = (view: string) => {
+  return () => import(`../views/${view}.vue`)
+}
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -12,54 +18,63 @@ const router = createRouter({
     {
       path: '/about',
       name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue')
+      component: loadView('AboutView')
     },
     {
       path: '/admin',
       name: 'admin',
-      redirect: '/admin/menu',
-      component: () => import('../views/MenuView.vue'),
+      component: AdminLayout,
+      meta: { requiresAuth: true },
+      redirect: '/admin/orders',
       children: [
         {
           path: 'dashboard',
           name: 'admin-dashboard',
-          component: () => import('../views/DashboardView.vue')
+          component: loadView('DashboardView'),
+          meta: { requiresAuth: true }
         },
         {
           path: 'menu',
           name: 'admin-menu',
-          component: () => import('../views/MenuView.vue')
+          component: loadView('MenuView'),
+          meta: { requiresAuth: true }
         },
         {
           path: 'orders',
           name: 'admin-orders',
-          component: () => import('../views/OrdersView.vue')
+          component: loadView('OrdersView'),
+          meta: { requiresAuth: true }
         },
         {
           path: 'kitchen',
           name: 'admin-kitchen',
-          component: () => import('../views/KitchenView.vue')
+          component: loadView('KitchenView'),
+          meta: { requiresAuth: true }
         }
       ]
     }
   ]
 })
 
-// In a real application, you would add a navigation guard for authentication
-// router.beforeEach((to, from, next) => {
-//   if (to.matched.some(record => record.meta.requiresAuth)) {
-//     // Check if user is authenticated
-//     // if (!isAuthenticated) {
-//     //   next({ name: 'login' })
-//     // } else {
-//     //   next()
-//     // }
-//   } else {
-//     next()
-//   }
-// })
+router.beforeEach(async (to, from, next) => {
+  const { checkAuth, getStoredRedirect, clearStoredRedirect } = useAuth()
+
+  if (!to.meta.requiresAuth) {
+    const storedRedirect = getStoredRedirect()
+    if (storedRedirect && to.name === 'home') {
+      clearStoredRedirect()
+      return next(storedRedirect)
+    }
+    return next()
+  }
+
+  const isAuthenticated = await checkAuth()
+  if (!isAuthenticated) {
+    localStorage.setItem('auth_redirect', to.fullPath)
+    return next({ name: 'home' })
+  }
+
+  return next()
+})
 
 export default router
