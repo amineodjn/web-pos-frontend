@@ -22,7 +22,7 @@
       :tax-rate="taxRate"
       :can-place-order="!!canPlaceOrder"
       :is-processing="isProcessing"
-      @place-order="placeOrder"
+      @place-order="handlePlaceOrder"
       @clear-order="orderStore.clearOrder"
     />
   </div>
@@ -58,11 +58,52 @@ const canPlaceOrder = computed(() => {
   return (orderStore.currentOrder.items?.length || 0) > 0
 })
 
-async function placeOrder() {
+const handleEditComment = (itemId: string) => {
+  selectedItemId.value = itemId
+  showCommentModal.value = true
+}
+
+const sendToPrinter = async () => {
+  const items =
+    orderStore.currentOrder.items?.map(item => ({
+      name: item.name,
+      quantity: item.quantity,
+      unitPrice: item.price
+    })) || []
+
+  const body = {
+    orders: items,
+    subtotal: parseFloat(orderStore.subtotal.toFixed(2)),
+    tax: parseFloat(orderStore.tax.toFixed(2)),
+    total: parseFloat(orderStore.total.toFixed(2)),
+    timestamp: new Date().toISOString()
+  }
+
+  const response = await fetch('http://localhost:9100', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body)
+  })
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`)
+  }
+
+  const result = await response.json()
+  console.log('Order sent to printer service:', result)
+  return result
+}
+
+async function handlePlaceOrder() {
   try {
+    await sendToPrinter()
+
     await orderStore.placeOrder()
   } catch (error) {
     console.error('Failed to place order:', error)
+    throw error
   }
 }
 
@@ -72,11 +113,6 @@ const handleTableChange = (tableNumber: number | null) => {
   } else {
     orderStore.clearOrder()
   }
-}
-
-const handleEditComment = (itemId: string) => {
-  selectedItemId.value = itemId
-  showCommentModal.value = true
 }
 
 defineEmits<{
