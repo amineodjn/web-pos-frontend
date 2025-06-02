@@ -1,24 +1,11 @@
 <template>
   <div class="mb-4">
-    <div class="flex gap-4 mb-2">
-      <label class="flex items-center text-gray-900 dark:text-white">
-        <input
-          type="radio"
-          v-model="orderType"
-          value="dine-in"
-          class="mr-2 text-gray-900 dark:text-gray-900 focus:ring-gray-900 dark:focus:ring-gray-900"
-        />
-        {{ translateOrderType('dine-in') }}
-      </label>
-      <label class="flex items-center text-gray-900 dark:text-white">
-        <input
-          type="radio"
-          v-model="orderType"
-          value="takeaway"
-          class="mr-2 text-gray-900 dark:text-gray-900 focus:ring-gray-900 dark:focus:ring-gray-900"
-        />
-        {{ translateOrderType('takeaway') }}
-      </label>
+    <div class="mb-2 w-full">
+      <TabsBar
+        :tabs="orderTypeTabs"
+        v-model:activeTab="orderType"
+        class="w-full"
+      />
     </div>
     <div v-if="orderType === 'dine-in'" class="mb-4">
       <SelectBoxUI
@@ -35,6 +22,7 @@
 import { ref, computed } from 'vue'
 import { useOrderStore } from '../../../stores/orderStore'
 import SelectBoxUI from '../../common/SelectBoxUI.vue'
+import TabsBar from '../../admin/TabsBar.vue'
 import { useTranslate } from '../../../composables/useTranslate'
 
 const { translate: translateOrderType } = useTranslate(
@@ -57,8 +45,13 @@ const selectedTable = ref('')
 
 const orderType = computed({
   get: () => orderStore.currentOrder.orderType || 'takeaway',
-  set: value => emit('update:orderType', value)
+  set: value => emit('update:orderType', value as 'dine-in' | 'takeaway')
 })
+
+const orderTypeTabs = computed(() => [
+  { label: translateOrderType('dine-in'), value: 'dine-in' },
+  { label: translateOrderType('takeaway'), value: 'takeaway' }
+])
 
 const tableOptions = computed(() => {
   return Array.from({ length: props.numberOfTables }, (_, i) => ({

@@ -10,12 +10,17 @@ import { useTranslate } from '../../composables/useTranslate'
 import type { OrderStatus } from '../../types/order'
 
 const props = defineProps<{
-  status: OrderStatus
+  status: OrderStatus | string
 }>()
 
 const { translate } = useTranslate('status')
 
-const translatedStatus = computed(() => translate(props.status))
+const translatedStatus = computed(() => {
+  if (props.status === 'unavailable') {
+    return useTranslate('menuItem').translate('unavailable')
+  }
+  return translate(props.status)
+})
 
 const statusClasses = computed(() => {
   switch (props.status) {
@@ -29,6 +34,8 @@ const statusClasses = computed(() => {
       return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300'
     case 'cancelled':
       return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300'
+    case 'unavailable':
+      return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
     default:
       return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
   }
