@@ -27,7 +27,6 @@
     "retry": "Try Again"
   },
   "menuView": {
-    "title": "Menu Management",
     "loading": "Loading menu data...",
     "error": {
       "title": "Error loading menu data",
@@ -148,12 +147,6 @@
   },
   "orders": {
     "table": {
-      "orderId": "Order ID",
-      "type": "Type",
-      "items": "Items",
-      "total": "Total",
-      "status": "Status",
-      "actions": "Actions",
       "empty": {
         "title": "No orders found",
         "description": "There are currently no orders in the system."
@@ -169,7 +162,6 @@
       "cancel": "Cancel"
     },
     "activeOrders": {
-      "title": "Active Orders",
       "headers": {
         "id": "Order ID",
         "type": "Type",
@@ -197,7 +189,7 @@
     },
     "tabs": {
       "add": "Add Order",
-      "history": "Order History"
+      "active": "Active Orders"
     },
     "currentOrder": {
       "orderType": {
@@ -263,7 +255,13 @@
       "revenueToday": "Revenue Today",
       "menuItems": "Menu Items"
     },
-    "recentOrders": "Recent Orders",
+    "recentOrders": {
+      "title": "Recent Orders",
+      "empty": {
+        "title": "No Recent Orders",
+        "description": "There are no recent orders to display."
+      }
+    },
     "timeLabels": {
       "today": "Today",
       "total": "Total"

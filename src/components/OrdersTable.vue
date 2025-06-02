@@ -22,10 +22,10 @@
         />
       </svg>
       <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-gray-100">
-        {{ translateOrdersTable('empty.title') }}
+        {{ emptyStateTitle }}
       </h3>
       <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-        {{ translateOrdersTable('empty.description') }}
+        {{ emptyStateDescription }}
       </p>
     </div>
     <table
@@ -168,7 +168,10 @@ const { translate: translateOrderType } = useTranslate(
 )
 const { translate: translateTable } = useTranslate('orders.activeOrders.table')
 const { translate: translateStatus } = useTranslate('status')
-const { translate: translateOrdersTable } = useTranslate('orders.table')
+const { translate: translateHeaders } = useTranslate(
+  'orders.activeOrders.headers'
+)
+const { translate: translateEmpty } = useTranslate('orders.table')
 
 interface TableHeader {
   key: string
@@ -189,21 +192,34 @@ const props = defineProps<{
   headers?: TableHeader[]
   actions?: TableAction[]
   isLoading?: boolean
+  emptyStateTitle?: string
+  emptyStateDescription?: string
 }>()
 
-const defaultHeaders: TableHeader[] = [
-  { key: 'id', label: 'Order ID' },
-  { key: 'type', label: 'Type' },
-  { key: 'table', label: 'Table' },
-  { key: 'items', label: 'Items' },
-  { key: 'total', label: 'Total' },
-  { key: 'status', label: 'Status' }
-]
+const defaultHeaders = computed<TableHeader[]>(() => [
+  { key: 'id', label: translateHeaders('id') },
+  { key: 'type', label: translateHeaders('type') },
+  { key: 'table', label: translateHeaders('table') },
+  { key: 'items', label: translateHeaders('items') },
+  { key: 'total', label: translateHeaders('total') },
+  { key: 'status', label: translateHeaders('status') }
+])
 
 const headers = computed(() => {
   if (props.headers) return props.headers
   return props.showActions
-    ? [...defaultHeaders, { key: 'actions', label: 'Actions' }]
-    : defaultHeaders
+    ? [
+        ...defaultHeaders.value,
+        { key: 'actions', label: translateHeaders('actions') }
+      ]
+    : defaultHeaders.value
+})
+
+const emptyStateTitle = computed(() => {
+  return props.emptyStateTitle || translateEmpty('empty.title')
+})
+
+const emptyStateDescription = computed(() => {
+  return props.emptyStateDescription || translateEmpty('empty.description')
 })
 </script>

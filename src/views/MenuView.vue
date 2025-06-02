@@ -2,10 +2,6 @@
   <div class="admin-view relative bg-white dark:bg-dark-bg">
     <!-- Menu Management Content -->
     <template v-if="$route.path === '/admin/menu'">
-      <h1 class="text-2xl font-bold mb-6 text-gray-900 dark:text-white">
-        {{ translateAdminView('title') }}
-      </h1>
-
       <div
         v-if="menuStore.isLoading"
         class="text-center py-8 flex flex-col items-center justify-center min-h-[200px]"
