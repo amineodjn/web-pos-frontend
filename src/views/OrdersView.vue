@@ -4,7 +4,7 @@
       <TabsBar
         :tabs="[
           { label: translateOrdersTabs('add'), value: 'add' },
-          { label: translateOrdersTabs('history'), value: 'history' },
+          { label: translateOrdersTabs('active'), value: 'active' }
         ]"
         :active-tab="currentView"
         @update:active-tab="currentView = $event"
@@ -32,19 +32,19 @@
 </template>
 
 <script setup lang="ts">
-  import MenuCategories from '../components/order/MenuCategories.vue';
-  import CurrentOrder from '../components/order/CurrentOrder.vue';
-  import ActiveOrders from '../components/order/ActiveOrders.vue';
-  import TabsBar from '../components/admin/TabsBar.vue';
-  import { ref } from 'vue';
-  import { useTranslate } from '../composables/useTranslate';
-  import { useOrderStore } from '../stores/orderStore';
+import MenuCategories from '../components/order/MenuCategories.vue'
+import CurrentOrder from '../components/order/CurrentOrder.vue'
+import ActiveOrders from '../components/order/ActiveOrders.vue'
+import TabsBar from '../components/admin/TabsBar.vue'
+import { ref } from 'vue'
+import { useTranslate } from '../composables/useTranslate'
+import { useOrderStore } from '../stores/orderStore'
 
-  const { translate: translateOrdersTabs } = useTranslate('orders.tabs');
-  const orderStore = useOrderStore();
+const { translate: translateOrdersTabs } = useTranslate('orders.tabs')
+const orderStore = useOrderStore()
 
-  const numberOfTables = ref(5);
-  const guestsPerTable = ref([6, 6, 4, 4, 4]);
-  const taxRate = ref(8); // Tax rate in percentage
-  const currentView = ref('add');
+const numberOfTables = ref(5)
+const guestsPerTable = ref([6, 6, 4, 4, 4])
+const taxRate = ref(8) // Tax rate in percentage
+const currentView = ref('add')
 </script>

@@ -1,8 +1,5 @@
 <template>
   <div class="bg-white dark:bg-dark-bg rounded-lg shadow p-6">
-    <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-      {{ translateActiveOrders('title') }}
-    </h2>
     <OrdersTable
       :orders="orderStore.activeOrders"
       :show-actions="true"
