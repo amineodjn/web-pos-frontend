@@ -23,6 +23,7 @@
       <button
         @click="$emit('edit-comment', item.id)"
         class="text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200 p-1"
+        :title="translateCurrentOrder('addComment')"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -42,6 +43,7 @@
       <button
         @click="$emit('remove', item.id)"
         class="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 p-1"
+        :title="translateCurrentOrder('removeItem')"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -64,6 +66,9 @@
 
 <script setup lang="ts">
 import type { OrderItem } from '../../../stores/orderStore'
+import { useTranslate } from '../../../composables/useTranslate'
+
+const { translate: translateCurrentOrder } = useTranslate('orders.currentOrder')
 
 defineProps<{
   item: OrderItem

@@ -20,7 +20,8 @@ export const useOrderStore = defineStore('order', () => {
     items: [],
     status: 'pending',
     tax: 0,
-    total: 0
+    total: 0,
+    notes: ''
   })
 
   const activeOrders = ref<Order[]>([])
@@ -90,8 +91,13 @@ export const useOrderStore = defineStore('order', () => {
       status: 'pending',
       tax: 0,
       total: 0,
-      tableNumber: null
+      tableNumber: null,
+      notes: ''
     }
+  }
+
+  function updateOrderNotes(notes: string) {
+    currentOrder.value.notes = notes
   }
 
   // Methods for active orders
@@ -124,6 +130,7 @@ export const useOrderStore = defineStore('order', () => {
         status: order.status,
         total: order.total_amount,
         tax: 0,
+        notes: order.notes || '',
         createdAt: new Date(order.created_at)
       }))
     } catch (err) {
@@ -156,6 +163,7 @@ export const useOrderStore = defineStore('order', () => {
         status: 'pending',
         total: currentOrder.value.total!,
         tax: currentOrder.value.tax!,
+        notes: currentOrder.value.notes || '',
         createdAt: new Date()
       }
 
@@ -169,7 +177,7 @@ export const useOrderStore = defineStore('order', () => {
           item_id: item.id,
           quantity: item.quantity
         })),
-        notes: '' // TODO: Add support for order notes
+        notes: newOrder.notes
       })
 
       const createdOrder: Order = {
@@ -206,7 +214,7 @@ export const useOrderStore = defineStore('order', () => {
           item_id: item.id,
           quantity: item.quantity
         })),
-        notes: '',
+        notes: order.notes || '',
         status: status
       })
       order.status = status
@@ -260,6 +268,7 @@ export const useOrderStore = defineStore('order', () => {
     placeOrder,
     updateOrderStatus,
     updateItemComment,
+    updateOrderNotes,
     fetchOrders,
     deleteOrder
   }

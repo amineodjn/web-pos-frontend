@@ -170,7 +170,10 @@
       "recentComments": "Ostatnie Komentarze",
       "commentPlaceholder": "Wpisz swój komentarz...",
       "cancel": "Anuluj",
-      "save": "Zapisz"
+      "save": "Zapisz",
+      "notes": "Notatki do zamówienia",
+      "notesPlaceholder": "Dodaj specjalne instrukcje lub notatki do tego zamówienia...",
+      "removeItem": "Usuń pozycję"
     },
     "activeOrders": {
       "title": "Aktywne Zamówienia",

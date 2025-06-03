@@ -8,10 +8,30 @@
       <span>{{ translateCurrentOrder('tax') }} ({{ taxRate }}%)</span>
       <span>PLN{{ tax.toFixed(2) }}</span>
     </div>
-    <div class="flex justify-between font-bold mb-4 text-gray-900 dark:text-white">
+    <div
+      class="flex justify-between font-bold mb-4 text-gray-900 dark:text-white"
+    >
       <span>{{ translateCurrentOrder('total') }}</span>
       <span>PLN{{ total.toFixed(2) }}</span>
     </div>
+
+    <div class="mb-4">
+      <label
+        for="order-notes"
+        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+      >
+        {{ translateCurrentOrder('notes') }}
+      </label>
+      <textarea
+        id="order-notes"
+        v-model="notes"
+        rows="2"
+        class="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none focus:border-blue-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600"
+        :placeholder="translateCurrentOrder('notesPlaceholder')"
+        @input="handleNotesInput"
+      ></textarea>
+    </div>
+
     <button
       @click="$emit('place-order')"
       :disabled="!canPlaceOrder || isProcessing"
@@ -19,7 +39,7 @@
         'w-full py-2 rounded-md mb-2 flex items-center justify-center',
         canPlaceOrder && !isProcessing
           ? 'bg-gray-900 text-white hover:bg-gray-800 dark:bg-gray-800 dark:hover:bg-gray-700'
-          : 'bg-gray-200 text-gray-500 cursor-not-allowed dark:bg-gray-700 dark:text-gray-400',
+          : 'bg-gray-200 text-gray-500 cursor-not-allowed dark:bg-gray-700 dark:text-gray-400'
       ]"
     >
       <span v-if="isProcessing" class="flex items-center">
@@ -41,21 +61,34 @@
 </template>
 
 <script setup lang="ts">
-  import { useTranslate } from '../../../composables/useTranslate';
+import { computed } from 'vue'
+import { useOrderStore } from '../../../stores/orderStore'
+import { useTranslate } from '../../../composables/useTranslate'
 
-  const { translate: translateCurrentOrder } = useTranslate('orders.currentOrder');
+const { translate: translateCurrentOrder } = useTranslate('orders.currentOrder')
+const orderStore = useOrderStore()
 
-  const props = defineProps<{
-    subtotal: number;
-    tax: number;
-    total: number;
-    taxRate: number;
-    canPlaceOrder: boolean;
-    isProcessing: boolean;
-  }>();
+defineProps<{
+  subtotal: number
+  tax: number
+  total: number
+  taxRate: number
+  canPlaceOrder: boolean
+  isProcessing: boolean
+}>()
 
-  const emit = defineEmits<{
-    (e: 'place-order'): void;
-    (e: 'clear-order'): void;
-  }>();
+defineEmits<{
+  (e: 'place-order'): void
+  (e: 'clear-order'): void
+}>()
+
+const notes = computed({
+  get: () => orderStore.currentOrder.notes || '',
+  set: (val: string) => orderStore.updateOrderNotes(val)
+})
+
+const handleNotesInput = (event: Event) => {
+  const target = event.target as HTMLTextAreaElement
+  notes.value = target.value
+}
 </script>

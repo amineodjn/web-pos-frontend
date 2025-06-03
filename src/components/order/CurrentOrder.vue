@@ -13,7 +13,11 @@
       @remove="id => orderStore.removeItemFromOrder(id)"
     />
 
-    <CommentModal v-model="showCommentModal" :item-id="selectedItemId" />
+    <CommentModal
+      v-model="showCommentModal"
+      :item-id="selectedItemId"
+      @save="handleCommentSave"
+    />
 
     <OrderSummary
       :subtotal="orderStore.subtotal"
@@ -61,6 +65,12 @@ const canPlaceOrder = computed(() => {
 const handleEditComment = (itemId: string) => {
   selectedItemId.value = itemId
   showCommentModal.value = true
+}
+
+const handleCommentSave = (comment: string) => {
+  if (selectedItemId.value) {
+    orderStore.updateItemComment(selectedItemId.value, comment)
+  }
 }
 
 const sendToPrinter = async () => {

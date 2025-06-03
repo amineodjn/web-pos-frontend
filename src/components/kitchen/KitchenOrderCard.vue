@@ -28,6 +28,18 @@
           {{ item.comment }}
         </div>
       </div>
+
+      <div
+        v-if="order.notes"
+        class="mt-4 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg"
+      >
+        <span class="font-medium text-gray-900 dark:text-white"
+          >{{ translateKitchView('orderNotes') }}:</span
+        >
+        <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">
+          {{ order.notes }}
+        </p>
+      </div>
     </div>
 
     <div class="flex justify-end space-x-2">

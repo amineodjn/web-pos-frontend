@@ -21,6 +21,7 @@ export interface Order {
   total: number
   tax: number
   createdAt: Date
+  notes: string
   comments?: string
 }
 

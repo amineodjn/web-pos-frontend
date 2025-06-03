@@ -210,7 +210,10 @@
       "recentComments": "Recent Comments",
       "commentPlaceholder": "Enter your comment here...",
       "cancel": "Cancel",
-      "save": "Save"
+      "save": "Save",
+      "notes": "Order Notes",
+      "notesPlaceholder": "Add any special instructions or notes for this order...",
+      "removeItem": "Remove Item"
     },
     "orderDetails": {
       "title": "Order #{orderId} Details",
