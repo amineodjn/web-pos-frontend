@@ -149,7 +149,7 @@
   "orders": {
     "tabs": {
       "add": "Dodaj Zamówienie",
-      "history": "Historia Zamówień"
+      "active": "Aktywne Zamówienia"
     },
     "currentOrder": {
       "orderType": {
@@ -200,12 +200,6 @@
       }
     },
     "table": {
-      "orderId": "ID Zamówienia",
-      "type": "Typ",
-      "items": "Pozycje",
-      "total": "Suma",
-      "status": "Status",
-      "actions": "Akcje",
       "empty": {
         "title": "Brak zamówień",
         "description": "Obecnie nie ma żadnych zamówień w systemie."
@@ -260,7 +254,13 @@
       "revenueToday": "Przychód Dzisiaj",
       "menuItems": "Pozycje Menu"
     },
-    "recentOrders": "Ostatnie Zamówienia",
+    "recentOrders": {
+      "title": "Ostatnie Zamówienia",
+      "empty": {
+        "title": "Brak Ostatnich Zamówień",
+        "description": "Nie ma ostatnich zamówień do wyświetlenia."
+      }
+    },
     "timeLabels": {
       "today": "Dzisiaj",
       "total": "Razem"

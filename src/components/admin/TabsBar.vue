@@ -1,6 +1,6 @@
 <template>
   <div
-    class="inline-flex rounded-md shadow-sm"
+    class="flex rounded-md shadow-sm w-full"
     role="tablist"
     aria-label="View options"
   >
@@ -11,7 +11,7 @@
       role="tab"
       :aria-selected="activeTab === tab.value"
       @click="$emit('update:activeTab', tab.value)"
-      class="px-4 py-2 text-sm font-medium transition-colors"
+      class="flex-1 px-4 py-2 text-sm font-medium transition-colors"
       :class="[
         'focus:ring-2 focus:z-10 focus:outline-none',
         index === 0 ? 'rounded-l-lg' : '',
