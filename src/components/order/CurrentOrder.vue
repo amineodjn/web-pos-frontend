@@ -27,7 +27,7 @@
       :can-place-order="!!canPlaceOrder"
       :is-processing="isProcessing"
       @place-order="handlePlaceOrder"
-      @clear-order="orderStore.clearOrder"
+      @clear-order="orderStore.clearCurrentOrder"
     />
   </div>
 </template>
@@ -124,7 +124,7 @@ const handleTableChange = (tableNumber: number | null) => {
   if (tableNumber) {
     orderStore.setTable(tableNumber)
   } else {
-    orderStore.clearOrder()
+    orderStore.clearCurrentOrder()
   }
 }
 

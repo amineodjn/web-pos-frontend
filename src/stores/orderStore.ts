@@ -42,6 +42,32 @@ export const useOrderStore = defineStore('order', () => {
   const isProcessing = ref(false)
   const error = ref<string | null>(null)
 
+  const mapApiOrderToStoreOrder = (order: OrderApiOrder): Order => ({
+    id: order.id,
+    tableNumber: order.table_number || null,
+    orderType: order.is_takeout ? 'takeaway' : 'dine-in',
+    items: order.items.map(item => ({
+      id: item.item.id,
+      name: item.item.name,
+      price: item.item.price,
+      quantity: item.quantity,
+      comment: '',
+      available: item.item.is_available,
+      currency: 'PLN',
+      description: item.item.description,
+      details: item.item.details,
+      imageUrl: item.item.image_url,
+      itemNumber: item.item.item_number,
+      category_id: '',
+      organization_id: config.defaultParams.organization_id
+    })),
+    status: order.status,
+    total: order.total_amount,
+    tax: 0,
+    notes: order.notes || '',
+    createdAt: new Date(order.created_at)
+  })
+
   // Methods for current order
   function setTaxRate(rate: number) {
     taxRate.value = rate
@@ -85,7 +111,7 @@ export const useOrderStore = defineStore('order', () => {
     currentOrder.value.tableNumber = tableNumber
   }
 
-  function clearOrder() {
+  function clearCurrentOrder() {
     currentOrder.value = {
       items: [],
       status: 'pending',
@@ -108,31 +134,7 @@ export const useOrderStore = defineStore('order', () => {
         organization_id: config.defaultParams.organization_id
       })
 
-      activeOrders.value = response.orders.map((order: OrderApiOrder) => ({
-        id: order.id,
-        tableNumber: order.table_number || null,
-        orderType: order.is_takeout ? 'takeaway' : 'dine-in',
-        items: order.items.map(item => ({
-          id: item.item.id,
-          name: item.item.name,
-          price: item.item.price,
-          quantity: item.quantity,
-          comment: '',
-          available: item.item.is_available,
-          currency: 'PLN',
-          description: item.item.description,
-          details: item.item.details,
-          imageUrl: item.item.image_url,
-          itemNumber: item.item.item_number,
-          category_id: '',
-          organization_id: config.defaultParams.organization_id
-        })),
-        status: order.status,
-        total: order.total_amount,
-        tax: 0,
-        notes: order.notes || '',
-        createdAt: new Date(order.created_at)
-      }))
+      activeOrders.value = response.orders.map(mapApiOrderToStoreOrder)
     } catch (err) {
       error.value =
         err instanceof Error ? err.message : 'Failed to fetch orders'
@@ -167,27 +169,21 @@ export const useOrderStore = defineStore('order', () => {
         createdAt: new Date()
       }
 
-      const response = await createOrderApi({
-        organization_id: config.defaultParams.organization_id,
+      const response: OrderApiResponse = await createOrderApi({
         flags: {
           is_takeout: newOrder.orderType === 'takeaway'
         },
-        table_number: newOrder.tableNumber || 0,
         items: newOrder.items.map(item => ({
           item_id: item.id,
           quantity: item.quantity
         })),
-        notes: newOrder.notes
+        notes: newOrder.notes,
+        organization_id: config.defaultParams.organization_id,
+        table_number: newOrder.tableNumber || 0
       })
 
-      const createdOrder: Order = {
-        ...newOrder,
-        id: response.orders[0].id,
-        status: response.orders[0].status as Order['status']
-      }
-
-      activeOrders.value.push(createdOrder)
-      clearOrder()
+      activeOrders.value = response.orders.map(mapApiOrderToStoreOrder)
+      clearCurrentOrder()
     } catch (err) {
       error.value = err instanceof Error ? err.message : 'Failed to place order'
       throw err
@@ -203,7 +199,7 @@ export const useOrderStore = defineStore('order', () => {
         throw new Error('Order not found')
       }
 
-      await updateOrderApi({
+      const response: OrderApiResponse = await updateOrderApi({
         order_id: orderId,
         organization_id: config.defaultParams.organization_id,
         flags: {
@@ -217,7 +213,7 @@ export const useOrderStore = defineStore('order', () => {
         notes: order.notes || '',
         status: status
       })
-      order.status = status
+      activeOrders.value = response.orders.map(mapApiOrderToStoreOrder)
     } catch (err) {
       error.value =
         err instanceof Error ? err.message : 'Failed to update order status'
@@ -236,13 +232,12 @@ export const useOrderStore = defineStore('order', () => {
 
   async function deleteOrder(orderId: string) {
     try {
-      await deleteOrderApi({
+      const response: OrderApiResponse = await deleteOrderApi({
         order_id: orderId,
         organization_id: config.defaultParams.organization_id
       })
-      activeOrders.value = activeOrders.value.filter(
-        order => order.id !== orderId
-      )
+
+      activeOrders.value = response.orders.map(mapApiOrderToStoreOrder)
     } catch (err) {
       error.value =
         err instanceof Error ? err.message : 'Failed to delete order'
@@ -264,7 +259,7 @@ export const useOrderStore = defineStore('order', () => {
     addItemToOrder,
     removeItemFromOrder,
     setTable,
-    clearOrder,
+    clearCurrentOrder,
     placeOrder,
     updateOrderStatus,
     updateItemComment,

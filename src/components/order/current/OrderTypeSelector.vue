@@ -65,7 +65,7 @@ const handleTableChange = () => {
     orderStore.setTable(Number(selectedTable.value))
     emit('tableChange', Number(selectedTable.value))
   } else {
-    orderStore.clearOrder()
+    orderStore.clearCurrentOrder()
     emit('tableChange', null)
   }
 }
