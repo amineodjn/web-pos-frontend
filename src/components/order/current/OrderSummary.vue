@@ -45,7 +45,7 @@
 
   const { translate: translateCurrentOrder } = useTranslate('orders.currentOrder');
 
-  const props = defineProps<{
+defineProps<{
     subtotal: number;
     tax: number;
     total: number;
@@ -54,7 +54,7 @@
     isProcessing: boolean;
   }>();
 
-  const emit = defineEmits<{
+defineEmits<{
     (e: 'place-order'): void;
     (e: 'clear-order'): void;
   }>();

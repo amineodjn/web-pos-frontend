@@ -11,7 +11,9 @@
     "type-check": "vue-tsc --build",
     "lint": "eslint . --fix",
     "format": "prettier --write src/",
-    "init:tailwind": "npx tailwindcss init -p"
+    "init:tailwind": "npx tailwindcss init -p",
+    "deploy": "firebase deploy --only hosting",
+    "serve": "firebase serve --only hosting"
   },
   "dependencies": {
     "flowbite": "^1.6.5",
@@ -30,6 +32,7 @@
     "autoprefixer": "^10.4.21",
     "eslint": "^9.18.0",
     "eslint-plugin-vue": "^9.32.0",
+    "firebase-tools": "^13.0.0",
     "jiti": "^2.4.2",
     "npm-run-all2": "^7.0.2",
     "postcss": "^8.5.3",
