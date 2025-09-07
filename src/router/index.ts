@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { useAuth } from '../composables/useAuth'
 import HomeView from '../views/HomeView.vue'
 import AdminLayout from '../layouts/AdminLayout.vue'
 
@@ -24,57 +23,32 @@ const router = createRouter({
       path: '/admin',
       name: 'admin',
       component: AdminLayout,
-      meta: { requiresAuth: true },
       redirect: '/admin/orders',
       children: [
         {
           path: 'dashboard',
           name: 'admin-dashboard',
-          component: loadView('DashboardView'),
-          meta: { requiresAuth: true }
+          component: loadView('DashboardView')
         },
         {
           path: 'menu',
           name: 'admin-menu',
-          component: loadView('MenuView'),
-          meta: { requiresAuth: true }
+          component: loadView('MenuView')
         },
         {
           path: 'orders',
           name: 'admin-orders',
-          component: loadView('OrdersView'),
-          meta: { requiresAuth: true }
+          component: loadView('OrdersView')
         },
         {
           path: 'kitchen',
           name: 'admin-kitchen',
-          component: loadView('KitchenView'),
-          meta: { requiresAuth: true }
+          component: loadView('KitchenView')
         }
       ]
     }
   ]
 })
 
-router.beforeEach(async (to, from, next) => {
-  const { checkAuth, getStoredRedirect, clearStoredRedirect } = useAuth()
-
-  if (!to.meta.requiresAuth) {
-    const storedRedirect = getStoredRedirect()
-    if (storedRedirect && to.name === 'home') {
-      clearStoredRedirect()
-      return next(storedRedirect)
-    }
-    return next()
-  }
-
-  const isAuthenticated = await checkAuth()
-  if (!isAuthenticated) {
-    localStorage.setItem('auth_redirect', to.fullPath)
-    return next({ name: 'home' })
-  }
-
-  return next()
-})
 
 export default router
