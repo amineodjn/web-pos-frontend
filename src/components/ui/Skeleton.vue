@@ -37,5 +37,8 @@
 </template>
 
 <script setup lang="ts">
-  // No props or logic needed for now
+
+defineOptions({
+  name: 'Skeleton-UI'
+})
 </script>

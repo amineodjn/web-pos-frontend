@@ -68,49 +68,11 @@
       <div
         class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700"
       >
-        <div class="flex items-center gap-2 p-2">
-          <div
-            class="h-8 w-8 rounded-full bg-red-600 flex items-center justify-center text-white font-semibold aspect-square"
-          >
-            {{ user?.given_name?.[0] || user?.email?.[0] || 'U' }}
-          </div>
-          <div v-if="!modelValue" class="flex flex-col">
-            <span class="text-sm font-medium dark:text-white">{{
-              user?.given_name || 'User'
-            }}</span>
-            <span class="text-xs text-gray-500 dark:text-gray-400">{{
-              user?.email
-            }}</span>
-          </div>
-        </div>
         <div class="flex items-center justify-around p-2">
           <div v-if="!modelValue" class="flex items-center">
             <LanguageSelector />
           </div>
           <DarkModeToggle />
-          <button
-            v-if="!modelValue"
-            @click="handleLogout"
-            class="p-2 text-gray-500 rounded-lg hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700"
-          >
-            <svg
-              class="w-5 h-5"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M20 12H8m12 0-4 4m4-4-4-4M9 4H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h2"
-              />
-            </svg>
-          </button>
         </div>
       </div>
     </div>
@@ -123,8 +85,6 @@ import { useTranslate } from '../../composables/useTranslate'
 import { computed } from 'vue'
 import DarkModeToggle from '../navbar/DarkModeToggle.vue'
 import LanguageSelector from '../navbar/LanguageSelector.vue'
-import authService from '../../services/auth'
-import { useAuth } from '../../composables/useAuth'
 
 const props = defineProps<{
   modelValue: boolean
@@ -136,7 +96,6 @@ const emit = defineEmits<{
 
 const route = useRoute()
 const { translate: translateSideBar } = useTranslate('adminView.sidebar')
-const { user } = useAuth()
 const icons = {
   dashboard: `<svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
                   <path d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z"/>
@@ -155,14 +114,6 @@ const icons = {
 
 const isActive = (path: string) => {
   return route.path === path
-}
-
-const handleLogout = async () => {
-  try {
-    await authService.logout()
-  } catch (error) {
-    console.error('Logout failed:', error)
-  }
 }
 
 const menuItems = computed(() => [
