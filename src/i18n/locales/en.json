@@ -14,5 +14,278 @@
   },
   "menuHeader": {
     "title": "OUR MENU"
+  },
+  "errors": {
+    "default": {
+      "title": "Oops! Something went wrong",
+      "message": "Failed to load the content. Please try again later."
+    },
+    "menu": {
+      "title": "Menu Loading Error",
+      "message": "Failed to load the menu data. Please check your connection and try again."
+    },
+    "retry": "Try Again"
+  },
+  "menuView": {
+    "loading": "Loading menu data...",
+    "error": {
+      "title": "Error loading menu data",
+      "retry": "Retry"
+    },
+    "processing": "Processing...",
+    "tabs": {
+      "categories": "Categories",
+      "items": "Menu Items"
+    },
+    "categories": {
+      "title": "Categories",
+      "addNew": "Add New Category",
+      "placeholder": "Category name",
+      "empty": "No categories found. Add one above."
+    },
+    "items": {
+      "title": "Menu Items",
+      "foundCount": "{count} item found",
+      "foundCountPlural": "{count} items found",
+      "searchPlaceholder": "Search by name or description...",
+      "filterLabel": "Filter by Category",
+      "filterPlaceholder": "All Categories",
+      "empty": {
+        "title": "No menu items found",
+        "description": "Add some items or select a different category"
+      }
+    },
+    "buttons": {
+      "add": "Add",
+      "addNew": "Add Item",
+      "edit": "Edit",
+      "delete": "Delete",
+      "reset": "Reset Data",
+      "saving": "Saving..."
+    },
+    "confirmations": {
+      "deleteCategory": {
+        "title": "Delete Category",
+        "message": "Are you sure you want to delete the category \"{name}\" and all its items?"
+      },
+      "deleteItem": {
+        "title": "Delete Item",
+        "message": "Are you sure you want to delete \"{name}\"?"
+      },
+      "resetData": {
+        "title": "Reset Menu Data",
+        "message": "Are you sure you want to reset all menu data to the initial state? This cannot be undone."
+      }
+    },
+    "toast": {
+      "success": {
+        "addCategory": "Category '{name}' has been added successfully",
+        "deleteCategory": "Category deleted successfully",
+        "updateItem": "Menu item updated successfully",
+        "addItem": "Menu item added successfully",
+        "deleteItem": "Menu item deleted successfully"
+      },
+      "error": {
+        "addCategory": "Failed to add category: {message}",
+        "deleteCategory": "Failed to delete category: {message}",
+        "updateItem": "Failed to update menu item: {message}",
+        "addItem": "Failed to add menu item: {message}",
+        "deleteItem": "Failed to delete menu item: {message}",
+        "generic": "An error occurred: {message}"
+      }
+    }
+  },
+  "menuItemModal": {
+    "title": {
+      "add": "Add Menu Item",
+      "edit": "Edit Menu Item"
+    },
+    "fields": {
+      "name": "Name",
+      "category": "Category",
+      "price": "Price",
+      "currency": "Currency",
+      "description": "Description",
+      "imageUrl": "Image URL",
+      "available": "Available",
+      "details": "Item Details",
+      "ingredients": "Ingredients",
+      "meats": "Meats",
+      "sauces": "Sauces",
+      "sizes": "Sizes",
+      "tags": "Tags"
+    },
+    "placeholders": {
+      "category": "Select a category",
+      "ingredients": "Ice cream, Whipped cream, Nuts",
+      "meats": "Chicken, Beef, Pork",
+      "sauces": "Chocolate, Caramel, Strawberry",
+      "sizes": "Small, Regular, Large",
+      "tags": "Sweet, Cold, Spicy, Vegetarian"
+    },
+    "helpText": {
+      "commaSeparated": "Separate multiple {items} with commas"
+    },
+    "buttons": {
+      "cancel": "Cancel",
+      "save": "Save",
+      "saving": "Saving..."
+    },
+    "validation": {
+      "required": "This field is required"
+    },
+    "error": "An error occurred while saving the item. Please try again."
+  },
+  "adminView": {
+    "sidebar": {
+      "dashboard": "Dashboard",
+      "menu": "Menu",
+      "orders": "Orders",
+      "kitchen": "Kitchen",
+      "logout": "Logout"
+    }
+  },
+  "orders": {
+    "table": {
+      "empty": {
+        "title": "No orders found",
+        "description": "There are currently no orders in the system."
+      },
+      "types": {
+        "dine-in": "Dine-in",
+        "takeaway": "Takeaway"
+      }
+    },
+    "actions": {
+      "start": "Start",
+      "complete": "Complete",
+      "cancel": "Cancel"
+    },
+    "activeOrders": {
+      "headers": {
+        "id": "Order ID",
+        "type": "Type",
+        "table": "Table",
+        "items": "Items",
+        "total": "Total",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "actions": {
+        "view": "View",
+        "complete": "Complete",
+        "cancel": "Cancel",
+        "deleteTitle": "Delete Order",
+        "deleteMessage": "Are you sure you want to delete this order? This action cannot be undone."
+      },
+      "table": {
+        "dineIn": "Table {number}",
+        "takeaway": "Takeaway"
+      },
+      "empty": {
+        "title": "No active orders",
+        "description": "There are currently no active orders in the system."
+      }
+    },
+    "tabs": {
+      "add": "Add Order",
+      "active": "Active Orders"
+    },
+    "currentOrder": {
+      "orderType": {
+        "dine-in": "Dine-in",
+        "takeaway": "Takeaway"
+      },
+      "selectTable": "Select Table",
+      "noItems": "No items in order yet",
+      "selectItems": "Select menu items to add",
+      "subtotal": "Subtotal",
+      "tax": "Tax",
+      "total": "Total",
+      "placeOrder": "Place Order",
+      "processing": "Processing...",
+      "clearOrder": "Clear Order",
+      "add": "Add",
+      "addComment": "Add Comment",
+      "recentComments": "Recent Comments",
+      "commentPlaceholder": "Enter your comment here...",
+      "cancel": "Cancel",
+      "save": "Save"
+    },
+    "orderDetails": {
+      "title": "Order #{orderId} Details",
+      "orderType": "Order Type",
+      "items": "Items",
+      "total": "Total",
+      "close": "Close"
+    }
+  },
+  "kitchen": {
+    "display": {
+      "title": "Kitchen Display",
+      "comments": "Comments",
+      "complete": "Complete",
+      "start": "Start",
+      "cancel": "Cancel",
+      "takeaway": "Takeaway",
+      "empty": {
+        "title": "No active orders",
+        "description": "There are currently no orders in progress. New orders will appear here."
+      },
+      "status": {
+        "pending": "Pending",
+        "preparing": "Preparing",
+        "ready": "Ready",
+        "completed": "Completed",
+        "cancelled": "Cancelled"
+      }
+    }
+  },
+  "status": {
+    "pending": "Pending",
+    "preparing": "Preparing",
+    "ready": "Ready",
+    "completed": "Completed",
+    "cancelled": "Cancelled"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "cards": {
+      "ordersToday": "Orders Today",
+      "revenueToday": "Revenue Today",
+      "menuItems": "Menu Items"
+    },
+    "recentOrders": {
+      "title": "Recent Orders",
+      "empty": {
+        "title": "No Recent Orders",
+        "description": "There are no recent orders to display."
+      }
+    },
+    "timeLabels": {
+      "today": "Today",
+      "total": "Total"
+    }
+  },
+  "imageUploader": {
+    "upload": {
+      "clickToUpload": "Click to upload",
+      "orDragAndDrop": "or drag and drop",
+      "supportedFormats": "PNG, JPG, GIF up to 10MB",
+      "preview": "Image preview"
+    }
+  },
+  "confirmationModal": {
+    "buttons": {
+      "confirm": "Confirm",
+      "cancel": "Cancel"
+    }
+  },
+  "common": {
+    "delete": "Delete",
+    "cancel": "Cancel"
+  },
+  "menuItem": {
+    "unavailable": "Unavailable"
   }
 }

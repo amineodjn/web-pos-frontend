@@ -1,694 +1,694 @@
 {
-  "categoryBadges": [
-    "Main",
-    "Sides",
-    "Drinks",
-    "Starters",
-    "Desserts",
-    "Soups",
-    "Salads",
-    "Kids Menu"
+  "menu": [
+    {
+      "categoryId": "desserts-1",
+      "categoryName": "Desserts",
+      "sortOrder": 0,
+      "categoryItems": [
+        {
+          "available": true,
+          "currency": "PLN",
+          "description": "Vanilla ice cream with toppings",
+          "details": {
+            "ingredients": ["Ice cream", "Whipped cream", "Nuts"],
+            "meats": [],
+            "sauces": ["Chocolate", "Caramel"],
+            "sizes": ["Regular"],
+            "tags": ["Sweet", "Cold"]
+          },
+          "id": "25",
+          "imageUrl": "../../../images/doner_kebab.jpg",
+          "itemNumber": 25,
+          "name": "Ice Cream Sundae",
+          "price": 12.99
+        },
+        {
+          "available": true,
+          "currency": "PLN",
+          "description": "Rich chocolate layer cake",
+          "details": {
+            "ingredients": ["Chocolate", "Cake", "Frosting"],
+            "meats": [],
+            "sauces": ["Chocolate"],
+            "sizes": ["Regular"],
+            "tags": ["Sweet", "Rich"]
+          },
+          "id": "26",
+          "imageUrl": "../../../images/doner_kebab.jpg",
+          "itemNumber": 26,
+          "name": "Chocolate Cake",
+          "price": 13.99
+        },
+        {
+          "available": true,
+          "currency": "PLN",
+          "description": "Warm apple pie with vanilla ice cream",
+          "details": {
+            "ingredients": ["Apples", "Pastry", "Cinnamon"],
+            "meats": [],
+            "sauces": ["Caramel"],
+            "sizes": ["Regular"],
+            "tags": ["Sweet", "Hot"]
+          },
+          "id": "27",
+          "imageUrl": "../../../images/doner_kebab.jpg",
+          "itemNumber": 27,
+          "name": "Apple Pie",
+          "price": 11.99
+        },
+        {
+          "available": true,
+          "currency": "PLN",
+          "description": "New York style cheesecake",
+          "details": {
+            "ingredients": ["Cream cheese", "Graham crust", "Berries"],
+            "meats": [],
+            "sauces": ["Berry sauce"],
+            "sizes": ["Regular"],
+            "tags": ["Sweet", "Classic"]
+          },
+          "id": "28",
+          "imageUrl": "../../../images/doner_kebab.jpg",
+          "itemNumber": 28,
+          "name": "Cheesecake",
+          "price": 14.99
+        },
+        {
+          "available": true,
+          "currency": "PLN",
+          "description": "Warm chocolate brownie with ice cream",
+          "details": {
+            "ingredients": ["Chocolate", "Walnuts", "Ice cream"],
+            "meats": [],
+            "sauces": ["Chocolate", "Caramel"],
+            "sizes": ["Regular"],
+            "tags": ["Sweet", "Hot"]
+          },
+          "id": "29",
+          "imageUrl": "../../../images/doner_kebab.jpg",
+          "itemNumber": 29,
+          "name": "Brownie",
+          "price": 10.99
+        },
+        {
+          "available": true,
+          "currency": "PLN",
+          "description": "Classic Italian tiramisu",
+          "details": {
+            "ingredients": ["Ladyfingers", "Coffee", "Mascarpone"],
+            "meats": [],
+            "sauces": [],
+            "sizes": ["Regular"],
+            "tags": ["Sweet", "Italian"]
+          },
+          "id": "30",
+          "imageUrl": "../../../images/doner_kebab.jpg",
+          "itemNumber": 30,
+          "name": "Tiramisu",
+          "price": 13.99
+        }
+      ]
+    },
+    {
+      "categoryId": "drinks-1",
+      "categoryName": "Drinks",
+      "sortOrder": 1,
+      "categoryItems": [
+        {
+          "available": true,
+          "currency": "PLN",
+          "description": "Ice-cold cola with free refills",
+          "details": {
+            "ingredients": ["Carbonated water", "Cola syrup"],
+            "meats": [],
+            "sauces": [],
+            "sizes": ["Small", "Regular", "Large"],
+            "tags": ["Cold", "Refillable"]
+          },
+          "id": "13",
+          "imageUrl": "../../../images/doner_kebab.jpg",
+          "itemNumber": 13,
+          "name": "Cola",
+          "price": 7.99
+        },
+        {
+          "available": true,
+          "currency": "PLN",
+          "description": "Fresh-squeezed lemonade",
+          "details": {
+            "ingredients": ["Lemons", "Sugar", "Water"],
+            "meats": [],
+            "sauces": [],
+            "sizes": ["Regular", "Large"],
+            "tags": ["Fresh", "Cold"]
+          },
+          "id": "14",
+          "imageUrl": "../../../images/doner_kebab.jpg",
+          "itemNumber": 14,
+          "name": "Lemonade",
+          "price": 6.99
+        },
+        {
+          "available": true,
+          "currency": "PLN",
+          "description": "House-brewed iced tea",
+          "details": {
+            "ingredients": ["Tea", "Ice"],
+            "meats": [],
+            "sauces": [],
+            "sizes": ["Regular", "Large"],
+            "tags": ["Cold", "Refillable"]
+          },
+          "id": "15",
+          "imageUrl": "../../../images/doner_kebab.jpg",
+          "itemNumber": 15,
+          "name": "Iced Tea",
+          "price": 6.99
+        },
+        {
+          "available": true,
+          "currency": "PLN",
+          "description": "Hand-spun milkshake with whipped cream",
+          "details": {
+            "ingredients": ["Ice cream", "Milk", "Whipped cream"],
+            "meats": [],
+            "sauces": ["Chocolate", "Caramel"],
+            "sizes": ["Regular"],
+            "tags": ["Cold", "Sweet"]
+          },
+          "id": "16",
+          "imageUrl": "../../../images/doner_kebab.jpg",
+          "itemNumber": 16,
+          "name": "Milkshake",
+          "price": 9.99
+        },
+        {
+          "available": true,
+          "currency": "PLN",
+          "description": "Fresh-brewed coffee",
+          "details": {
+            "ingredients": ["Coffee beans", "Hot water"],
+            "meats": [],
+            "sauces": [],
+            "sizes": ["Small", "Regular", "Large"],
+            "tags": ["Hot", "Refillable"]
+          },
+          "id": "17",
+          "imageUrl": "../../../images/doner_kebab.jpg",
+          "itemNumber": 17,
+          "name": "Coffee",
+          "price": 5.99
+        },
+        {
+          "available": true,
+          "currency": "PLN",
+          "description": "Fresh fruit smoothie",
+          "details": {
+            "ingredients": ["Mixed fruits", "Yogurt", "Honey"],
+            "meats": [],
+            "sauces": [],
+            "sizes": ["Regular"],
+            "tags": ["Healthy", "Cold"]
+          },
+          "id": "18",
+          "imageUrl": "../../../images/doner_kebab.jpg",
+          "itemNumber": 18,
+          "name": "Smoothie",
+          "price": 8.99
+        }
+      ]
+    },
+    {
+      "categoryId": "kids-menu-1",
+      "categoryName": "Kids Menu",
+      "sortOrder": 2,
+      "categoryItems": [
+        {
+          "available": true,
+          "currency": "PLN",
+          "description": "Kid-sized burger with fries",
+          "details": {
+            "ingredients": ["Beef patty", "Cheese", "Fries"],
+            "meats": ["Beef"],
+            "sauces": ["Ketchup"],
+            "sizes": ["Kids"],
+            "tags": ["Kids", "Classic"]
+          },
+          "id": "35",
+          "imageUrl": "../../../images/doner_kebab.jpg",
+          "itemNumber": 35,
+          "name": "Mini Burger",
+          "price": 12.99
+        },
+        {
+          "available": true,
+          "currency": "PLN",
+          "description": "Crispy chicken nuggets with fries",
+          "details": {
+            "ingredients": ["Chicken", "Breading", "Fries"],
+            "meats": ["Chicken"],
+            "sauces": ["BBQ", "Ketchup"],
+            "sizes": ["Kids"],
+            "tags": ["Kids", "Hot"]
+          },
+          "id": "36",
+          "imageUrl": "../../../images/doner_kebab.jpg",
+          "itemNumber": 36,
+          "name": "Chicken Nuggets",
+          "price": 11.99
+        }
+      ]
+    },
+    {
+      "categoryId": "main-1",
+      "categoryName": "Main",
+      "sortOrder": 3,
+      "categoryItems": [
+        {
+          "available": true,
+          "currency": "PLN",
+          "description": "Juicy beef patty with fresh vegetables and our signature sauce",
+          "details": {
+            "ingredients": [
+              "Beef patty",
+              "Lettuce",
+              "Tomato",
+              "Onion",
+              "Pickles"
+            ],
+            "meats": ["Beef"],
+            "sauces": ["Signature sauce", "Mayo", "Ketchup"],
+            "sizes": ["Regular", "Large"],
+            "tags": ["Burgers", "Bestseller"]
+          },
+          "id": "1",
+          "imageUrl": "../../../images/doner_kebab.jpg",
+          "itemNumber": 1,
+          "name": "Classic Burger",
+          "price": 24.99
+        },
+        {
+          "available": true,
+          "currency": "PLN",
+          "description": "Grilled chicken breast with fresh vegetables in a tortilla wrap",
+          "details": {
+            "ingredients": ["Chicken breast", "Lettuce", "Tomato", "Cucumber"],
+            "meats": ["Chicken"],
+            "sauces": ["Garlic sauce", "Ranch"],
+            "sizes": ["Regular"],
+            "tags": ["Healthy", "Light"]
+          },
+          "id": "2",
+          "imageUrl": "../../../images/doner_kebab.jpg",
+          "itemNumber": 2,
+          "name": "Chicken Wrap",
+          "price": 19.99
+        },
+        {
+          "available": true,
+          "currency": "PLN",
+          "description": "Slow-cooked pulled pork with BBQ sauce and coleslaw",
+          "details": {
+            "ingredients": [
+              "Pulled pork",
+              "Coleslaw",
+              "BBQ sauce",
+              "Brioche bun"
+            ],
+            "meats": ["Pork"],
+            "sauces": ["BBQ", "Spicy BBQ"],
+            "sizes": ["Regular", "Large"],
+            "tags": ["BBQ", "Specialty"]
+          },
+          "id": "3",
+          "imageUrl": "../../../images/doner_kebab.jpg",
+          "itemNumber": 3,
+          "name": "BBQ Pulled Pork",
+          "price": 26.99
+        },
+        {
+          "available": true,
+          "currency": "PLN",
+          "description": "Fresh vegetables, quinoa, and tofu with tahini dressing",
+          "details": {
+            "ingredients": ["Quinoa", "Tofu", "Avocado", "Mixed vegetables"],
+            "meats": [],
+            "sauces": ["Tahini", "Soy"],
+            "sizes": ["Regular"],
+            "tags": ["Vegetarian", "Healthy"]
+          },
+          "id": "4",
+          "imageUrl": "../../../images/doner_kebab.jpg",
+          "itemNumber": 4,
+          "name": "Veggie Buddha Bowl",
+          "price": 22.99
+        },
+        {
+          "available": true,
+          "currency": "PLN",
+          "description": "Grilled steak with caramelized onions and mushrooms",
+          "details": {
+            "ingredients": [
+              "Beef steak",
+              "Caramelized onions",
+              "Mushrooms",
+              "Sourdough bread"
+            ],
+            "meats": ["Beef"],
+            "sauces": ["Horseradish", "Mustard"],
+            "sizes": ["Regular"],
+            "tags": ["Premium", "Hot"]
+          },
+          "id": "5",
+          "imageUrl": "../../../images/doner_kebab.jpg",
+          "itemNumber": 5,
+          "name": "Steak Sandwich",
+          "price": 28.99
+        },
+        {
+          "available": true,
+          "currency": "PLN",
+          "description": "Beer-battered cod with crispy fries and tartar sauce",
+          "details": {
+            "ingredients": ["Cod", "Beer batter", "Fries", "Lemon"],
+            "meats": ["Fish"],
+            "sauces": ["Tartar", "Malt vinegar"],
+            "sizes": ["Regular", "Large"],
+            "tags": ["Seafood", "Classic"]
+          },
+          "id": "6",
+          "imageUrl": "../../../images/doner_kebab.jpg",
+          "itemNumber": 6,
+          "name": "Fish & Chips",
+          "price": 25.99
+        }
+      ]
+    },
+    {
+      "categoryId": "salads-1",
+      "categoryName": "Salads",
+      "sortOrder": 4,
+      "categoryItems": [
+        {
+          "available": true,
+          "currency": "PLN",
+          "description": "Classic Caesar salad with grilled chicken",
+          "details": {
+            "ingredients": ["Romaine", "Chicken", "Croutons", "Parmesan"],
+            "meats": ["Chicken"],
+            "sauces": ["Caesar"],
+            "sizes": ["Regular", "Large"],
+            "tags": ["Classic", "Fresh"]
+          },
+          "id": "33",
+          "imageUrl": "../../../images/doner_kebab.jpg",
+          "itemNumber": 33,
+          "name": "Caesar Salad",
+          "price": 15.99
+        },
+        {
+          "available": true,
+          "currency": "PLN",
+          "description": "Traditional Greek salad with feta",
+          "details": {
+            "ingredients": ["Tomatoes", "Cucumber", "Olives", "Feta"],
+            "meats": [],
+            "sauces": ["Olive Oil"],
+            "sizes": ["Regular"],
+            "tags": ["Vegetarian", "Fresh"]
+          },
+          "id": "34",
+          "imageUrl": "../../../images/doner_kebab.jpg",
+          "itemNumber": 34,
+          "name": "Greek Salad",
+          "price": 14.99
+        }
+      ]
+    },
+    {
+      "categoryId": "sides-1",
+      "categoryName": "Sides",
+      "sortOrder": 5,
+      "categoryItems": [
+        {
+          "available": true,
+          "currency": "PLN",
+          "description": "Crispy golden fries seasoned with sea salt",
+          "details": {
+            "ingredients": ["Potatoes", "Salt"],
+            "meats": [],
+            "sauces": ["Ketchup", "Mayo"],
+            "sizes": ["Small", "Regular", "Large"],
+            "tags": ["Vegetarian", "Classic"]
+          },
+          "id": "7",
+          "imageUrl": "../../../images/doner_kebab.jpg",
+          "itemNumber": 7,
+          "name": "French Fries",
+          "price": 9.99
+        },
+        {
+          "available": true,
+          "currency": "PLN",
+          "description": "Crispy sweet potato fries with herbs",
+          "details": {
+            "ingredients": ["Sweet potatoes", "Herbs"],
+            "meats": [],
+            "sauces": ["Chipotle Mayo"],
+            "sizes": ["Small", "Regular", "Large"],
+            "tags": ["Vegetarian", "Healthy"]
+          },
+          "id": "8",
+          "imageUrl": "../../../images/doner_kebab.jpg",
+          "itemNumber": 8,
+          "name": "Sweet Potato Fries",
+          "price": 11.99
+        },
+        {
+          "available": true,
+          "currency": "PLN",
+          "description": "Beer-battered onion rings",
+          "details": {
+            "ingredients": ["Onions", "Beer batter"],
+            "meats": [],
+            "sauces": ["Ranch", "BBQ"],
+            "sizes": ["Regular", "Large"],
+            "tags": ["Vegetarian", "Crispy"]
+          },
+          "id": "9",
+          "imageUrl": "../../../images/doner_kebab.jpg",
+          "itemNumber": 9,
+          "name": "Onion Rings",
+          "price": 8.99
+        },
+        {
+          "available": true,
+          "currency": "PLN",
+          "description": "Fresh cabbage slaw with creamy dressing",
+          "details": {
+            "ingredients": ["Cabbage", "Carrots", "Mayo dressing"],
+            "meats": [],
+            "sauces": [],
+            "sizes": ["Regular"],
+            "tags": ["Fresh", "Cold"]
+          },
+          "id": "10",
+          "imageUrl": "../../../images/doner_kebab.jpg",
+          "itemNumber": 10,
+          "name": "Coleslaw",
+          "price": 6.99
+        },
+        {
+          "available": true,
+          "currency": "PLN",
+          "description": "Creamy macaroni and cheese",
+          "details": {
+            "ingredients": ["Macaroni", "Cheese blend", "Breadcrumbs"],
+            "meats": [],
+            "sauces": [],
+            "sizes": ["Regular", "Large"],
+            "tags": ["Vegetarian", "Hot"]
+          },
+          "id": "11",
+          "imageUrl": "../../../images/doner_kebab.jpg",
+          "itemNumber": 11,
+          "name": "Mac & Cheese",
+          "price": 12.99
+        },
+        {
+          "available": true,
+          "currency": "PLN",
+          "description": "Mixed greens with fresh vegetables",
+          "details": {
+            "ingredients": ["Mixed greens", "Tomatoes", "Cucumber", "Carrots"],
+            "meats": [],
+            "sauces": ["Vinaigrette", "Ranch"],
+            "sizes": ["Regular"],
+            "tags": ["Vegetarian", "Fresh"]
+          },
+          "id": "12",
+          "imageUrl": "../../../images/doner_kebab.jpg",
+          "itemNumber": 12,
+          "name": "Garden Salad",
+          "price": 7.99
+        }
+      ]
+    },
+    {
+      "categoryId": "soups-1",
+      "categoryName": "Soups",
+      "sortOrder": 6,
+      "categoryItems": [
+        {
+          "available": true,
+          "currency": "PLN",
+          "description": "Creamy tomato soup with basil",
+          "details": {
+            "ingredients": ["Tomatoes", "Cream", "Basil"],
+            "meats": [],
+            "sauces": [],
+            "sizes": ["Regular", "Large"],
+            "tags": ["Vegetarian", "Hot"]
+          },
+          "id": "31",
+          "imageUrl": "../../../images/doner_kebab.jpg",
+          "itemNumber": 31,
+          "name": "Tomato Soup",
+          "price": 8.99
+        },
+        {
+          "available": true,
+          "currency": "PLN",
+          "description": "Classic chicken noodle soup",
+          "details": {
+            "ingredients": ["Chicken", "Noodles", "Vegetables"],
+            "meats": ["Chicken"],
+            "sauces": [],
+            "sizes": ["Regular", "Large"],
+            "tags": ["Classic", "Hot"]
+          },
+          "id": "32",
+          "imageUrl": "../../../images/doner_kebab.jpg",
+          "itemNumber": 32,
+          "name": "Chicken Noodle Soup",
+          "price": 9.99
+        }
+      ]
+    },
+    {
+      "categoryId": "starters-1",
+      "categoryName": "Starters",
+      "sortOrder": 7,
+      "categoryItems": [
+        {
+          "available": true,
+          "currency": "PLN",
+          "description": "Freshly baked bread with garlic butter and herbs",
+          "details": {
+            "ingredients": ["Bread", "Garlic", "Butter", "Herbs"],
+            "meats": [],
+            "sauces": [],
+            "sizes": ["Regular"],
+            "tags": ["Vegetarian", "Hot"]
+          },
+          "id": "19",
+          "imageUrl": "../../../images/doner_kebab.jpg",
+          "itemNumber": 19,
+          "name": "Garlic Bread",
+          "price": 8.99
+        },
+        {
+          "available": true,
+          "currency": "PLN",
+          "description": "Crispy chicken wings with choice of sauce",
+          "details": {
+            "ingredients": ["Chicken wings", "Spices"],
+            "meats": ["Chicken"],
+            "sauces": ["BBQ", "Buffalo", "Sweet Chili"],
+            "sizes": ["6 pcs", "12 pcs"],
+            "tags": ["Spicy", "Hot"]
+          },
+          "id": "20",
+          "imageUrl": "../../../images/doner_kebab.jpg",
+          "itemNumber": 20,
+          "name": "Chicken Wings",
+          "price": 16.99
+        },
+        {
+          "available": true,
+          "currency": "PLN",
+          "description": "Tortilla chips with melted cheese and toppings",
+          "details": {
+            "ingredients": [
+              "Tortilla chips",
+              "Cheese",
+              "Jalapeños",
+              "Tomatoes"
+            ],
+            "meats": [],
+            "sauces": ["Salsa", "Sour Cream"],
+            "sizes": ["Regular", "Large"],
+            "tags": ["Vegetarian", "Shareable"]
+          },
+          "id": "21",
+          "imageUrl": "../../../images/doner_kebab.jpg",
+          "itemNumber": 21,
+          "name": "Nachos",
+          "price": 14.99
+        },
+        {
+          "available": true,
+          "currency": "PLN",
+          "description": "Breaded mozzarella sticks with marinara sauce",
+          "details": {
+            "ingredients": ["Mozzarella", "Breadcrumbs"],
+            "meats": [],
+            "sauces": ["Marinara"],
+            "sizes": ["6 pcs", "12 pcs"],
+            "tags": ["Vegetarian", "Hot"]
+          },
+          "id": "22",
+          "imageUrl": "../../../images/doner_kebab.jpg",
+          "itemNumber": 22,
+          "name": "Mozzarella Sticks",
+          "price": 11.99
+        },
+        {
+          "available": true,
+          "currency": "PLN",
+          "description": "Crispy fried calamari with lemon",
+          "details": {
+            "ingredients": ["Squid", "Breading", "Lemon"],
+            "meats": ["Seafood"],
+            "sauces": ["Tartar", "Marinara"],
+            "sizes": ["Regular"],
+            "tags": ["Seafood", "Crispy"]
+          },
+          "id": "23",
+          "imageUrl": "../../../images/doner_kebab.jpg",
+          "itemNumber": 23,
+          "name": "Calamari",
+          "price": 15.99
+        },
+        {
+          "available": true,
+          "currency": "PLN",
+          "description": "Toasted bread with tomatoes and basil",
+          "details": {
+            "ingredients": ["Bread", "Tomatoes", "Basil", "Garlic"],
+            "meats": [],
+            "sauces": [],
+            "sizes": ["Regular"],
+            "tags": ["Vegetarian", "Italian"]
+          },
+          "id": "24",
+          "imageUrl": "../../../images/doner_kebab.jpg",
+          "itemNumber": 24,
+          "name": "Bruschetta",
+          "price": 10.99
+        }
+      ]
+    }
   ],
-  "categoryItems": {
-    "Desserts": [
-      {
-        "available": true,
-        "currency": "PLN",
-        "description": "Vanilla ice cream with toppings",
-        "details": {
-          "ingredients": ["Ice cream", "Whipped cream", "Nuts"],
-          "meats": [],
-          "sauces": ["Chocolate", "Caramel"],
-          "sizes": ["Regular"],
-          "tags": ["Sweet", "Cold"]
-        },
-        "id": 25,
-        "imageUrl": "../../../images/doner Kebab.jpg",
-        "itemNumber": 25,
-        "name": "Ice Cream Sundae",
-        "price": 12.99,
-        "tags": null
-      },
-      {
-        "available": true,
-        "currency": "PLN",
-        "description": "Rich chocolate layer cake",
-        "details": {
-          "ingredients": ["Chocolate", "Cake", "Frosting"],
-          "meats": [],
-          "sauces": ["Chocolate"],
-          "sizes": ["Regular"],
-          "tags": ["Sweet", "Rich"]
-        },
-        "id": 26,
-        "imageUrl": "../../../images/doner Kebab.jpg",
-        "itemNumber": 26,
-        "name": "Chocolate Cake",
-        "price": 13.99,
-        "tags": null
-      },
-      {
-        "available": true,
-        "currency": "PLN",
-        "description": "Warm apple pie with vanilla ice cream",
-        "details": {
-          "ingredients": ["Apples", "Pastry", "Cinnamon"],
-          "meats": [],
-          "sauces": ["Caramel"],
-          "sizes": ["Regular"],
-          "tags": ["Sweet", "Hot"]
-        },
-        "id": 27,
-        "imageUrl": "../../../images/doner Kebab.jpg",
-        "itemNumber": 27,
-        "name": "Apple Pie",
-        "price": 11.99,
-        "tags": null
-      },
-      {
-        "available": true,
-        "currency": "PLN",
-        "description": "New York style cheesecake",
-        "details": {
-          "ingredients": ["Cream cheese", "Graham crust", "Berries"],
-          "meats": [],
-          "sauces": ["Berry sauce"],
-          "sizes": ["Regular"],
-          "tags": ["Sweet", "Classic"]
-        },
-        "id": 28,
-        "imageUrl": "../../../images/doner Kebab.jpg",
-        "itemNumber": 28,
-        "name": "Cheesecake",
-        "price": 14.99,
-        "tags": null
-      },
-      {
-        "available": true,
-        "currency": "PLN",
-        "description": "Warm chocolate brownie with ice cream",
-        "details": {
-          "ingredients": ["Chocolate", "Walnuts", "Ice cream"],
-          "meats": [],
-          "sauces": ["Chocolate", "Caramel"],
-          "sizes": ["Regular"],
-          "tags": ["Sweet", "Hot"]
-        },
-        "id": 29,
-        "imageUrl": "../../../images/doner Kebab.jpg",
-        "itemNumber": 29,
-        "name": "Brownie",
-        "price": 10.99,
-        "tags": null
-      },
-      {
-        "available": true,
-        "currency": "PLN",
-        "description": "Classic Italian tiramisu",
-        "details": {
-          "ingredients": ["Ladyfingers", "Coffee", "Mascarpone"],
-          "meats": [],
-          "sauces": [],
-          "sizes": ["Regular"],
-          "tags": ["Sweet", "Italian"]
-        },
-        "id": 30,
-        "imageUrl": "../../../images/doner Kebab.jpg",
-        "itemNumber": 30,
-        "name": "Tiramisu",
-        "price": 13.99,
-        "tags": null
-      }
-    ],
-    "Drinks": [
-      {
-        "available": true,
-        "currency": "PLN",
-        "description": "Ice-cold cola with free refills",
-        "details": {
-          "ingredients": ["Carbonated water", "Cola syrup"],
-          "meats": [],
-          "sauces": [],
-          "sizes": ["Small", "Regular", "Large"],
-          "tags": ["Cold", "Refillable"]
-        },
-        "id": 13,
-        "imageUrl": "../../../images/doner Kebab.jpg",
-        "itemNumber": 13,
-        "name": "Cola",
-        "price": 7.99,
-        "tags": null
-      },
-      {
-        "available": true,
-        "currency": "PLN",
-        "description": "Fresh-squeezed lemonade",
-        "details": {
-          "ingredients": ["Lemons", "Sugar", "Water"],
-          "meats": [],
-          "sauces": [],
-          "sizes": ["Regular", "Large"],
-          "tags": ["Fresh", "Cold"]
-        },
-        "id": 14,
-        "imageUrl": "../../../images/doner Kebab.jpg",
-        "itemNumber": 14,
-        "name": "Lemonade",
-        "price": 6.99,
-        "tags": null
-      },
-      {
-        "available": true,
-        "currency": "PLN",
-        "description": "House-brewed iced tea",
-        "details": {
-          "ingredients": ["Tea", "Ice"],
-          "meats": [],
-          "sauces": [],
-          "sizes": ["Regular", "Large"],
-          "tags": ["Cold", "Refillable"]
-        },
-        "id": 15,
-        "imageUrl": "../../../images/doner Kebab.jpg",
-        "itemNumber": 15,
-        "name": "Iced Tea",
-        "price": 6.99,
-        "tags": null
-      },
-      {
-        "available": true,
-        "currency": "PLN",
-        "description": "Hand-spun milkshake with whipped cream",
-        "details": {
-          "ingredients": ["Ice cream", "Milk", "Whipped cream"],
-          "meats": [],
-          "sauces": ["Chocolate", "Caramel"],
-          "sizes": ["Regular"],
-          "tags": ["Cold", "Sweet"]
-        },
-        "id": 16,
-        "imageUrl": "../../../images/doner Kebab.jpg",
-        "itemNumber": 16,
-        "name": "Milkshake",
-        "price": 9.99,
-        "tags": null
-      },
-      {
-        "available": true,
-        "currency": "PLN",
-        "description": "Fresh-brewed coffee",
-        "details": {
-          "ingredients": ["Coffee beans", "Hot water"],
-          "meats": [],
-          "sauces": [],
-          "sizes": ["Small", "Regular", "Large"],
-          "tags": ["Hot", "Refillable"]
-        },
-        "id": 17,
-        "imageUrl": "../../../images/doner Kebab.jpg",
-        "itemNumber": 17,
-        "name": "Coffee",
-        "price": 5.99,
-        "tags": null
-      },
-      {
-        "available": true,
-        "currency": "PLN",
-        "description": "Fresh fruit smoothie",
-        "details": {
-          "ingredients": ["Mixed fruits", "Yogurt", "Honey"],
-          "meats": [],
-          "sauces": [],
-          "sizes": ["Regular"],
-          "tags": ["Healthy", "Cold"]
-        },
-        "id": 18,
-        "imageUrl": "../../../images/doner Kebab.jpg",
-        "itemNumber": 18,
-        "name": "Smoothie",
-        "price": 8.99,
-        "tags": null
-      }
-    ],
-    "Kids Menu": [
-      {
-        "available": true,
-        "currency": "PLN",
-        "description": "Kid-sized burger with fries",
-        "details": {
-          "ingredients": ["Beef patty", "Cheese", "Fries"],
-          "meats": ["Beef"],
-          "sauces": ["Ketchup"],
-          "sizes": ["Kids"],
-          "tags": ["Kids", "Classic"]
-        },
-        "id": 35,
-        "imageUrl": "../../../images/doner Kebab.jpg",
-        "itemNumber": 35,
-        "name": "Mini Burger",
-        "price": 12.99,
-        "tags": null
-      },
-      {
-        "available": true,
-        "currency": "PLN",
-        "description": "Crispy chicken nuggets with fries",
-        "details": {
-          "ingredients": ["Chicken", "Breading", "Fries"],
-          "meats": ["Chicken"],
-          "sauces": ["BBQ", "Ketchup"],
-          "sizes": ["Kids"],
-          "tags": ["Kids", "Hot"]
-        },
-        "id": 36,
-        "imageUrl": "../../../images/doner Kebab.jpg",
-        "itemNumber": 36,
-        "name": "Chicken Nuggets",
-        "price": 11.99,
-        "tags": null
-      }
-    ],
-    "Main": [
-      {
-        "available": true,
-        "currency": "PLN",
-        "description": "Juicy beef patty with fresh vegetables and our signature sauce",
-        "details": {
-          "ingredients": [
-            "Beef patty",
-            "Lettuce",
-            "Tomato",
-            "Onion",
-            "Pickles"
-          ],
-          "meats": ["Beef"],
-          "sauces": ["Signature sauce", "Mayo", "Ketchup"],
-          "sizes": ["Regular", "Large"],
-          "tags": ["Burgers", "Bestseller"]
-        },
-        "id": 1,
-        "imageUrl": "../../../images/doner Kebab.jpg",
-        "itemNumber": 1,
-        "name": "Classic Burger",
-        "price": 24.99,
-        "tags": null
-      },
-      {
-        "available": true,
-        "currency": "PLN",
-        "description": "Grilled chicken breast with fresh vegetables in a tortilla wrap",
-        "details": {
-          "ingredients": ["Chicken breast", "Lettuce", "Tomato", "Cucumber"],
-          "meats": ["Chicken"],
-          "sauces": ["Garlic sauce", "Ranch"],
-          "sizes": ["Regular"],
-          "tags": ["Healthy", "Light"]
-        },
-        "id": 2,
-        "imageUrl": "../../../images/doner Kebab.jpg",
-        "itemNumber": 2,
-        "name": "Chicken Wrap",
-        "price": 19.99,
-        "tags": null
-      },
-      {
-        "available": true,
-        "currency": "PLN",
-        "description": "Slow-cooked pulled pork with BBQ sauce and coleslaw",
-        "details": {
-          "ingredients": [
-            "Pulled pork",
-            "Coleslaw",
-            "BBQ sauce",
-            "Brioche bun"
-          ],
-          "meats": ["Pork"],
-          "sauces": ["BBQ", "Spicy BBQ"],
-          "sizes": ["Regular", "Large"],
-          "tags": ["BBQ", "Specialty"]
-        },
-        "id": 3,
-        "imageUrl": "../../../images/doner Kebab.jpg",
-        "itemNumber": 3,
-        "name": "BBQ Pulled Pork",
-        "price": 26.99,
-        "tags": null
-      },
-      {
-        "available": true,
-        "currency": "PLN",
-        "description": "Fresh vegetables, quinoa, and tofu with tahini dressing",
-        "details": {
-          "ingredients": ["Quinoa", "Tofu", "Avocado", "Mixed vegetables"],
-          "meats": [],
-          "sauces": ["Tahini", "Soy"],
-          "sizes": ["Regular"],
-          "tags": ["Vegetarian", "Healthy"]
-        },
-        "id": 4,
-        "imageUrl": "../../../images/doner Kebab.jpg",
-        "itemNumber": 4,
-        "name": "Veggie Buddha Bowl",
-        "price": 22.99,
-        "tags": null
-      },
-      {
-        "available": true,
-        "currency": "PLN",
-        "description": "Grilled steak with caramelized onions and mushrooms",
-        "details": {
-          "ingredients": [
-            "Beef steak",
-            "Caramelized onions",
-            "Mushrooms",
-            "Sourdough bread"
-          ],
-          "meats": ["Beef"],
-          "sauces": ["Horseradish", "Mustard"],
-          "sizes": ["Regular"],
-          "tags": ["Premium", "Hot"]
-        },
-        "id": 5,
-        "imageUrl": "../../../images/doner Kebab.jpg",
-        "itemNumber": 5,
-        "name": "Steak Sandwich",
-        "price": 28.99,
-        "tags": null
-      },
-      {
-        "available": true,
-        "currency": "PLN",
-        "description": "Beer-battered cod with crispy fries and tartar sauce",
-        "details": {
-          "ingredients": ["Cod", "Beer batter", "Fries", "Lemon"],
-          "meats": ["Fish"],
-          "sauces": ["Tartar", "Malt vinegar"],
-          "sizes": ["Regular", "Large"],
-          "tags": ["Seafood", "Classic"]
-        },
-        "id": 6,
-        "imageUrl": "../../../images/doner Kebab.jpg",
-        "itemNumber": 6,
-        "name": "Fish & Chips",
-        "price": 25.99,
-        "tags": null
-      }
-    ],
-    "Salads": [
-      {
-        "available": true,
-        "currency": "PLN",
-        "description": "Classic Caesar salad with grilled chicken",
-        "details": {
-          "ingredients": ["Romaine", "Chicken", "Croutons", "Parmesan"],
-          "meats": ["Chicken"],
-          "sauces": ["Caesar"],
-          "sizes": ["Regular", "Large"],
-          "tags": ["Classic", "Fresh"]
-        },
-        "id": 33,
-        "imageUrl": "../../../images/doner Kebab.jpg",
-        "itemNumber": 33,
-        "name": "Caesar Salad",
-        "price": 15.99,
-        "tags": null
-      },
-      {
-        "available": true,
-        "currency": "PLN",
-        "description": "Traditional Greek salad with feta",
-        "details": {
-          "ingredients": ["Tomatoes", "Cucumber", "Olives", "Feta"],
-          "meats": [],
-          "sauces": ["Olive Oil"],
-          "sizes": ["Regular"],
-          "tags": ["Vegetarian", "Fresh"]
-        },
-        "id": 34,
-        "imageUrl": "../../../images/doner Kebab.jpg",
-        "itemNumber": 34,
-        "name": "Greek Salad",
-        "price": 14.99,
-        "tags": null
-      }
-    ],
-    "Sides": [
-      {
-        "available": true,
-        "currency": "PLN",
-        "description": "Crispy golden fries seasoned with sea salt",
-        "details": {
-          "ingredients": ["Potatoes", "Salt"],
-          "meats": [],
-          "sauces": ["Ketchup", "Mayo"],
-          "sizes": ["Small", "Regular", "Large"],
-          "tags": ["Vegetarian", "Classic"]
-        },
-        "id": 7,
-        "imageUrl": "../../../images/doner Kebab.jpg",
-        "itemNumber": 7,
-        "name": "French Fries",
-        "price": 9.99,
-        "tags": null
-      },
-      {
-        "available": true,
-        "currency": "PLN",
-        "description": "Crispy sweet potato fries with herbs",
-        "details": {
-          "ingredients": ["Sweet potatoes", "Herbs"],
-          "meats": [],
-          "sauces": ["Chipotle Mayo"],
-          "sizes": ["Small", "Regular", "Large"],
-          "tags": ["Vegetarian", "Healthy"]
-        },
-        "id": 8,
-        "imageUrl": "../../../images/doner Kebab.jpg",
-        "itemNumber": 8,
-        "name": "Sweet Potato Fries",
-        "price": 11.99,
-        "tags": null
-      },
-      {
-        "available": true,
-        "currency": "PLN",
-        "description": "Beer-battered onion rings",
-        "details": {
-          "ingredients": ["Onions", "Beer batter"],
-          "meats": [],
-          "sauces": ["Ranch", "BBQ"],
-          "sizes": ["Regular", "Large"],
-          "tags": ["Vegetarian", "Crispy"]
-        },
-        "id": 9,
-        "imageUrl": "../../../images/doner Kebab.jpg",
-        "itemNumber": 9,
-        "name": "Onion Rings",
-        "price": 8.99,
-        "tags": null
-      },
-      {
-        "available": true,
-        "currency": "PLN",
-        "description": "Fresh cabbage slaw with creamy dressing",
-        "details": {
-          "ingredients": ["Cabbage", "Carrots", "Mayo dressing"],
-          "meats": [],
-          "sauces": [],
-          "sizes": ["Regular"],
-          "tags": ["Fresh", "Cold"]
-        },
-        "id": 10,
-        "imageUrl": "../../../images/doner Kebab.jpg",
-        "itemNumber": 10,
-        "name": "Coleslaw",
-        "price": 6.99,
-        "tags": null
-      },
-      {
-        "available": true,
-        "currency": "PLN",
-        "description": "Creamy macaroni and cheese",
-        "details": {
-          "ingredients": ["Macaroni", "Cheese blend", "Breadcrumbs"],
-          "meats": [],
-          "sauces": [],
-          "sizes": ["Regular", "Large"],
-          "tags": ["Vegetarian", "Hot"]
-        },
-        "id": 11,
-        "imageUrl": "../../../images/doner Kebab.jpg",
-        "itemNumber": 11,
-        "name": "Mac & Cheese",
-        "price": 12.99,
-        "tags": null
-      },
-      {
-        "available": true,
-        "currency": "PLN",
-        "description": "Mixed greens with fresh vegetables",
-        "details": {
-          "ingredients": ["Mixed greens", "Tomatoes", "Cucumber", "Carrots"],
-          "meats": [],
-          "sauces": ["Vinaigrette", "Ranch"],
-          "sizes": ["Regular"],
-          "tags": ["Vegetarian", "Fresh"]
-        },
-        "id": 12,
-        "imageUrl": "../../../images/doner Kebab.jpg",
-        "itemNumber": 12,
-        "name": "Garden Salad",
-        "price": 7.99,
-        "tags": null
-      }
-    ],
-    "Soups": [
-      {
-        "available": true,
-        "currency": "PLN",
-        "description": "Creamy tomato soup with basil",
-        "details": {
-          "ingredients": ["Tomatoes", "Cream", "Basil"],
-          "meats": [],
-          "sauces": [],
-          "sizes": ["Regular", "Large"],
-          "tags": ["Vegetarian", "Hot"]
-        },
-        "id": 31,
-        "imageUrl": "../../../images/doner Kebab.jpg",
-        "itemNumber": 31,
-        "name": "Tomato Soup",
-        "price": 8.99,
-        "tags": null
-      },
-      {
-        "available": true,
-        "currency": "PLN",
-        "description": "Classic chicken noodle soup",
-        "details": {
-          "ingredients": ["Chicken", "Noodles", "Vegetables"],
-          "meats": ["Chicken"],
-          "sauces": [],
-          "sizes": ["Regular", "Large"],
-          "tags": ["Classic", "Hot"]
-        },
-        "id": 32,
-        "imageUrl": "../../../images/doner Kebab.jpg",
-        "itemNumber": 32,
-        "name": "Chicken Noodle Soup",
-        "price": 9.99,
-        "tags": null
-      }
-    ],
-    "Starters": [
-      {
-        "available": true,
-        "currency": "PLN",
-        "description": "Freshly baked bread with garlic butter and herbs",
-        "details": {
-          "ingredients": ["Bread", "Garlic", "Butter", "Herbs"],
-          "meats": [],
-          "sauces": [],
-          "sizes": ["Regular"],
-          "tags": ["Vegetarian", "Hot"]
-        },
-        "id": 19,
-        "imageUrl": "../../../images/doner Kebab.jpg",
-        "itemNumber": 19,
-        "name": "Garlic Bread",
-        "price": 8.99,
-        "tags": null
-      },
-      {
-        "available": true,
-        "currency": "PLN",
-        "description": "Crispy chicken wings with choice of sauce",
-        "details": {
-          "ingredients": ["Chicken wings", "Spices"],
-          "meats": ["Chicken"],
-          "sauces": ["BBQ", "Buffalo", "Sweet Chili"],
-          "sizes": ["6 pcs", "12 pcs"],
-          "tags": ["Spicy", "Hot"]
-        },
-        "id": 20,
-        "imageUrl": "../../../images/doner Kebab.jpg",
-        "itemNumber": 20,
-        "name": "Chicken Wings",
-        "price": 16.99,
-        "tags": null
-      },
-      {
-        "available": true,
-        "currency": "PLN",
-        "description": "Tortilla chips with melted cheese and toppings",
-        "details": {
-          "ingredients": ["Tortilla chips", "Cheese", "Jalapeños", "Tomatoes"],
-          "meats": [],
-          "sauces": ["Salsa", "Sour Cream"],
-          "sizes": ["Regular", "Large"],
-          "tags": ["Vegetarian", "Shareable"]
-        },
-        "id": 21,
-        "imageUrl": "../../../images/doner Kebab.jpg",
-        "itemNumber": 21,
-        "name": "Nachos",
-        "price": 14.99,
-        "tags": null
-      },
-      {
-        "available": true,
-        "currency": "PLN",
-        "description": "Breaded mozzarella sticks with marinara sauce",
-        "details": {
-          "ingredients": ["Mozzarella", "Breadcrumbs"],
-          "meats": [],
-          "sauces": ["Marinara"],
-          "sizes": ["6 pcs", "12 pcs"],
-          "tags": ["Vegetarian", "Hot"]
-        },
-        "id": 22,
-        "imageUrl": "../../../images/doner Kebab.jpg",
-        "itemNumber": 22,
-        "name": "Mozzarella Sticks",
-        "price": 11.99,
-        "tags": null
-      },
-      {
-        "available": true,
-        "currency": "PLN",
-        "description": "Crispy fried calamari with lemon",
-        "details": {
-          "ingredients": ["Squid", "Breading", "Lemon"],
-          "meats": ["Seafood"],
-          "sauces": ["Tartar", "Marinara"],
-          "sizes": ["Regular"],
-          "tags": ["Seafood", "Crispy"]
-        },
-        "id": 23,
-        "imageUrl": "../../../images/doner Kebab.jpg",
-        "itemNumber": 23,
-        "name": "Calamari",
-        "price": 15.99,
-        "tags": null
-      },
-      {
-        "available": true,
-        "currency": "PLN",
-        "description": "Toasted bread with tomatoes and basil",
-        "details": {
-          "ingredients": ["Bread", "Tomatoes", "Basil", "Garlic"],
-          "meats": [],
-          "sauces": [],
-          "sizes": ["Regular"],
-          "tags": ["Vegetarian", "Italian"]
-        },
-        "id": 24,
-        "imageUrl": "../../../images/doner Kebab.jpg",
-        "itemNumber": 24,
-        "name": "Bruschetta",
-        "price": 10.99,
-        "tags": null
-      }
-    ]
-  }
+  "organizationId": "demo-org"
 }

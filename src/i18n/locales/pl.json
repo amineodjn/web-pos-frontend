@@ -14,5 +14,277 @@
   },
   "menuHeader": {
     "title": "NASZE MENU"
+  },
+  "errors": {
+    "default": {
+      "title": "Ups! Coś poszło nie tak",
+      "message": "Nie udało się załadować treści. Spróbuj ponownie później."
+    },
+    "menu": {
+      "title": "Błąd ładowania menu",
+      "message": "Nie udało się załadować danych menu. Sprawdź swoje połączenie i spróbuj ponownie."
+    },
+    "retry": "Spróbuj ponownie"
+  },
+  "menuView": {
+    "title": "Zarządzanie Menu",
+    "loading": "Ładowanie danych menu...",
+    "error": {
+      "title": "Błąd ładowania danych menu",
+      "retry": "Spróbuj ponownie"
+    },
+    "processing": "Przetwarzanie...",
+    "tabs": {
+      "categories": "Kategorie",
+      "items": "Pozycje Menu"
+    },
+    "categories": {
+      "title": "Kategorie",
+      "addNew": "Dodaj Nową Kategorię",
+      "placeholder": "Nazwa kategorii",
+      "empty": "Nie znaleziono kategorii. Dodaj jedną powyżej."
+    },
+    "items": {
+      "title": "Pozycje Menu",
+      "foundCount": "Znaleziono {count} pozycję",
+      "foundCountPlural": "Znaleziono {count} pozycji",
+      "searchPlaceholder": "Szukaj po nazwie lub opisie...",
+      "filterLabel": "Filtruj według Kategorii",
+      "filterPlaceholder": "Wszystkie Kategorie",
+      "empty": {
+        "title": "Nie znaleziono pozycji menu",
+        "description": "Dodaj pozycje lub wybierz inną kategorię"
+      }
+    },
+    "buttons": {
+      "add": "Dodaj",
+      "addNew": "Dodaj Nową Pozycję",
+      "edit": "Edytuj",
+      "delete": "Usuń",
+      "reset": "Resetuj Dane",
+      "saving": "Zapisywanie..."
+    },
+    "confirmations": {
+      "deleteCategory": {
+        "title": "Usuń Kategorię",
+        "message": "Czy na pewno chcesz usunąć kategorię \"{name}\" i wszystkie jej pozycje?"
+      },
+      "deleteItem": {
+        "title": "Usuń Pozycję",
+        "message": "Czy na pewno chcesz usunąć \"{name}\"?"
+      },
+      "resetData": {
+        "title": "Resetuj Dane Menu",
+        "message": "Czy na pewno chcesz zresetować wszystkie dane menu do stanu początkowego? Tej operacji nie można cofnąć."
+      }
+    },
+    "toast": {
+      "success": {
+        "addCategory": "Kategoria '{name}' została pomyślnie dodana",
+        "deleteCategory": "Kategoria została pomyślnie usunięta",
+        "updateItem": "Pozycja menu została pomyślnie zaktualizowana",
+        "addItem": "Pozycja menu została pomyślnie dodana",
+        "deleteItem": "Pozycja menu została pomyślnie usunięta"
+      },
+      "error": {
+        "addCategory": "Nie udało się dodać kategorii: {message}",
+        "deleteCategory": "Nie udało się usunąć kategorii: {message}",
+        "updateItem": "Nie udało się zaktualizować pozycji menu: {message}",
+        "addItem": "Nie udało się dodać pozycji menu: {message}",
+        "deleteItem": "Nie udało się usunąć pozycji menu: {message}",
+        "generic": "Wystąpił błąd: {message}"
+      }
+    }
+  },
+  "menuItemModal": {
+    "title": {
+      "add": "Dodaj Pozycję Menu",
+      "edit": "Edytuj Pozycję Menu"
+    },
+    "fields": {
+      "name": "Nazwa",
+      "category": "Kategoria",
+      "price": "Cena",
+      "currency": "Waluta",
+      "description": "Opis",
+      "imageUrl": "URL Obrazu",
+      "available": "Dostępny",
+      "details": "Szczegóły Pozycji",
+      "ingredients": "Składniki",
+      "meats": "Mięsa",
+      "sauces": "Sosy",
+      "sizes": "Rozmiary",
+      "tags": "Tagi"
+    },
+    "placeholders": {
+      "category": "Wybierz kategorię",
+      "ingredients": "Lód, Bita śmietana, Orzechy",
+      "meats": "Kurczak, Wołowina, Wieprzowina",
+      "sauces": "Czekolada, Karmel, Truskawka",
+      "sizes": "Mały, Normalny, Duży",
+      "tags": "Słodki, Zimny, Ostry, Wegetariański"
+    },
+    "helpText": {
+      "commaSeparated": "Oddziel wiele {items} przecinkami"
+    },
+    "buttons": {
+      "cancel": "Anuluj",
+      "save": "Zapisz",
+      "saving": "Zapisywanie..."
+    },
+    "validation": {
+      "required": "To pole jest wymagane"
+    },
+    "error": "Wystąpił błąd podczas zapisywania pozycji. Spróbuj ponownie."
+  },
+  "adminView": {
+    "sidebar": {
+      "dashboard": "Panel",
+      "menu": "Menu",
+      "orders": "Zamówienia",
+      "kitchen": "Kuchnia",
+      "logout": "Wyloguj się"
+    }
+  },
+  "orders": {
+    "tabs": {
+      "add": "Dodaj Zamówienie",
+      "active": "Aktywne Zamówienia"
+    },
+    "currentOrder": {
+      "orderType": {
+        "dine-in": "Na miejscu",
+        "takeaway": "Na wynos"
+      },
+      "selectTable": "Wybierz stolik",
+      "noItems": "Brak pozycji w zamówieniu",
+      "selectItems": "Wybierz pozycje z menu",
+      "subtotal": "Suma częściowa",
+      "tax": "Podatek",
+      "total": "Razem",
+      "placeOrder": "Złóż zamówienie",
+      "processing": "Przetwarzanie...",
+      "clearOrder": "Wyczyść zamówienie",
+      "add": "Dodaj",
+      "addComment": "Dodaj komentarz",
+      "recentComments": "Ostatnie Komentarze",
+      "commentPlaceholder": "Wpisz swój komentarz...",
+      "cancel": "Anuluj",
+      "save": "Zapisz"
+    },
+    "activeOrders": {
+      "title": "Aktywne Zamówienia",
+      "headers": {
+        "id": "ID Zamówienia",
+        "type": "Typ",
+        "table": "Stolik",
+        "items": "Pozycje",
+        "total": "Suma",
+        "status": "Status",
+        "actions": "Akcje"
+      },
+      "actions": {
+        "view": "Podgląd",
+        "complete": "Zakończ",
+        "cancel": "Anuluj",
+        "deleteTitle": "Usuń zamówienie",
+        "deleteMessage": "Czy na pewno chcesz usunąć to zamówienie? Tej operacji nie można cofnąć."
+      },
+      "table": {
+        "dineIn": "Stolik {number}",
+        "takeaway": "Na wynos"
+      },
+      "empty": {
+        "title": "Brak aktywnych zamówień",
+        "description": "Obecnie nie ma żadnych aktywnych zamówień w systemie."
+      }
+    },
+    "table": {
+      "empty": {
+        "title": "Brak zamówień",
+        "description": "Obecnie nie ma żadnych zamówień w systemie."
+      },
+      "types": {
+        "dine-in": "Na miejscu",
+        "takeaway": "Na wynos"
+      }
+    },
+    "actions": {
+      "start": "Rozpocznij",
+      "complete": "Zakończ",
+      "cancel": "Anuluj"
+    },
+    "orderDetails": {
+      "title": "Szczegóły Zamówienia #{orderId}",
+      "orderType": "Typ Zamówienia",
+      "items": "Pozycje",
+      "total": "Suma",
+      "close": "Zamknij"
+    }
+  },
+  "kitchen": {
+    "display": {
+      "title": "Wyświetlacz Kuchni",
+      "comments": "Komentarze",
+      "complete": "Zakończ",
+      "empty": {
+        "title": "Brak aktywnych zamówień",
+        "description": "Obecnie nie ma żadnych zamówień w trakcie realizacji. Nowe zamówienia pojawią się tutaj."
+      },
+      "status": {
+        "pending": "Oczekujące",
+        "preparing": "Przygotowywane",
+        "ready": "Gotowe",
+        "completed": "Zakończone",
+        "cancelled": "Anulowane"
+      }
+    }
+  },
+  "status": {
+    "pending": "Oczekujące",
+    "preparing": "Przygotowywane",
+    "ready": "Gotowe",
+    "completed": "Zakończone",
+    "cancelled": "Anulowane"
+  },
+  "dashboard": {
+    "title": "Panel",
+    "cards": {
+      "ordersToday": "Zamówienia Dzisiaj",
+      "revenueToday": "Przychód Dzisiaj",
+      "menuItems": "Pozycje Menu"
+    },
+    "recentOrders": {
+      "title": "Ostatnie Zamówienia",
+      "empty": {
+        "title": "Brak Ostatnich Zamówień",
+        "description": "Nie ma ostatnich zamówień do wyświetlenia."
+      }
+    },
+    "timeLabels": {
+      "today": "Dzisiaj",
+      "total": "Razem"
+    }
+  },
+  "imageUploader": {
+    "upload": {
+      "clickToUpload": "Kliknij, aby przesłać",
+      "orDragAndDrop": "lub przeciągnij i upuść",
+      "supportedFormats": "PNG, JPG, GIF do 10MB",
+      "preview": "Podgląd obrazu"
+    }
+  },
+  "confirmationModal": {
+    "buttons": {
+      "confirm": "Potwierdź",
+      "cancel": "Anuluj"
+    }
+  },
+  "common": {
+    "delete": "Usuń",
+    "cancel": "Anuluj"
+  },
+  "menuItem": {
+    "unavailable": "Niedostępny"
   }
 }

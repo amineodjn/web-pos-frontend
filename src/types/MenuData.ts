@@ -1,25 +1,35 @@
 export interface MenuItemDetails {
-  ingredients: string[]
-  meats: string[]
-  sauces: string[]
-  sizes: string[]
-  tags: string[]
+  ingredients: string[];
+  meats: string[];
+  sauces: string[];
+  sizes: string[];
+  tags: string[];
 }
 
 export interface MenuItem {
-  available: boolean
-  currency: string
-  description: string
-  details: MenuItemDetails
-  id: number
-  imageUrl: string
-  itemNumber: number
-  name: string
-  price: number
-  tags: string[] | null
+  available: boolean;
+  is_available?: boolean;
+  currency: string;
+  description: string;
+  details: MenuItemDetails;
+  id: string;
+  imageUrl: string;
+  image_url?: string;
+  itemNumber: number;
+  name: string;
+  price: number;
+  organization_id: string;
+  category_id: string;
+}
+
+export interface Category {
+  categoryId: string;
+  categoryName: string;
+  sortOrder: number;
+  categoryItems: MenuItem[];
 }
 
 export interface MenuData {
-  categoryBadges: string[]
-  categoryItems: Record<string, MenuItem[]>
+  menu: Category[];
+  organizationId: string;
 }
